@@ -1,0 +1,1 @@
+<?php Script::renderScripts('body'); ?>
