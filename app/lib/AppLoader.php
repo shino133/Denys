@@ -10,7 +10,8 @@ class AppLoader
     if (file_exists($fullPath)) {
       include_once $fullPath;
     } else {
-      echo "File không tồn tại: $fullPath";
+      http_response_code(404);
+      echo "404 - File not found: $fullPath";
     }
   }
 
@@ -54,5 +55,10 @@ class AppLoader
   public static function component($path)
   {
     self::include("components/$path");
+  }
+
+  public static function constant($path)
+  {
+    self::include("constants/$path");
   }
 }

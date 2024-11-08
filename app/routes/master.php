@@ -13,11 +13,11 @@ if (isset($routes[$requestMethod][$requestUri])) {
   list($controller, $action) = explode('@', $routes[$requestMethod][$requestUri]);
 
   // Gọi controller và action
-  app_controller($controller);
+  AppLoader::controller($controller);
   $controllerInstance = new $controller();
   $controllerInstance->$action();
 } else {
   // Nếu không tìm thấy route, trả về trang 404
   http_response_code(404);
-  echo "404 - Not Found";
+  echo "404 - URL not found";
 }

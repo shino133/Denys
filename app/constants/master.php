@@ -1,9 +1,8 @@
 <?php
-app_helper('Link');
-app_helper('Meta');
-
-class Constants {
-  public static function home(){
+class Constants
+{
+  public static function home()
+  {
     Link::addLink('stylesheet', 'https://fonts.googleapis.com/css?family=Poppins');
 
     // Thêm Font Awesome với các thuộc tính bổ sung
@@ -13,7 +12,9 @@ class Constants {
       'referrerpolicy' => 'no-referrer'
     ]);
 
+    Link::addStylesheet("style/lighttheme_css/light_style.css?t=" . time(), ["id" => "theme"]);
+
     // Thêm favicon
-    Link::addLink('shortcut icon', 'logo/Minglr logo4.png', ['type' => 'image/png']);
+    Link::addLink('shortcut icon', 'public/logo/denys.svg', ['type' => 'image/png']);
   }
 }

@@ -1,5 +1,5 @@
 <?php
-app_model('UserModel');
+AppLoader::model('UserModel');
 
 class UserController extends BaseController
 {
