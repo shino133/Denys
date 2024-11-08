@@ -1,0 +1,11 @@
+Options -MultiViews
+
+RewriteEngine On
+
+# Đảm bảo BASE_URL được trỏ đến thư mục đúng
+RewriteBase /
+
+# Chuyển tiếp tất cả yêu cầu không phải file hoặc thư mục đến index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

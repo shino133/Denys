@@ -1,7 +1,17 @@
 <?php
-class User extends BaseModel
+class UserModel extends BaseModel
 {
   protected $table = 'users'; // Đặt tên bảng
 
-  // Bạn có thể thêm các phương thức đặc biệt khác cho User nếu cần
+  public function addUser($user) {
+    $data = [
+      'username' => $user['username'],
+      'email' => $user['email'],
+      'password' => password_hash($user['password'], PASSWORD_DEFAULT)
+    ];
+
+    $this->create($data);
+  }
+
+
 }

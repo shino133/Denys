@@ -8,7 +8,7 @@
 
 <body>
   <h1><?= $data['message'] ?></h1>
-  <h1><?php var_dump($data)  ?></h1>
+  <h1><?php var_dump($data['products'])  ?></h1>
 </body>
 
 </html>
