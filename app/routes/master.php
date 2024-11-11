@@ -5,17 +5,18 @@ require_once 'web.php';
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-// Lấy tất cả route đã định nghĩa
-$routes = Route::getRoutes();
+// Lấy route khớp với URI hiện tại
+$route = Route::match($requestUri, $requestMethod);
 
-// Kiểm tra và xử lý route
-if (isset($routes[$requestMethod][$requestUri])) {
-  list($controller, $action) = explode('@', $routes[$requestMethod][$requestUri]);
+if ($route) {
+  list($controller, $action) = explode('@', $route['controller']);
 
   // Gọi controller và action
   AppLoader::controller($controller);
   $controllerInstance = new $controller();
-  $controllerInstance->$action();
+
+  // Gọi action và truyền các tham số nếu có
+  call_user_func_array([$controllerInstance, $action], $route['params']);
 } else {
   // Nếu không tìm thấy route, trả về trang 404
   http_response_code(404);

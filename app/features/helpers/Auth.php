@@ -11,13 +11,15 @@ class Auth
     return $_SESSION[$key] == $value;
   }
 
+  public static function get($key) {
+    return $_SESSION[$key] ?? null;
+  }
+
   // Phương thức đăng xuất: xóa session và chuyển hướng đến trang đăng nhập
-  public static function logout($redirectTo = "/login")
+  public static function logout()
   {
     session_unset();
     session_destroy();
-    header("Location: " . BASE_URL . $redirectTo);
-    exit;
   }
 
   // Phương thức kiểm tra xem người dùng đã đăng nhập hay chưa
@@ -35,5 +37,16 @@ class Auth
   public static function checkUser()
   {
     return self::check("username");
+  }
+
+  // Phương thức cho admin
+  public static function setAdmin($username)
+  {
+    return self::set("admin", $username);
+  }
+
+  public static function checkAdmin()
+  {
+    return self::check("admin");
   }
 }

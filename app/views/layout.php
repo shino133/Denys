@@ -11,7 +11,7 @@
   </header>
 
   <main>
-    <?php AppLoader::view($data['pathView']) ?>
+    <?php AppLoader::view($data['pathView'], $data) ?>
   </main>
 
   <footer>

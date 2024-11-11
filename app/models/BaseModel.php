@@ -20,11 +20,16 @@ class BaseModel
   }
 
   // Phương thức để tìm bản ghi theo ID
-  public function find($id)
+  public function find($id, $columns = ['*'])
   {
-    $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+    // Xây dựng danh sách cột cần lấy, mặc định là '*'
+    $columnList = implode(', ', $columns);
+
+    // Chuẩn bị câu truy vấn với các cột được chỉ định
+    $stmt = $this->pdo->prepare("SELECT {$columnList} FROM {$this->table} WHERE id = :id");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
+
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
