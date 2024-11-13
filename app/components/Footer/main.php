@@ -33,4 +33,3 @@
     institution/entity/company - by Mayuresh Choudhary</p>
 </div>
 
-<?php Script::renderScripts('body'); ?>

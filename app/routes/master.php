@@ -5,20 +5,22 @@ require_once 'web.php';
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-// Lấy route khớp với URI hiện tại
 $route = Route::match($requestUri, $requestMethod);
 
-if ($route) {
-  list($controller, $action) = explode('@', $route['controller']);
-
-  // Gọi controller và action
-  AppLoader::controller($controller);
-  $controllerInstance = new $controller();
-
-  // Gọi action và truyền các tham số nếu có
-  call_user_func_array([$controllerInstance, $action], $route['params']);
-} else {
-  // Nếu không tìm thấy route, trả về trang 404
-  http_response_code(404);
-  echo "404 - URL not found";
+// 404
+if (!$route) {
+  AppLoader::controller('ErrorController');
+  (new ErrorController())->notFoundPage();
+  exit();
 }
+
+Store::set('queryParams', $route['queryParams']);
+
+// Gọi controller và action
+[$controller, $action] = explode('@', $route['controller']);
+AppLoader::controller($controller);
+$controllerInstance = new $controller();
+
+// Gọi action và truyền các tham số nếu có
+call_user_func_array([$controllerInstance, $action], $route['params']);
+

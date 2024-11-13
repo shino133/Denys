@@ -49,4 +49,13 @@ class Auth
   {
     return self::check("admin");
   }
+
+  // Phương thức cho login
+  public static function setLogin($username) {
+    return self::set("login", $username);
+  }
+
+  public static function checkLogin() {
+    return self::check("login");
+  }
 }

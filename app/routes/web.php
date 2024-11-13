@@ -15,12 +15,15 @@ function routeForGuest()
   Route::get('/logout', 'AuthController@logout');
   Route::get('/about', 'PageController@about');
   Route::post('/contact', 'ContactController@submit');
+  Route::get('/404', 'ErrorController@notFoundPage');
   
   // Dynamic route
   Route::get('/{username}', 'UserController@index');
-  Route::get('/user/{nameAction}', 'AuthController@action');
   
-  Route::post('/user/request/{nameAction}', 'AuthController@actionRequest');
+  Route::get('/user/login', 'AuthController@login');
+  Route::get('/user/register', 'AuthController@register');
+  Route::post('/user/request/login', 'AuthController@loginRequest');
+  Route::post('/user/request/register', 'AuthController@registerRequest');
 }
 
 

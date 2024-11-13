@@ -10,6 +10,6 @@ class UserController extends BaseController
   }
 
   public function index($username) {
-    echo "Welcome $username";
+    AppLoader::view('User/main', ['username' => $username]);
   }
 } 

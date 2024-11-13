@@ -1,61 +1,91 @@
-<div class="seperate_header"></div>
-
-<?php
-if ($data['isLogin']): ?>
-  <a href="/account/?username=' . $_SESSION['username'] . '" style="text-decoration: none">Account</a>
-<?php else: ?>
-  <a href="account.php" style="text-decoration: none">Account</a>
-<?php endif; ?>
-
-<?php
-if (!isset($_SESSION['username'])) {
-  echo '<a href="/" style="text-decoration: none;">Login</a>';
-} else {
-  echo '<a href="back/logout.php"  style="text-decoration: none;">Logout</a>';
-}
-?>
-
-
-<div class="login-signup">
-  <center><img class="login-logo" src="logo/Minglr logo3.png" alt="logo"></center>
-  <center><small><button class="btn"
-        onclick="getElementById('login-form').style.display='block'; getElementById('regst-form').style.display='none';">Login</button>OR<button
-        class="btn"
-        onclick="getElementById('login-form').style.display='none'; getElementById('regst-form').style.display='block';">Register</button></small>
-  </center>
-  <div class="login">
-    <form action="db/validate.php" method="post" class="login-form" id="login-form">
-      <input type="text" for="usrname" id="username" autocomplete="off" name="username" placeholder="Username" required>
-      <input type="password" for="password" id="password" name="password" placeholder="Password" autocomplete="off"
-        required>
-      <button class="login-btn" name="lgn" id="lgn">Login Now</button>
-    </form>
-  </div>
-  <div class="register">
-    <form action="db/validate.php" method="post" class="regst-form" id="regst-form" style="display: none;">
-      <input type="text" for="usrname" id="usrname" name="username" placeholder="Username" autocomplete="off" required>
-      <section class="name">
-        <input type="text" for="fname" id="fname" name="fname" placeholder="First name" required pattern="[a-zA-Z]{2,}$"
-          title="please enter alphabets only">
-        <input type="text" for="lname" id="lname" name="lname" placeholder="Last name" required pattern="[a-zA-Z]{2,}$"
-          title="please enter alphabets only">
-      </section>
-      <input type="email" for="email" id="email" name="email" placeholder="Email" required>
-      <input type="password" id="pass" name="password" placeholder="Password" required>
-      <!--only show for password input -->
-      <div class="div-toggle-password">
-        <button id="togglePassword" hidden>Show</button>
-        <small id="kindOfPassword" hidden>
-          <span>🔒 size > 8 </span>
-          <span>🔠 Uppercase </span>
-          <span>🔡 Lowercase </span>
-          <span>🔢 Number </span>
-          <span>@!$# Special Character</span>
-        </small>
+<div class="row ht-100v flex-row-reverse no-gutters">
+  <div class="col-md-6 d-flex justify-content-center align-items-center">
+    <div class="signup-form">
+      <div class="auth-logo text-center mb-5">
+        <div class="row">
+          <div class="col-md-2">
+            <img src="/public/img/logo-64x64.png" class="logo-img" alt="Logo" />
+          </div>
+          <div class="col-md-10">
+            <p>Argon Social Network</p>
+            <span>Design System</span>
+          </div>
+        </div>
       </div>
-      <small>Your data will be used to provide you with the seamless experience. We respect your
-        privacy</small>
-      <button class="rgst-btn" name="regst" id="regst" style="cursor: not-allowed;" disabled>Register</button>
-    </form>
+      <form action="/user/request/login" method="POST">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="text" class="form-control" name="username" placeholder="Username" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password" />
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <a href="forgot-password.html">Forgot password?</a>
+          </div>
+          <div class="col-md-6">
+            <label class="custom-control material-checkbox">
+              <input type="checkbox" class="material-control-input" />
+              <span class="material-control-indicator"></span>
+              <span class="material-control-description">Remember Me</span>
+            </label>
+          </div>
+          <div class="col-md-6 text-right">
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary sign-up">
+                Sign In
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 text-center mt-4">
+            <p class="text-muted">Start using your fingerprint</p>
+            <a href="#" class="btn btn-outline-primary btn-sm sign-up" data-toggle="modal"
+              data-target="#fingerprintModal">Use Fingerprint</a>
+          </div>
+          <div class="col-md-12 text-center mt-5">
+            <span class="go-login">Not yet a member? <a href="sign-up.html">Sign Up</a></span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6 auth-bg-image d-flex justify-content-center align-items-center">
+    <div class="auth-left-content mt-5 mb-5 text-center">
+      <div class="weather-small text-white">
+        <p class="current-weather">
+          <i class="bx bx-sun"></i> <span>14&deg;</span>
+        </p>
+        <p class="weather-city">Gyumri</p>
+      </div>
+      <div class="text-white mt-5 mb-5">
+        <h2 class="create-account mb-3">Welcome Back</h2>
+        <p>
+          Thank you for joining. Updates and new features are released
+          daily.
+        </p>
+      </div>
+      <div class="auth-quick-links">
+        <a href="#" class="btn btn-outline-primary">Purchase template</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade fingerprint-modal" id="fingerprintModal" tabindex="-1" role="dialog"
+  aria-labelledby="fingerprintModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <h3 class="text-muted display-5">
+          Place your Finger on the Device Now
+        </h3>
+        <img src="/public/img/icons/auth-fingerprint.png" alt="Fingerprint" />
+      </div>
+    </div>
   </div>
 </div>

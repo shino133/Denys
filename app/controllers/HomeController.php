@@ -5,7 +5,7 @@ class HomeController extends BaseController
   {
     $isLogin = Auth::check('username');
     if (!$isLogin) {
-      $this->redirect('login');
+      $this->redirect('user/login');
     }
     Constants::homePage();
     Title::set(APP_NAME . ' - Social Networking Site');

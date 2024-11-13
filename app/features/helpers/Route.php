@@ -27,6 +27,26 @@ class Route
         }
     }
 
+    // Định nghĩa route PUT
+    public static function put($uri, $controller)
+    {
+        if (strpos($uri, '{') === false) {
+            self::$routes['PUT'][$uri] = $controller;
+        } else {
+            self::$dynamicRoutes['PUT'][$uri] = $controller;
+        }
+    }
+
+    // Định nghĩa route DELETE
+    public static function delete($uri, $controller)
+    {
+        if (strpos($uri, '{') === false) {
+            self::$routes['DELETE'][$uri] = $controller;
+        } else {
+            self::$dynamicRoutes['DELETE'][$uri] = $controller;
+        }
+    }
+
     // Lấy tất cả các route đã định nghĩa
     public static function getRoutes()
     {
@@ -34,16 +54,23 @@ class Route
     }
 
     // So khớp route với URI và lấy tham số nếu có
-    public static function match($requestUri, $requestMethod)
+    public static function match($requestUri, $requestMethod): array|null
     {
         // Loại bỏ các tham số truy vấn khỏi URI
         $parsedUrl = parse_url($requestUri);
-        $path = $parsedUrl['path'];
 
+        $requestUri = $parsedUrl['path'];
+
+        $queryParams = [];
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $queryParams);
+        }
+        
         // Kiểm tra route cố định trước
         if (isset(self::$routes[$requestMethod][$requestUri])) {
             return [
                 'controller' => self::$routes[$requestMethod][$requestUri],
+                'queryParams' => $queryParams,
                 'params' => []
             ];
         }
@@ -57,6 +84,7 @@ class Route
                 array_shift($matches); // Bỏ phần khớp toàn bộ
                 return [
                     'controller' => $controller,
+                    'queryParams' => $queryParams,
                     'params' => $matches,
                 ];
             }
