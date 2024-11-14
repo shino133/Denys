@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 10, 2024 at 09:55 AM
+-- Generation Time: Nov 14, 2024 at 12:53 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -31,7 +31,7 @@ CREATE TABLE `categories_table` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -47,9 +47,10 @@ CREATE TABLE `comments_table` (
   `userId` int NOT NULL,
   `content` text,
   `mediaType` tinyint DEFAULT NULL,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now())
+  `updatedAt` timestamp NULL DEFAULT (now()),
+  `mediaUrl` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -90,7 +91,7 @@ CREATE TABLE `events_table` (
   `title` varchar(255) NOT NULL,
   `bannerUrl` varchar(255) DEFAULT NULL,
   `content` text,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -120,7 +121,7 @@ CREATE TABLE `groups_table` (
   `name` varchar(255) NOT NULL,
   `bannerUrl` varchar(255) DEFAULT NULL,
   `bio` text,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -162,9 +163,11 @@ CREATE TABLE `messages_table` (
   `senderId` int NOT NULL,
   `roomId` int NOT NULL,
   `content` text,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now())
+  `updatedAt` timestamp NULL DEFAULT (now()),
+  `mediaType` tinyint DEFAULT NULL,
+  `mediaUrl` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -177,7 +180,7 @@ CREATE TABLE `message_rooms_table` (
   `id` int NOT NULL,
   `user1` int NOT NULL,
   `user2` int NOT NULL,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -208,7 +211,7 @@ CREATE TABLE `posts_table` (
   `content` text,
   `mediaType` tinyint DEFAULT NULL,
   `mediaUrl` varchar(255) DEFAULT NULL,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -322,12 +325,19 @@ CREATE TABLE `users_table` (
   `fullName` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `avatarUrl` varchar(255) DEFAULT NULL,
-  `role` tinyint DEFAULT NULL,
+  `role` tinyint DEFAULT '2',
   `verifyEmailAt` timestamp NULL DEFAULT NULL,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `users_table`
+--
+
+INSERT INTO `users_table` (`id`, `userName`, `password`, `fullName`, `email`, `avatarUrl`, `role`, `verifyEmailAt`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, 'locshino', '@Locshino123', 'locshino', 'locshino123@gmail.com', NULL, 2, NULL, 1, '2024-11-11 12:18:29', '2024-11-11 12:18:29');
 
 -- --------------------------------------------------------
 
@@ -382,7 +392,7 @@ CREATE TABLE `user_profiles_table` (
   `website` varchar(255) DEFAULT NULL,
   `socialAccounts` text,
   `bio` text,
-  `status` tinyint DEFAULT NULL,
+  `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -418,7 +428,9 @@ CREATE TABLE `__drizzle_migrations` (
 
 INSERT INTO `__drizzle_migrations` (`id`, `hash`, `created_at`) VALUES
 (1, '704034c9665f6e19c9f3cc7ed8c7c5506f65d964e07f1521903fa293084f253e', 1730544835539),
-(2, 'f890aa75b717764ef100c749d1284e0de2ebc77333fa6b31ba4ad7c9b85357c3', 1731232072242);
+(2, 'f890aa75b717764ef100c749d1284e0de2ebc77333fa6b31ba4ad7c9b85357c3', 1731232072242),
+(3, '817528baf7490ae68c63bd9dae8b9ac7f733b66e7b2ba51f4d83cde60df173de', 1731233459251),
+(4, '7635ef914920f7255eb45534941874668ea4d427b4ad953359f3ba4bb3f108c9', 1731545543292);
 
 --
 -- Indexes for dumped tables
@@ -755,7 +767,7 @@ ALTER TABLE `status_table`
 -- AUTO_INCREMENT for table `users_table`
 --
 ALTER TABLE `users_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_follows_table`
@@ -791,7 +803,7 @@ ALTER TABLE `user_wishlist`
 -- AUTO_INCREMENT for table `__drizzle_migrations`
 --
 ALTER TABLE `__drizzle_migrations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
