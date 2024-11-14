@@ -47,7 +47,7 @@
               data-target="#fingerprintModal">Use Fingerprint</a>
           </div>
           <div class="col-md-12 text-center mt-5">
-            <span class="go-login">Not yet a member? <a href="sign-up.html">Sign Up</a></span>
+            <span class="go-login">Not yet a member? <a href="/user/register">Đăng ký</a></span>
           </div>
         </div>
       </form>
