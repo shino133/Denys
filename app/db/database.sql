@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 14, 2024 at 02:08 AM
+-- Generation Time: Nov 14, 2024 at 12:53 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -47,10 +47,10 @@ CREATE TABLE `comments_table` (
   `userId` int NOT NULL,
   `content` text,
   `mediaType` tinyint DEFAULT NULL,
-  `mediaUrl` varchar(255) DEFAULT NULL,
   `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now())
+  `updatedAt` timestamp NULL DEFAULT (now()),
+  `mediaUrl` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -163,11 +163,11 @@ CREATE TABLE `messages_table` (
   `senderId` int NOT NULL,
   `roomId` int NOT NULL,
   `content` text,
-  `mediaType` tinyint DEFAULT NULL,
-  `mediaUrl` varchar(255) DEFAULT NULL,
   `status` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now())
+  `updatedAt` timestamp NULL DEFAULT (now()),
+  `mediaType` tinyint DEFAULT NULL,
+  `mediaUrl` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -268,6 +268,14 @@ CREATE TABLE `roles_table` (
   `createdAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `roles_table`
+--
+
+INSERT INTO `roles_table` (`id`, `key`, `description`, `createdAt`) VALUES
+(1, 'admin', NULL, '2024-11-06 09:23:29'),
+(2, 'user', NULL, '2024-11-06 09:23:50');
+
 -- --------------------------------------------------------
 
 --
@@ -294,6 +302,16 @@ CREATE TABLE `status_table` (
   `createdAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `status_table`
+--
+
+INSERT INTO `status_table` (`id`, `key`, `description`, `createdAt`) VALUES
+(1, 'onDeleted', NULL, '2024-11-06 09:24:33'),
+(3, 'onPublished', NULL, '2024-11-06 09:29:24'),
+(4, 'onPrivated', NULL, '2024-11-06 09:29:39'),
+(5, 'onProtected', NULL, '2024-11-06 09:29:56');
+
 -- --------------------------------------------------------
 
 --
@@ -313,6 +331,13 @@ CREATE TABLE `users_table` (
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `users_table`
+--
+
+INSERT INTO `users_table` (`id`, `userName`, `password`, `fullName`, `email`, `avatarUrl`, `role`, `verifyEmailAt`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, 'locshino', '@Locshino123', 'locshino', 'locshino123@gmail.com', NULL, 2, NULL, 1, '2024-11-11 12:18:29', '2024-11-11 12:18:29');
 
 -- --------------------------------------------------------
 
@@ -402,7 +427,10 @@ CREATE TABLE `__drizzle_migrations` (
 --
 
 INSERT INTO `__drizzle_migrations` (`id`, `hash`, `created_at`) VALUES
-(1, '23ce0c315cb4e367fa3f1b3e1e253f510078b441a8d9ef88e82729f0c25f88f2', 1731549950793);
+(1, '704034c9665f6e19c9f3cc7ed8c7c5506f65d964e07f1521903fa293084f253e', 1730544835539),
+(2, 'f890aa75b717764ef100c749d1284e0de2ebc77333fa6b31ba4ad7c9b85357c3', 1731232072242),
+(3, '817528baf7490ae68c63bd9dae8b9ac7f733b66e7b2ba51f4d83cde60df173de', 1731233459251),
+(4, '7635ef914920f7255eb45534941874668ea4d427b4ad953359f3ba4bb3f108c9', 1731545543292);
 
 --
 -- Indexes for dumped tables
@@ -721,7 +749,7 @@ ALTER TABLE `post_likes_table`
 -- AUTO_INCREMENT for table `roles_table`
 --
 ALTER TABLE `roles_table`
-  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role_permissions_table`
@@ -733,13 +761,13 @@ ALTER TABLE `role_permissions_table`
 -- AUTO_INCREMENT for table `status_table`
 --
 ALTER TABLE `status_table`
-  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users_table`
 --
 ALTER TABLE `users_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_follows_table`
@@ -775,7 +803,7 @@ ALTER TABLE `user_wishlist`
 -- AUTO_INCREMENT for table `__drizzle_migrations`
 --
 ALTER TABLE `__drizzle_migrations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
