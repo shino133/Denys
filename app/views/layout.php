@@ -6,10 +6,7 @@
 </head>
 
 <body>
-
-  <div id="root">
-    <?php AppLoader::view(path: $data['pathView'], data: $data) ?>
-  </div>
+  <?php AppLoader::view(path: $data['pathView'], data: $data) ?>
 
   <?php Script::renderScripts(position: 'body'); ?>
 </body>
