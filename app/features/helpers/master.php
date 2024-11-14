@@ -6,6 +6,7 @@ AppLoader::helper('Route');
 AppLoader::helper('Store');
 AppLoader::helper('Script');
 AppLoader::helper('Title');
+AppLoader::helper('Url');
 AppLoader::helper('ApiResponse');
 AppLoader::helper('ErrorHandler');
 
