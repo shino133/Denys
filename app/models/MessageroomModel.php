@@ -7,7 +7,7 @@ class MessageroomModel extends BaseModel
     'user1' => 'user1',
     'user2' => 'user2',
     'status' => 'status',
-    'createdAt' => 'createdAt',
-    'updatedAt' => 'updatedAt'
+    'created_At' => 'createdAt',
+    'updated_At' => 'updatedAt'
   ];
 }
