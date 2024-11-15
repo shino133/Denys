@@ -4,8 +4,8 @@ class UserwishlistModel extends BaseModel
   protected $table = 'user_wishlist'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'userld' => 'userld',
-    'categoryld' => 'categoryld',
-    'createdAt' => 'createdAt'
+    'user_Id' => 'userId',
+    'category_Id' => 'categoryId',
+    'created_At' => 'createdAt'
   ];
 }

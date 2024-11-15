@@ -4,13 +4,13 @@ class PostModel extends BaseModel
   protected $table = 'posts_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'userld' => 'userld',
+    'user_Id' => 'userId',
     'title' => 'title',
     'content' => 'content',
-    'mediaType' => 'mediaType',
-    'mediaUrl' => 'mediaUrl',
+    'media_Type' => 'mediaType',
+    'media_Url' => 'mediaUrl',
     'status' => 'status',
-    'createdAt' => 'createdAt',
-    'updatedAt' => 'updatedAt'
+    'created_At' => 'createdAt',
+    'updated_At' => 'updatedAt'
   ];
 }

@@ -6,6 +6,6 @@ class PermissionModel extends BaseModel
     'id' => 'id',
     'key' => 'key',
     'description' => 'description',
-    'createdAt' => 'createdAt'
+    'created_At' => 'createdAt'
   ];
 }

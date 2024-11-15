@@ -4,11 +4,13 @@ class MessageModel extends BaseModel
   protected $table = 'messages_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'senderld' => 'senderld',
-    'roomld' => 'roomld',
+    'sender_Id' => 'senderId',
+    'room_Id' => 'roomId',
     'content' => 'content',
     'status' => 'status',
-    'createdAt' => 'createdAt',
-    'updatedAt' => 'updatedAt'
+    'created_At' => 'createdAt',
+    'updated_At' => 'updatedAt',
+    'media_Type' => 'mediaType',
+    'media_Url' => 'mediaUrl'
   ];
 }

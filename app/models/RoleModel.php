@@ -6,6 +6,6 @@ class RoleModel extends BaseModel
     'id' => 'id',
     'key' => 'key',
     'description' => 'description',
-    'createdAt' => 'createdAt'
+    'created_At' => 'createdAt'
   ];
 }

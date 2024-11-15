@@ -4,11 +4,12 @@ class CommentModel extends BaseModel
   protected $table = 'comments_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'userld' => 'userld',
+    'user_Id' => 'userId',
     'content' => 'content',
-    'mediaType' => 'mediaType',
+    'media_Type' => 'mediaType',
+    'media_Url' => 'mediaUrl',
     'status' => 'status',
-    'createdAt' => 'createdAt',
-    'updatedAt' => 'updatedAt'
+    'created_At' => 'createdAt',
+    'updated_At' => 'updatedAt'
   ];
 }
