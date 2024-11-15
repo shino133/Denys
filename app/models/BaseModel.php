@@ -100,7 +100,7 @@ class BaseModel
   }
 
   // Tìm bản ghi theo điều kiện
-  public function findByCondition($conditions = [], $limit = null, $offset = null)
+  public function findByCondition($conditions = [], $limit = null, $offset = null): array
   {
     $query = "SELECT * FROM {$this->table}";
 

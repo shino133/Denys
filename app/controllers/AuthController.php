@@ -1,5 +1,7 @@
 <?php
 AppLoader::model('UserModel');
+AppLoader::lib("encryptData");
+AppLoader::helper('DataValidator');
 
 class AuthController extends BaseController
 {
@@ -46,31 +48,56 @@ class AuthController extends BaseController
 
   public function loginRequest()
   {
+    Url::setUrl('/user/login');
     $username = $_POST['username'];
     $password = $_POST['password'];
+    if (!$username || !$password) {
+      Url::setQueryString(['errorMessage' => 'empty_fields']);
+      $this->redirect(Url::get());
+    }
 
-    $userData = $this->userModel->findByCondition(['username' => $username], 1);
+    $userData = $this->userModel->findByCondition(conditions: ['username' => $username], limit: 1)[0];
 
+    if (!isset($userData)) {
+      Url::setQueryString(['errorMessage' => 'user_not_found']);
+      $this->redirect(Url::get());
+    }
+
+    $password = encryptData($password);
+
+    if (!($username == $userData['userName'] || $password == $userData['password'])) {
+      Url::setQueryString(['errorMessage' => 'invalid_username_or_password']);
+      $this->redirect(Url::get());
+    }
+
+    Auth::setUser($username);
     $this->redirect('/');
-
   }
 
   public function registerRequest()
   {
+    Url::setUrl('/user/register');
     $data = [
       'username' => $_POST['username'],
       'password' => $_POST['password'],
       'fullName' => $_POST['fullName'],
       'email' => $_POST['email'],
     ];
-    
-    $result = $this->userModel->create($data);
-    if ($result) {
-      $this->redirect('/user/login');
+
+    $isValidData = DataValidator::check($data);
+    if (!$isValidData) {
+      Url::setQueryString(['errorMessage' => 'empty_fields']);
+      $this->redirect(Url::get());
     }
 
-    //WHEN: create fail
-    $this->redirect('/user/register?errorMessage=Username already taken. Try another one');
+    $data['password'] = encryptData($data['password']);
+    $result = $this->userModel->create($data);
+    if (!$result) {
+      Url::setQueryString(['errorMessage' => 'username_already_taken']);
+      $this->redirect(Url::get());
+    }
+
+    $this->redirect('/user/login?notification=registered');
   }
 
   public function logout()

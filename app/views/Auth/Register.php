@@ -1,44 +1,79 @@
-<div class="seperate_header"></div>
-
-<div class="login-signup">
-  <center><img class="login-logo" src="logo/Minglr logo3.png" alt="logo"></center>
-  <center><small><button class="btn"
-        onclick="getElementById('login-form').style.display='block'; getElementById('regst-form').style.display='none';">Login</button>OR<button
-        class="btn"
-        onclick="getElementById('login-form').style.display='none'; getElementById('regst-form').style.display='block';">Register</button></small>
-  </center>
-  <div class="login">
-    <form action="/user/request/login" method="post" class="login-form" id="login-form" style="display: none;">
-      <input type="text" for="usrname" id="username" autocomplete="off" name="username" placeholder="Username" required>
-      <input type="password" for="password" id="password" name="password" placeholder="Password" autocomplete="off"
-        required>
-      <button class="login-btn" name="lgn" id="lgn">Login Now</button>
-    </form>
-  </div>
-  <div class="register">
-    <form action="/user/request/register" method="post" class="regst-form" id="regst-form">
-      <input type="text" for="usrname" id="usrname" name="username" placeholder="Username" autocomplete="off" required>
-      <section class="name">
-        <input type="text" for="fname" id="fname" name="fullName" placeholder="Full name" required
-          pattern="[a-zA-Z]{2,}$" title="please enter alphabets only">
-
-      </section>
-      <input type="email" for="email" id="email" name="email" placeholder="Email" required>
-      <input type="password" id="pass" name="password" placeholder="Password" required>
-      <!--only show for password input -->
-      <div class="div-toggle-password">
-        <button id="togglePassword" hidden>Show</button>
-        <small id="kindOfPassword" hidden>
-          <span>🔒 size > 8 </span>
-          <span>🔠 Uppercase </span>
-          <span>🔡 Lowercase </span>
-          <span>🔢 Number </span>
-          <span>@!$# Special Character</span>
-        </small>
+<div class="row ht-100v flex-row-reverse no-gutters">
+  <div class="col-md-6 d-flex justify-content-center align-items-center">
+    <div class="signup-form">
+      <div class="auth-logo text-center mb-5">
+        <div class="row">
+          <div class="col-md-2">
+            <img src="assets/images/logo-64x64.png" class="logo-img" alt="Logo" />
+          </div>
+          <div class="col-md-10">
+            <p>Argon Social Network</p>
+            <span>Design System</span>
+          </div>
+        </div>
       </div>
-      <small>Your data will be used to provide you with the seamless experience. We respect your
-        privacy</small>
-      <button class="rgst-btn" name="regst" id="regst" style="cursor: not-allowed;" disabled>Register</button>
-    </form>
+      <form action="/user/request/register" method="POST" class="pt-5">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="text" class="form-control" name="fullName" placeholder="Full Name" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" placeholder="Email Address" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="text" class="form-control" name="username" placeholder="Username" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <p class="agree-privacy">
+              By clicking the Sign Up button below you agreed to our privacy
+              policy and terms of use of our website.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <span class="go-login">Already a member? <a href="/user/login">Sign In</a></span>
+          </div>
+          <div class="col-md-6 text-right">
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary sign-up">
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6 auth-bg-image d-flex justify-content-center align-items-center">
+    <div class="auth-left-content mt-5 mb-5 text-center">
+      <div class="weather-small text-white">
+        <p class="current-weather">
+          <i class="bx bx-sun"></i> <span>14&deg;</span>
+        </p>
+        <p class="weather-city">Gyumri</p>
+      </div>
+      <div class="text-white mt-5 mb-5">
+        <h2 class="create-account mb-3">Create Account</h2>
+        <p>Enter your personal details and start journey with us.</p>
+      </div>
+      <div class="auth-quick-links">
+        <a href="#" class="btn btn-outline-primary">Purchase template</a>
+      </div>
+    </div>
   </div>
 </div>

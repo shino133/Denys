@@ -1,5 +1,6 @@
 <?php
 // Hàm tiện ích để mã hóa
+AppLoader::helper('Encryption');
 function encryptData($data)
 {
   return Encryption::encrypt($data);

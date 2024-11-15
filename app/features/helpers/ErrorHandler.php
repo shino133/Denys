@@ -10,6 +10,15 @@ class ErrorHandler
         self::$message = $message;
         self::$code = $statusCode;
     }
+
+    public static function get()
+    {
+        return [
+            'status' => 'error',
+            'code' => self::$code ?? 500,
+            'message' => self::$message ?? 'Unknown Server Error',
+        ];
+    }
     
     
     public static function sendJson($exit = true): bool|string
