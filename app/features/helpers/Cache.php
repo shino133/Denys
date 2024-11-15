@@ -20,7 +20,7 @@ class Cache
   // Lưu dữ liệu vào cache
   public static function set($key, $data, $expiration = null)
   {
-    $expiration = $expiration ?? self::$defaultExpiration;
+    $expiration ??= self::$defaultExpiration;
     $cacheFile = self::getCacheFilePath($key);
     $cacheData = [
       'data' => $data,
