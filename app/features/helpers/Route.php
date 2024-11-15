@@ -69,7 +69,7 @@ class Route
         // Kiểm tra route cố định trước
         if (isset(self::$routes[$requestMethod][$requestUri])) {
             return [
-                'controller' => self::$routes[$requestMethod][$requestUri],
+                'controllerPath' => self::$routes[$requestMethod][$requestUri],
                 'queryParams' => $queryParams,
                 'params' => []
             ];
