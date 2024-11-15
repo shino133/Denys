@@ -16,6 +16,10 @@ class AppLoader
     }
   }
 
+  public static function getPath($path): string
+  {
+    return __DIR__ . '/../' . $path;
+  }
 
   // Optional helpers
   public static function view($path, $data = [])
@@ -73,5 +77,4 @@ class AppLoader
     self::view($path, $data);
     return ob_get_clean();
   }
-
 }
