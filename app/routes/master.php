@@ -17,10 +17,14 @@ if (!$route) {
 Store::set('queryParams', $route['queryParams']);
 
 // Gọi controller và action
-[$controller, $action] = explode('@', $route['controller']);
-AppLoader::controller($controller);
+[$fullControllerPath, $action] = explode('@', $route['controllerPath']);
+AppLoader::controller(path: $fullControllerPath);
+
+// Tách folder và controller từ fullControllerPath
+$parts = explode('/', $fullControllerPath);
+// $folder = implode('/', $parts);
+$controller = array_pop($parts);
 $controllerInstance = new $controller();
 
 // Gọi action và truyền các tham số nếu có
 call_user_func_array([$controllerInstance, $action], $route['params']);
-
