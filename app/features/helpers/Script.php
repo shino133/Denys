@@ -38,6 +38,11 @@ class Script
     foreach (self::$scripts[$position] as $script) {
       $attrString = '';
       foreach ($script['attributes'] as $key => $value) {
+        if ($value == null){
+          $attrString .= "$key ";
+          continue;
+        }
+
         $attrString .= "$key=\"$value\" ";
       }
 

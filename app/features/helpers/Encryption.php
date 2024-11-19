@@ -6,7 +6,7 @@ class Encryption
   private static $ivLength = null;
 
   // Khởi tạo độ dài IV ngay khi khai báo
-  public static function initialize()
+  public static function initialize(): void
   {
     if (self::$ivLength === null) {
       self::$ivLength = openssl_cipher_iv_length(self::$cipher);
@@ -14,7 +14,7 @@ class Encryption
   }
 
   // Hàm mã hóa dữ liệu
-  public static function encrypt($data)
+  public static function encrypt($data): string
   {
     self::initialize();
 
@@ -24,7 +24,7 @@ class Encryption
   }
 
   // Hàm giải mã dữ liệu
-  public static function decrypt($encryptedData)
+  public static function decrypt($encryptedData): bool|string
   {
     self::initialize();
 

@@ -1,5 +1,5 @@
 <?php
-include 'app/lib/AppLoader.php';
+include 'app/features/AppLoader.php';
 
 // Supporter
 // AppLoader::helper('core/master');

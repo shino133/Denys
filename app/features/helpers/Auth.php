@@ -42,7 +42,7 @@ class Auth
   // Phương thức cho admin
   public static function setAdmin($username)
   {
-    return self::set("admin", $username);
+    return self::set("admin", $username );
   }
 
   public static function checkAdmin()
@@ -51,11 +51,7 @@ class Auth
   }
 
   // Phương thức cho login
-  public static function setLogin($username) {
-    return self::set("login", $username);
-  }
-
   public static function checkLogin() {
-    return self::check("login");
+    return self::checkUser() || self::checkAdmin();
   }
 }

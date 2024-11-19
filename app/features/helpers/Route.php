@@ -75,6 +75,10 @@ class Route
             ];
         }
 
+        
+        if (!isset(self::$dynamicRoutes[$requestMethod])) {
+            return null;
+        }
         // Kiểm tra route động nếu không có route cố định
         foreach (self::$dynamicRoutes[$requestMethod] as $uri => $controller) {
             $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([^/]+)', $uri);

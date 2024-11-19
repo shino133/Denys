@@ -26,4 +26,8 @@ class Url
   {
     return self::$url . '?' . self::$query_string;
   }
+
+  public static function setNofi($msg, $status){
+    self::$query_string .= "msg=$msg&status=$status&";
+  }
 }
