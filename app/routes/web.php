@@ -1,28 +1,22 @@
 <?php
 function routeForAdmin()
 {
-  
+  Route::get('/admin', 'Admin/HomeController@index');
+  Route::get('/admin/user', 'UserController@index');
 }
 
 function routeForUser()
 {
-  Route::get('/admin', 'Admin/HomeController@index');
+
+  Route::get('/about', 'PageController@about');
+  Route::post('/contact', 'ContactController@submit');
 }
 
 function routeForGuest()
 {
-  // Static route
   Route::get('/', 'HomeController@index');
   Route::get('/logout', 'AuthController@logout');
-  Route::get('/about', 'PageController@about');
-  Route::post('/contact', 'ContactController@submit');
   Route::get('/404', 'ErrorController@notFoundPage');
-
-  // Dynamic route
-  Route::get('/admin/user', 'UserController@index');
-
-
-  // Auth
   Route::get('/user/login', 'AuthController@login');
   Route::get('/user/register', 'AuthController@register');
   Route::get('/user/logout', 'AuthController@logout');

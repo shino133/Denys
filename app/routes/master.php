@@ -14,6 +14,7 @@ if (!$route) {
   exit();
 }
 
+// Lưu dữ liệu với key queryParams
 Store::set('queryParams', $route['queryParams']);
 
 // Gọi controller và action
