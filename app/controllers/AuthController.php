@@ -21,29 +21,41 @@ class AuthController extends BaseController
     ];
 
     if (!isset($actionList[$nameAction])) {
-      $this->redirect('/404');
+      throw new Exception('Action not found', 404);
     }
 
     if (Auth::checkAdmin() == true) {
       $this->redirect('/admin');
     }
 
-    if (Auth::checkLogin() == true) {
+    if (Auth::checkLogin() == true || Auth::checkUser() == true) {
       $this->redirect('/');
     }
 
     Constants::loginPage();
+    if ($nameAction == 'register') {
+      Title::set(APP_NAME . ' - Register');
+    }
+    
     $this->render($actionList[$nameAction]);
   }
 
   public function register()
   {
-    $this->actionDefault('register');
+    try {
+      $this->actionDefault('register');
+    } catch (Exception $e) {
+      echo $e->getMessage();
+    }
   }
 
   public function login()
   {
-    $this->actionDefault('login');
+    try {
+      $this->actionDefault('login');
+    } catch (Exception $e) {
+      echo $e->getMessage();
+    }
   }
 
   public function loginRequest()
@@ -52,25 +64,31 @@ class AuthController extends BaseController
     $username = $_POST['username'];
     $password = $_POST['password'];
     if (!$username || !$password) {
-      Url::setQueryString(['errorMessage' => 'empty_fields']);
+      Url::setNofi(msg: 'invalid_username_or_password', status: 'error');
       $this->redirect(Url::get());
     }
 
-    $userData = $this->userModel->findByCondition(conditions: ['username' => $username], limit: 1)[0];
+    $userData = $this->userModel->find(conditions: ['username' => $username], limit: 1)[0];
 
     if (!isset($userData)) {
-      Url::setQueryString(['errorMessage' => 'user_not_found']);
+      Url::setNofi(msg: 'invalid_username_or_password', status: 'error');
       $this->redirect(Url::get());
     }
 
     $password = encryptData($password);
 
     if (!($username == $userData['userName'] || $password == $userData['password'])) {
-      Url::setQueryString(['errorMessage' => 'invalid_username_or_password']);
+      Url::setNofi(msg: 'invalid_username_or_password', status: 'error');
       $this->redirect(Url::get());
     }
 
+    // WHEN: login success
     Auth::setUser($username);
+    if ($userData['role'] == 1) {
+      Auth::setAdmin($username);
+      $this->redirect('/admin');
+    }
+
     $this->redirect('/');
   }
 
@@ -86,23 +104,25 @@ class AuthController extends BaseController
 
     $isValidData = DataValidator::check($data);
     if (!$isValidData) {
-      Url::setQueryString(['errorMessage' => 'empty_fields']);
+      Url::setNofi(msg: 'invalid_data', status: 'error'); 
       $this->redirect(Url::get());
     }
 
     $data['password'] = encryptData($data['password']);
     $result = $this->userModel->create($data);
     if (!$result) {
-      Url::setQueryString(['errorMessage' => 'username_already_taken']);
+      Url::setNofi(msg: 'something_went_wrong', status: 'error');
       $this->redirect(Url::get());
     }
 
-    $this->redirect('/user/login?notification=registered');
+    Url::setUrl('/user/login'); 
+    Url::setNofi(msg: 'Registered', status: 'success');
+    $this->redirect(Url::get());
   }
 
   public function logout()
   {
     Auth::logout();
-    $this->redirect('/login');
+    $this->redirect('/');
   }
 }
