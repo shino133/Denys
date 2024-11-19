@@ -6,3 +6,6 @@ app/features/helpers/*.cache
 app/cache/*
 
 !*.htaccess
+
+.vscode
+.idea
