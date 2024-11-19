@@ -1,11 +1,13 @@
-Options -MultiViews
+# Tắt liệt kê thư mục
+Options -Indexes
 
 RewriteEngine On
-
-# Đảm bảo BASE_URL được trỏ đến thư mục đúng
 RewriteBase /
 
-# Chuyển tiếp tất cả yêu cầu không phải file hoặc thư mục đến index.php
+# Chỉ chuyển hướng các yêu cầu không nằm trong thư mục /public/ tới index.php
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Chỉ chuyển hướng yêu cầu không phải là tệp hoặc thư mục có thực
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]

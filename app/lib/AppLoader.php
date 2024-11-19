@@ -1,13 +1,14 @@
 <?php
 class AppLoader
 {
-  // Hàm include một file với đường dẫn từ thư mục gốc
+  // Core helpers
   public static function include($path, $data = [])
   {
     $fullPath = __DIR__ . '/../' . $path . ".php";
 
     // Kiểm tra nếu file tồn tại trước khi include
     if (file_exists($fullPath)) {
+      extract($data);
       include_once $fullPath;
     } else {
       http_response_code(404);
@@ -15,13 +16,17 @@ class AppLoader
     }
   }
 
-  // Hàm include một file view từ thư mục views
+  public static function getPath($path): string
+  {
+    return __DIR__ . '/../' . $path;
+  }
+
+  // Optional helpers
   public static function view($path, $data = [])
   {
     self::include("views/$path", $data);
   }
 
-  // Hàm include một model từ thư mục models, kèm tùy chọn include BaseModel
   public static function model($path, $isIncludeBase = true)
   {
     if ($isIncludeBase) {
@@ -30,7 +35,6 @@ class AppLoader
     self::include("models/$path");
   }
 
-  // Hàm include một controller từ thư mục controllers, kèm tùy chọn include BaseController
   public static function controller($path, $isIncludeBase = true)
   {
     if ($isIncludeBase) {
@@ -39,19 +43,16 @@ class AppLoader
     self::include("controllers/$path");
   }
 
-  // Hàm include một feature từ thư mục features
   public static function feature($path)
   {
     self::include("features/$path");
   }
 
-  // Hàm include một helper từ thư mục features/helpers
   public static function helper($path)
   {
     self::include("features/helpers/$path");
   }
 
-  // Hàm include một component từ thư mục components
   public static function component($path)
   {
     self::include("components/$path");
@@ -60,5 +61,20 @@ class AppLoader
   public static function constant($path)
   {
     self::include("constants/$path");
+  }
+
+  public static function lib($path)
+  {
+    self::include("lib/$path");
+  }
+
+  public static function htmlToString($path, $data = [])
+  {
+    ob_start();
+    if ($data) {
+      extract($data);
+    }
+    self::view($path, $data);
+    return ob_get_clean();
   }
 }

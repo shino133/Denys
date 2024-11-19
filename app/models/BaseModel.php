@@ -7,7 +7,7 @@ class BaseModel
   public function __construct()
   {
     // Kết nối tới cơ sở dữ liệu (ví dụ dùng PDO)
-    $this->pdo = new PDO('mysql:host='.DB_HOST .';dbname='. DB_NAME, DB_USER, DB_PASSWORD);
+    $this->pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
     $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
@@ -20,11 +20,16 @@ class BaseModel
   }
 
   // Phương thức để tìm bản ghi theo ID
-  public function find($id)
+  public function find($id, $columns = ['*'])
   {
-    $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+    // Xây dựng danh sách cột cần lấy, mặc định là '*'
+    $columnList = implode(', ', $columns);
+
+    // Chuẩn bị câu truy vấn với các cột được chỉ định
+    $stmt = $this->pdo->prepare("SELECT {$columnList} FROM {$this->table} WHERE id = :id");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
+
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
@@ -95,7 +100,7 @@ class BaseModel
   }
 
   // Tìm bản ghi theo điều kiện
-  public function findByCondition($conditions = [], $limit = null, $offset = null)
+  public function findByCondition($conditions = [], $limit = null, $offset = null): array
   {
     $query = "SELECT * FROM {$this->table}";
 

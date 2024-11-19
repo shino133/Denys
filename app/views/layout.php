@@ -2,20 +2,12 @@
 <html lang="en">
 
 <head>
-  <?php AppLoader::component("Head/main") ?>
+  <?php AppLoader::component(path: "Head/main") ?>
 </head>
 
 <body>
-  <header>
-    <?php AppLoader::component("Header/main") ?>
-  </header>
+  <?php AppLoader::view(path: $data['pathView'], data: $data) ?>
 
-  <main>
-    <?php AppLoader::view($data['pathView']) ?>
-  </main>
-
-  <footer>
-    <?php AppLoader::component("Footer/main") ?>
-  </footer>
+  <?php Script::renderScripts(position: 'body'); ?>
 </body>
 </html>

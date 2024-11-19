@@ -9,9 +9,7 @@ class UserController extends BaseController
     $this->model = new UserModel();
   }
 
-  public function index() {
-    $users = $this->model->getAll();
-    $this->setData('users', $users);
-    $this->render('User/main');
+  public function index($username) {
+    AppLoader::view('User/main', ['username' => $username]);
   }
-}
+} 

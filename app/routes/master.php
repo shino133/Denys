@@ -5,19 +5,26 @@ require_once 'web.php';
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-// Lấy tất cả route đã định nghĩa
-$routes = Route::getRoutes();
+$route = Route::match($requestUri, $requestMethod);
 
-// Kiểm tra và xử lý route
-if (isset($routes[$requestMethod][$requestUri])) {
-  list($controller, $action) = explode('@', $routes[$requestMethod][$requestUri]);
-
-  // Gọi controller và action
-  AppLoader::controller($controller);
-  $controllerInstance = new $controller();
-  $controllerInstance->$action();
-} else {
-  // Nếu không tìm thấy route, trả về trang 404
-  http_response_code(404);
-  echo "404 - URL not found";
+// 404
+if (!$route) {
+  AppLoader::controller('ErrorController');
+  (new ErrorController())->notFoundPage();
+  exit();
 }
+
+Store::set('queryParams', $route['queryParams']);
+
+// Gọi controller và action
+[$fullControllerPath, $action] = explode('@', $route['controllerPath']);
+AppLoader::controller(path: $fullControllerPath);
+
+// Tách folder và controller từ fullControllerPath
+$parts = explode('/', $fullControllerPath);
+// $folder = implode('/', $parts);
+$controller = array_pop($parts);
+$controllerInstance = new $controller();
+
+// Gọi action và truyền các tham số nếu có
+call_user_func_array([$controllerInstance, $action], $route['params']);
