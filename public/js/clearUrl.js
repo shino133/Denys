@@ -1,14 +1,14 @@
-function cleanUrl() {
+(() => {
   const url = new URL(window.location.href);
+  const msgs = ["notification", "errorMessage"];
 
-  const errorMessage = url.searchParams.get("errorMessage");
-  if (errorMessage) {
-    alert(errorMessage);
-  }
+  msgs.forEach((msg) => {
+    const errorMessage = url.searchParams.get("msg");
+    if (errorMessage) {
+      alert(errorMessage);
+    }
+  });
 
   url.search = "";
-
   window.history.replaceState({}, document.title, url.toString());
-}
-
-cleanUrl();
+})();

@@ -16,7 +16,8 @@
 }
 
 .auth-bg-image {
-    background: url(../img/background/auth-bg.png) no-repeat;
+    /* background: url(../img/background/auth-bg.png) no-repeat; */
+    background-color: #360f42;
     background-size: cover;
 }
 
