@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 14, 2024 at 12:53 AM
+-- Generation Time: Nov 22, 2024 at 12:55 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -18,23 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `peng_emperor`
+-- Database: `denys`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `categories_table`
---
-
-CREATE TABLE `categories_table` (
-  `id` int NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text,
-  `status` tinyint DEFAULT '1',
-  `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -46,11 +31,11 @@ CREATE TABLE `comments_table` (
   `id` int NOT NULL,
   `userId` int NOT NULL,
   `content` text,
-  `mediaType` tinyint DEFAULT NULL,
-  `status` tinyint DEFAULT '1',
+  `mediaType` varchar(255) DEFAULT NULL,
+  `mediaUrl` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now()),
-  `mediaUrl` varchar(255) DEFAULT NULL
+  `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -91,7 +76,7 @@ CREATE TABLE `events_table` (
   `title` varchar(255) NOT NULL,
   `bannerUrl` varchar(255) DEFAULT NULL,
   `content` text,
-  `status` tinyint DEFAULT '1',
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -118,10 +103,11 @@ CREATE TABLE `event_follows_table` (
 CREATE TABLE `groups_table` (
   `id` int NOT NULL,
   `userId` int NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `bannerUrl` varchar(255) DEFAULT NULL,
   `bio` text,
-  `status` tinyint DEFAULT '1',
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -142,19 +128,6 @@ CREATE TABLE `group_members_table` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `media_type_table`
---
-
-CREATE TABLE `media_type_table` (
-  `id` tinyint UNSIGNED NOT NULL,
-  `key` varchar(255) NOT NULL,
-  `description` text,
-  `createdAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `messages_table`
 --
 
@@ -163,11 +136,11 @@ CREATE TABLE `messages_table` (
   `senderId` int NOT NULL,
   `roomId` int NOT NULL,
   `content` text,
-  `status` tinyint DEFAULT '1',
+  `mediaType` varchar(255) DEFAULT NULL,
+  `mediaUrl` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
-  `updatedAt` timestamp NULL DEFAULT (now()),
-  `mediaType` tinyint DEFAULT NULL,
-  `mediaUrl` varchar(255) DEFAULT NULL
+  `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -180,7 +153,7 @@ CREATE TABLE `message_rooms_table` (
   `id` int NOT NULL,
   `user1` int NOT NULL,
   `user2` int NOT NULL,
-  `status` tinyint DEFAULT '1',
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -209,24 +182,11 @@ CREATE TABLE `posts_table` (
   `userId` int NOT NULL,
   `title` varchar(255) NOT NULL,
   `content` text,
-  `mediaType` tinyint DEFAULT NULL,
+  `mediaType` varchar(255) DEFAULT NULL,
   `mediaUrl` varchar(255) DEFAULT NULL,
-  `status` tinyint DEFAULT '1',
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `post_categories_table`
---
-
-CREATE TABLE `post_categories_table` (
-  `id` int NOT NULL,
-  `postId` int NOT NULL,
-  `categoryId` int NOT NULL,
-  `createdAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -258,63 +218,6 @@ CREATE TABLE `post_likes_table` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles_table`
---
-
-CREATE TABLE `roles_table` (
-  `id` tinyint UNSIGNED NOT NULL,
-  `key` varchar(255) NOT NULL,
-  `description` text,
-  `createdAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `roles_table`
---
-
-INSERT INTO `roles_table` (`id`, `key`, `description`, `createdAt`) VALUES
-(1, 'admin', NULL, '2024-11-06 09:23:29'),
-(2, 'user', NULL, '2024-11-06 09:23:50');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `role_permissions_table`
---
-
-CREATE TABLE `role_permissions_table` (
-  `id` int NOT NULL,
-  `roleId` tinyint UNSIGNED NOT NULL,
-  `permissionId` tinyint UNSIGNED NOT NULL,
-  `createdAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `status_table`
---
-
-CREATE TABLE `status_table` (
-  `id` tinyint UNSIGNED NOT NULL,
-  `key` varchar(255) NOT NULL,
-  `description` text,
-  `createdAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `status_table`
---
-
-INSERT INTO `status_table` (`id`, `key`, `description`, `createdAt`) VALUES
-(1, 'onDeleted', NULL, '2024-11-06 09:24:33'),
-(3, 'onPublished', NULL, '2024-11-06 09:29:24'),
-(4, 'onPrivated', NULL, '2024-11-06 09:29:39'),
-(5, 'onProtected', NULL, '2024-11-06 09:29:56');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users_table`
 --
 
@@ -327,7 +230,7 @@ CREATE TABLE `users_table` (
   `avatarUrl` varchar(255) DEFAULT NULL,
   `role` tinyint DEFAULT '2',
   `verifyEmailAt` timestamp NULL DEFAULT NULL,
-  `status` tinyint DEFAULT '1',
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -337,7 +240,9 @@ CREATE TABLE `users_table` (
 --
 
 INSERT INTO `users_table` (`id`, `userName`, `password`, `fullName`, `email`, `avatarUrl`, `role`, `verifyEmailAt`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, 'locshino', '@Locshino123', 'locshino', 'locshino123@gmail.com', NULL, 2, NULL, 1, '2024-11-11 12:18:29', '2024-11-11 12:18:29');
+(1, 'admin', 'IUXqhIOqNHfzJwhwGGh6YmtHaXZ2TU1tUGpLa0liYk90akgzNmc9PQ==', 'locshino', 'locshino123@gmail.com', NULL, 2, NULL, 'active', '2024-11-21 01:10:50', '2024-11-21 01:10:50'),
+(2, '@admin', 'iebyeOSiRt+DEfYbspzCxHhxZVVvSlBjV3Iwa2ZxOFBIUTVmZHc9PQ==', 'locshino1', 'locshino3@gmail.com', NULL, 2, NULL, 'active', '2024-11-21 02:15:40', '2024-11-21 02:15:40'),
+(3, '@admin1', '2MrtURI9A6IC8GQIPZ1sgFhaQWtIb0R6Y2EvL0g1TXp4SFAyc2c9PQ==', 'locshino2', 'locshino4565@gmail.com', NULL, 2, NULL, 'active', '2024-11-21 03:03:10', '2024-11-21 03:03:10');
 
 -- --------------------------------------------------------
 
@@ -392,57 +297,14 @@ CREATE TABLE `user_profiles_table` (
   `website` varchar(255) DEFAULT NULL,
   `socialAccounts` text,
   `bio` text,
-  `status` tinyint DEFAULT '1',
+  `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user_wishlist`
---
-
-CREATE TABLE `user_wishlist` (
-  `id` int NOT NULL,
-  `userId` int NOT NULL,
-  `categoryId` int NOT NULL,
-  `createdAt` timestamp NULL DEFAULT (now())
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `__drizzle_migrations`
---
-
-CREATE TABLE `__drizzle_migrations` (
-  `id` bigint UNSIGNED NOT NULL,
-  `hash` text NOT NULL,
-  `created_at` bigint DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `__drizzle_migrations`
---
-
-INSERT INTO `__drizzle_migrations` (`id`, `hash`, `created_at`) VALUES
-(1, '704034c9665f6e19c9f3cc7ed8c7c5506f65d964e07f1521903fa293084f253e', 1730544835539),
-(2, 'f890aa75b717764ef100c749d1284e0de2ebc77333fa6b31ba4ad7c9b85357c3', 1731232072242),
-(3, '817528baf7490ae68c63bd9dae8b9ac7f733b66e7b2ba51f4d83cde60df173de', 1731233459251),
-(4, '7635ef914920f7255eb45534941874668ea4d427b4ad953359f3ba4bb3f108c9', 1731545543292);
-
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `categories_table`
---
-ALTER TABLE `categories_table`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `categories_table_name_unique` (`name`),
-  ADD KEY `status_idx` (`status`);
 
 --
 -- Indexes for table `comments_table`
@@ -502,13 +364,6 @@ ALTER TABLE `group_members_table`
   ADD KEY `userId_idx` (`userId`);
 
 --
--- Indexes for table `media_type_table`
---
-ALTER TABLE `media_type_table`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `media_type_table_key_unique` (`key`);
-
---
 -- Indexes for table `messages_table`
 --
 ALTER TABLE `messages_table`
@@ -543,14 +398,6 @@ ALTER TABLE `posts_table`
   ADD KEY `status_idx` (`status`);
 
 --
--- Indexes for table `post_categories_table`
---
-ALTER TABLE `post_categories_table`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `postId_idx` (`postId`),
-  ADD KEY `categoryId_idx` (`categoryId`);
-
---
 -- Indexes for table `post_comments_table`
 --
 ALTER TABLE `post_comments_table`
@@ -565,28 +412,6 @@ ALTER TABLE `post_likes_table`
   ADD PRIMARY KEY (`id`),
   ADD KEY `postId_idx` (`postId`),
   ADD KEY `userId_idx` (`userId`);
-
---
--- Indexes for table `roles_table`
---
-ALTER TABLE `roles_table`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `roles_table_key_unique` (`key`);
-
---
--- Indexes for table `role_permissions_table`
---
-ALTER TABLE `role_permissions_table`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `roleId_idx` (`roleId`),
-  ADD KEY `permissionId_idx` (`permissionId`);
-
---
--- Indexes for table `status_table`
---
-ALTER TABLE `status_table`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `status_table_key_unique` (`key`);
 
 --
 -- Indexes for table `users_table`
@@ -631,29 +456,8 @@ ALTER TABLE `user_profiles_table`
   ADD KEY `status_idx` (`status`);
 
 --
--- Indexes for table `user_wishlist`
---
-ALTER TABLE `user_wishlist`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userId_idx` (`userId`),
-  ADD KEY `categoryId_idx` (`categoryId`);
-
---
--- Indexes for table `__drizzle_migrations`
---
-ALTER TABLE `__drizzle_migrations`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `categories_table`
---
-ALTER TABLE `categories_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `comments_table`
@@ -698,12 +502,6 @@ ALTER TABLE `group_members_table`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `media_type_table`
---
-ALTER TABLE `media_type_table`
-  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `messages_table`
 --
 ALTER TABLE `messages_table`
@@ -728,12 +526,6 @@ ALTER TABLE `posts_table`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `post_categories_table`
---
-ALTER TABLE `post_categories_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `post_comments_table`
 --
 ALTER TABLE `post_comments_table`
@@ -746,28 +538,10 @@ ALTER TABLE `post_likes_table`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `roles_table`
---
-ALTER TABLE `roles_table`
-  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `role_permissions_table`
---
-ALTER TABLE `role_permissions_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `status_table`
---
-ALTER TABLE `status_table`
-  MODIFY `id` tinyint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT for table `users_table`
 --
 ALTER TABLE `users_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_follows_table`
@@ -792,18 +566,6 @@ ALTER TABLE `user_permissions_table`
 --
 ALTER TABLE `user_profiles_table`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `user_wishlist`
---
-ALTER TABLE `user_wishlist`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `__drizzle_migrations`
---
-ALTER TABLE `__drizzle_migrations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -876,13 +638,6 @@ ALTER TABLE `posts_table`
   ADD CONSTRAINT `posts_table_userId_users_table_id_fk` FOREIGN KEY (`userId`) REFERENCES `users_table` (`id`);
 
 --
--- Constraints for table `post_categories_table`
---
-ALTER TABLE `post_categories_table`
-  ADD CONSTRAINT `post_categories_table_categoryId_categories_table_id_fk` FOREIGN KEY (`categoryId`) REFERENCES `categories_table` (`id`),
-  ADD CONSTRAINT `post_categories_table_postId_posts_table_id_fk` FOREIGN KEY (`postId`) REFERENCES `posts_table` (`id`);
-
---
 -- Constraints for table `post_comments_table`
 --
 ALTER TABLE `post_comments_table`
@@ -895,13 +650,6 @@ ALTER TABLE `post_comments_table`
 ALTER TABLE `post_likes_table`
   ADD CONSTRAINT `post_likes_table_postId_posts_table_id_fk` FOREIGN KEY (`postId`) REFERENCES `posts_table` (`id`),
   ADD CONSTRAINT `post_likes_table_userId_users_table_id_fk` FOREIGN KEY (`userId`) REFERENCES `users_table` (`id`);
-
---
--- Constraints for table `role_permissions_table`
---
-ALTER TABLE `role_permissions_table`
-  ADD CONSTRAINT `role_permissions_table_permissionId_permissions_table_id_fk` FOREIGN KEY (`permissionId`) REFERENCES `permissions_table` (`id`),
-  ADD CONSTRAINT `role_permissions_table_roleId_roles_table_id_fk` FOREIGN KEY (`roleId`) REFERENCES `roles_table` (`id`);
 
 --
 -- Constraints for table `user_follows_table`
@@ -929,13 +677,6 @@ ALTER TABLE `user_permissions_table`
 --
 ALTER TABLE `user_profiles_table`
   ADD CONSTRAINT `user_profiles_table_userId_users_table_id_fk` FOREIGN KEY (`userId`) REFERENCES `users_table` (`id`);
-
---
--- Constraints for table `user_wishlist`
---
-ALTER TABLE `user_wishlist`
-  ADD CONSTRAINT `user_wishlist_categoryId_categories_table_id_fk` FOREIGN KEY (`categoryId`) REFERENCES `categories_table` (`id`),
-  ADD CONSTRAINT `user_wishlist_userId_users_table_id_fk` FOREIGN KEY (`userId`) REFERENCES `users_table` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
