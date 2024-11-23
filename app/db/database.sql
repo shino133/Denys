@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 22, 2024 at 12:55 AM
+-- Generation Time: Nov 23, 2024 at 04:56 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -234,15 +234,6 @@ CREATE TABLE `users_table` (
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `users_table`
---
-
-INSERT INTO `users_table` (`id`, `userName`, `password`, `fullName`, `email`, `avatarUrl`, `role`, `verifyEmailAt`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, 'admin', 'IUXqhIOqNHfzJwhwGGh6YmtHaXZ2TU1tUGpLa0liYk90akgzNmc9PQ==', 'locshino', 'locshino123@gmail.com', NULL, 2, NULL, 'active', '2024-11-21 01:10:50', '2024-11-21 01:10:50'),
-(2, '@admin', 'iebyeOSiRt+DEfYbspzCxHhxZVVvSlBjV3Iwa2ZxOFBIUTVmZHc9PQ==', 'locshino1', 'locshino3@gmail.com', NULL, 2, NULL, 'active', '2024-11-21 02:15:40', '2024-11-21 02:15:40'),
-(3, '@admin1', '2MrtURI9A6IC8GQIPZ1sgFhaQWtIb0R6Y2EvL0g1TXp4SFAyc2c9PQ==', 'locshino2', 'locshino4565@gmail.com', NULL, 2, NULL, 'active', '2024-11-21 03:03:10', '2024-11-21 03:03:10');
 
 -- --------------------------------------------------------
 
@@ -541,7 +532,7 @@ ALTER TABLE `post_likes_table`
 -- AUTO_INCREMENT for table `users_table`
 --
 ALTER TABLE `users_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_follows_table`
