@@ -2,7 +2,7 @@
 class PostModel extends BaseModel
 {
   protected $table = 'posts_table'; // Đặt tên bảng
-  protected $column = [
+  protected $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'title' => 'title',
@@ -14,7 +14,8 @@ class PostModel extends BaseModel
     'updated_at' => 'updatedAt'
   ];
 
-  public function addPost($data) {
+  public function addPost($data)
+  {
     $postData = [
       'userId' => $data['user_id'],
       'title' => $data['title'],
@@ -25,8 +26,29 @@ class PostModel extends BaseModel
     return $this->create($postData);
   }
 
-  public function getNewestPost() {
-    $sql = "SELECT * FROM {$this->table} ORDER BY {$this->column['created_at']} DESC LIMIT 1";
-    return $this->fetchAll($sql);
+  public function getPosts($orderBy = 'created_at', $conditions = ['status' => "active"], $limit = 10)
+  {
+    $user = "users_table";
+    $post = "posts_table";
+
+    $joins = [
+      [
+        'type' => 'INNER',
+        'table' => $user,
+        'on' => "$user.id = $post.userId"
+      ],
+    ];
+
+    $columns = ["$post.*", "$user.username as user_name", "$user.avatarUrl as user_avatarUrl"];
+
+    $conditionsValid = [];
+    foreach ($conditions as $field => $value) {
+      $conditionsValid["$post.$field"] = $value;
+    }
+
+    $orderBy = "$post." . $this->columns[$orderBy] . " DESC";
+
+    return $this->join($joins, $columns, $conditionsValid, $orderBy, $limit);
   }
+
 }

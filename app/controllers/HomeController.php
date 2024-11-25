@@ -17,7 +17,7 @@ class HomeController extends BaseController
     }
     
     $this->setData('user', Auth::get('username'));
-    $this->setData('posts', $this->postModel->getNewestPost());
+    $this->setData('posts', $this->postModel->getPosts());
 
     Constants::homePage();
     $this->render('Home/main');

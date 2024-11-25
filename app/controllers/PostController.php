@@ -13,22 +13,21 @@ class PostController extends BaseController
   {
     AppLoader::util('DataValidator');
 
-    // Action default
-    Action::set(function ($msg, $status = 'error') {
+    // Action reverse
+    Action::set('reverse',function ($msg, $status = 'error') {
       Url::setNofi($msg, $status);
       $this->reverse(Url::getQueryString());
     });
 
-    // Upload image
-    $uploadImage = [];
-    if (isset($_FILES["post_image"])) {
-      AppLoader::controller('AssetController');
-      $uploadImage = (new AssetController())->upImage("post_image");
-    }
+    // Action add post
+    Action::set('addPost',function ($data) {
+      $res = $this->postModel->addPost($data);
+      $args = $res == false
+        ? ['Vui lòng thử lại', 'error']
+        : ['Đăng bài viết thành công', 'success'];
 
-    if ($uploadImage['success'] == false) {
-      Action::run('Lỗi tải ảnh', 'error');
-    }
+      Action::run('reverse', ...$args);
+    });
 
     // Set data post
     $data = [
@@ -36,7 +35,7 @@ class PostController extends BaseController
       'title' => '',
       'content' => $_POST['content'],
       'media_type' => 'p',
-      'media_url' => $uploadImage['fileName'] ?? '',
+      'media_url' => '',
     ];
 
     $dataNullable = [
@@ -46,16 +45,28 @@ class PostController extends BaseController
 
     // Validate
     if (DataValidator::check($data, $dataNullable) == false) {
-      Action::run('Không được để trống', 'error');
+      Action::run('reverse','Không được để trống', 'error');
     }
 
-    // Add post
-    $res = $this->postModel->addPost($data);
-    if ($res == false) {
-      Action::run('Vui lòng thử lại', 'error');
+    // Upload image
+    $uploadImage = [];
+    if (isset($_FILES["post_image"])) {
+      AppLoader::controller('AssetController');
+      $uploadImage = (new AssetController())->upImage("post_image");
     }
+
+    if ($uploadImage['success'] == false) {
+      Action::run('reverse','Lỗi tải ảnh', 'error');
+    }
+
+    $data['media_url'] = $uploadImage['fileName'] ?? '';
 
     // Redirect
-    Action::run('Đăng bài viết thành công', 'success');
+    Action::run('addPost', $data);
+  }
+
+  public function getPost()
+  {
+    
   }
 }

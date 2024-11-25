@@ -8,9 +8,9 @@ class Action
    *
    * @param callable $action The function to store.
    */
-  public static function set(callable $action)
+  public static function set($key, callable $action)
   {
-    self::$storedAction = $action;
+    self::$storedAction[$key] = $action;
   }
 
   /**
@@ -19,12 +19,12 @@ class Action
    * @param mixed ...$args The arguments to pass to the stored function.
    * @return mixed The result of the function execution.
    */
-  public static function run(...$args)
+  public static function run($key,...$args)
   {
-    if (!is_callable(self::$storedAction)) {
+    if (!is_callable(self::$storedAction[$key])) {
       throw new Exception("No valid action has been set.");
     }
 
-    return call_user_func_array(self::$storedAction, $args);
+    return call_user_func_array(self::$storedAction[$key], $args);
   }
 }

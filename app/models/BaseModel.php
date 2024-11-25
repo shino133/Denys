@@ -15,7 +15,17 @@ class BaseModel
   protected function query($sql, $params = []): bool|PDOStatement
   {
     $stmt = $this->pdo->prepare($sql);
-    $stmt->execute($params);
+    // Bind các tham số để đảm bảo kiểu dữ liệu đúng
+    foreach ($params as $key => $value) {
+      $type = match (true) {
+        is_int($value) => PDO::PARAM_INT,
+        default => PDO::PARAM_STR,
+      };
+
+      $stmt->bindValue($key, $value, $type);
+    }
+
+    $stmt->execute();
     return $stmt;
   }
 
@@ -37,13 +47,13 @@ class BaseModel
     ][$clauseType] ?? 'AND';
 
     foreach ($conditions as $column => $value) {
-      $placeholder = ":$column" . "_$clauseType";
+      $placeholder = str_replace('.', '', ":$column");
       $clauses[] = "$column = $placeholder ";
       $bindings[$placeholder] = $value;
     }
-    
+
     $sql = " $clauseType " . implode(" $connector ", $clauses);
-    
+
     return ['sql' => $sql, 'bindings' => $bindings];
   }
 
@@ -79,6 +89,8 @@ class BaseModel
       $sql .= " LIMIT :limit";
       $params[':limit'] = $limit;
     }
+
+    // dumpVar(['sql' => $sql, 'params' => $params]);
 
     return $this->fetchAll($sql, $params);
   }
@@ -122,12 +134,14 @@ class BaseModel
     $placeholders = ':' . implode(', :', $dataKeys);
     $sql = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
 
+    // dumpVar(['sql' => $sql, 'params' => $params]);
+
     $this->query($sql, $params);
     return $this->pdo->lastInsertId();
   }
 
   // Phương thức để cập nhật một bản ghi theo ID
-  public function update($conditions, array $data)
+  public function update($conditions, array $data): bool
   {
     // Xây dựng SET clause, WHERE clause
     $setClauses = $this->buildSqlClause($data, 'SET');
@@ -138,17 +152,21 @@ class BaseModel
     $sql .= $setClauses['sql'];
     $sql .= $whereClause['sql'];
 
+    // dumpVar(['sql' => $sql, 'params' => $params]);
+
     $res = $this->query($sql, array_merge($setClauses['bindings'], $whereClause['bindings']));
     return $res !== false;
   }
 
   // Phương thức để xóa một bản ghi theo ID
-  public function delete($conditions = [])
+  public function delete($conditions = []): bool
   {
     $sql = "DELETE FROM {$this->table}";
 
     $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
+
+    // dumpVar(['sql' => $sql, 'params' => $params]);
 
     $res = $this->query($sql, $whereData['bindings']);
     return $res !== false;
@@ -163,12 +181,13 @@ class BaseModel
     $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
+    // dumpVar(['sql' => $sql, 'params' => $params]);
+
     // Trả về kết quả đếm được
     return (int) $this->fetchColumn($sql, $whereData['bindings']);
   }
 
 
-  // Phương thức join bảng, cơ sở dữ liệu, điều kiện where, sắp xếp, với limit
   public function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null)
   {
     $columnString = implode(', ', $columns);
@@ -189,12 +208,14 @@ class BaseModel
     }
 
     // Thêm LIMIT nếu có
-    $params = [];
+    $params = $whereData['bindings'];
     if ($limit) {
       $sql .= " LIMIT :limit";
       $params[':limit'] = $limit;
     }
 
-    return $this->fetchAll($sql, array_merge($whereData['bindings'], $params));
+    // dumpVar(['sql' => $sql, 'params' => $params]);
+
+    return $this->fetchAll($sql, $params);
   }
 }
