@@ -1,26 +1,6 @@
 <?php
-class AppLoader
+class AppLoader extends Loader
 {
-  // Core helpers
-  public static function include($path, $data = [])
-  {
-    $fullPath = __DIR__ . '/../' . $path . ".php";
-
-    // Kiểm tra nếu file tồn tại trước khi include
-    if (file_exists($fullPath)) {
-      extract($data);
-      include_once $fullPath;
-    } else {
-      http_response_code(404);
-      echo "404 - File not found: $fullPath";
-    }
-  }
-
-  public static function getPath($path): string
-  {
-    return __DIR__ . '/../' . $path;
-  }
-
   // Optional helpers
   public static function view($path, $data = [])
   {
@@ -48,14 +28,19 @@ class AppLoader
     self::include("features/$path");
   }
 
-  public static function helper($path)
+  public static function util($path)
   {
-    self::include("features/helpers/$path");
+    self::include("utils/$path");
   }
 
-  public static function component($path)
+  public static function helper($path)
   {
-    self::include("components/$path");
+    self::include("utils/helpers/$path");
+  }
+
+  public static function component($path, $data = [], $include_once = false)
+  {
+    self::include("components/$path", $data, $include_once);
   }
 
   public static function constant($path)
@@ -66,15 +51,5 @@ class AppLoader
   public static function lib($path)
   {
     self::include("lib/$path");
-  }
-
-  public static function htmlToString($path, $data = [])
-  {
-    ob_start();
-    if ($data) {
-      extract($data);
-    }
-    self::view($path, $data);
-    return ob_get_clean();
   }
 }
