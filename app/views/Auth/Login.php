@@ -1,6 +1,6 @@
 <div class="row ht-100v flex-row-reverse no-gutters">
   <div class="col-md-6 d-flex justify-content-center align-items-center">
-    <div class="signup-form">
+    <div class="container mx-5">
       <div class="auth-logo text-center mb-5">
         <div class="row">
           <div class="col-md-2">
