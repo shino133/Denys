@@ -27,6 +27,6 @@ class PostModel extends BaseModel
 
   public function getNewestPost() {
     $sql = "SELECT * FROM {$this->table} ORDER BY {$this->column['created_at']} DESC LIMIT 1";
-    return $this->query($sql);
+    return $this->fetchAll($sql);
   }
 }

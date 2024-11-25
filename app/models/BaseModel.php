@@ -19,32 +19,33 @@ class BaseModel
     return $stmt;
   }
 
-  protected function buildClause(array $conditions, $type = 'WHERE'): array
+  // Xây dựng SQL clause
+  protected function buildSqlClause(array $conditions, $clauseType = 'WHERE'): array
   {
-    $sql = '';
-    $bindings = [];
-    if (!empty($conditions)) {
-      $connector = [
-        'WHERE' => 'AND',
-        'VALUES' => ',',
-        'SET' => ',',
-        'JOIN' => 'ON',
-        'GROUP' => 'AND',
-        'ORDER' => 'AND',
-        'HAVING' => 'AND',
-      ][$type];
-
-      $clauses = [];
-      foreach ($conditions as $key => $value) {
-        $clauses[] = "$key = :$key$type";
-        $bindings[":$key$type"] = $value;
-      }
-      $sql = " $type " . implode(" $connector ", $clauses);
+    if (empty($conditions)) {
+      return ['sql' => '', 'bindings' => []];
     }
 
+    $sql = '';
+    $bindings = [];
+    $clauses = [];
+    $connector = [
+      'WHERE' => 'AND',
+      'VALUES' => ',',
+      'SET' => ',',
+      'JOIN' => 'ON',
+    ][$clauseType] ?? 'AND';
+
+    foreach ($conditions as $column => $value) {
+      $placeholder = ":$column" . "_$clauseType";
+      $clauses[] = "$column = $placeholder ";
+      $bindings[$placeholder] = $value;
+    }
+    
+    $sql = " $clauseType " . implode(" $connector ", $clauses);
+    
     return ['sql' => $sql, 'bindings' => $bindings];
   }
-
 
   // Lấy tất cả bản ghi
   public function fetchAll($sql, $params = []): array
@@ -57,7 +58,6 @@ class BaseModel
   {
     return $this->query($sql, $params)->fetch(PDO::FETCH_ASSOC);
   }
-
 
   public function fetchColumn($sql, $params = []): array
   {
@@ -90,35 +90,21 @@ class BaseModel
     $sql = "SELECT $columnsList FROM {$this->table}";
 
     // Gọi hàm buildClause để thêm điều kiện WHERE
-    $whereData = $this->buildClause($conditions);
+    $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
-    // Thêm LIMIT và OFFSET nếu được truyền
-    if ($limit !== null) {
-      $sql .= " LIMIT :limit";
-    }
-    if ($offset !== null) {
-      $sql .= " OFFSET :offset";
+    // Thêm LIMIT với OFFSET
+    $params = $whereData['bindings'];
+    if ($limit) {
+      $sql .= " LIMIT " . (int) $limit;
     }
 
-    $stmt = $this->pdo->prepare($sql);
-
-    // Gán giá trị cho WHERE clause
-    foreach ($whereData['bindings'] as $key => $value) {
-      $stmt->bindValue($key, $value);
+    if ($offset) {
+      $sql .= " OFFSET " . (int) $offset;
     }
 
-    // Gán giá trị cho LIMIT và OFFSET
-    if ($limit !== null) {
-      $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
-    }
-    if ($offset !== null) {
-      $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-    }
-
-    $stmt->execute();
-
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // dumpVar(['sql' => $sql, 'params' => $params]);
+    return $this->fetchAll($sql, $params);
   }
 
   // Phương thức để tạo một bản ghi mới
@@ -144,8 +130,8 @@ class BaseModel
   public function update($conditions, array $data)
   {
     // Xây dựng SET clause, WHERE clause
-    $setClauses = $this->buildClause($data, 'SET');
-    $whereClause = $this->buildClause($conditions);
+    $setClauses = $this->buildSqlClause($data, 'SET');
+    $whereClause = $this->buildSqlClause($conditions);
 
     // Câu lệnh SQL UPDATE
     $sql = "UPDATE {$this->table}";
@@ -161,7 +147,7 @@ class BaseModel
   {
     $sql = "DELETE FROM {$this->table}";
 
-    $whereData = $this->buildClause($conditions);
+    $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     $res = $this->query($sql, $whereData['bindings']);
@@ -174,7 +160,7 @@ class BaseModel
     $sql = "SELECT COUNT(*) FROM {$this->table}";
 
     // Gọi hàm buildClause để thêm điều kiện WHERE
-    $whereData = $this->buildClause($conditions);
+    $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     // Trả về kết quả đếm được
@@ -194,7 +180,7 @@ class BaseModel
     }
 
     // Thêm điều kiện WHERE nếu có
-    $whereData = $this->buildClause($conditions);
+    $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     // Thêm ORDER BY nếu có
