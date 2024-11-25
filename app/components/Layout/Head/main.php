@@ -3,6 +3,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 <?php Title::render();
-Meta::renderMetaTags();
-Link::renderLinks();
-Script::renderScripts('head'); ?>
+Meta::render();
+Link::render();
+Script::render('head'); ?>

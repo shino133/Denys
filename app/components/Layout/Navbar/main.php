@@ -77,7 +77,7 @@
         <a href="#" class="nav-link nav-links message-drop drop-w-tooltip" data-toggle="dropdown"
           data-placement="bottom" role="button" aria-haspopup="true" aria-expanded="false">
           <img src="/public/img/icons/navbar/message.png" class="message-dropdown" alt="navbar icon" />
-          <span class="badge badge-pill badge-primary">1</span>
+          <span class="badge badge-pill span-badge text-white">1</span>
         </a>
         <ul class="dropdown-menu notify-drop dropdown-menu-right nav-drop">
           <div class="notify-drop-title">
@@ -194,14 +194,14 @@
         <a href="#" class="nav-link nav-links rm-drop-mobile drop-w-tooltip" data-toggle="dropdown"
           data-placement="bottom" role="button" aria-haspopup="true" aria-expanded="false">
           <img src="/public/img/icons/navbar/notification.png" class="notification-bell" alt="navbar icon" />
-          <span class="badge badge-pill badge-primary">3</span>
+          <span class="badge badge-pill span-badge text-white">3</span>
         </a>
         <ul class="dropdown-menu notify-drop dropdown-menu-right nav-drop">
           <div class="notify-drop-title">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-6 fs-8">
                 Notifications
-                <span class="badge badge-pill badge-primary ml-2">3</span>
+                <span class="badge badge-pill span-badge text-white ml-2">3</span>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6 text-right">
                 <a href="#" class="notify-right-icon">
@@ -227,7 +227,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <span class="badge badge-pill badge-primary"><i class="bx bxs-group"></i></span>
+                  <span class="badge badge-pill span-badge text-white"><i class="bx bxs-group"></i></span>
                   3h
                 </p>
               </div>
@@ -246,7 +246,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <span class="badge badge-pill badge-primary"><i class="bx bxs-like"></i></span>
+                  <span class="badge badge-pill span-badge text-white"><i class="bx bxs-like"></i></span>
                   7h
                 </p>
               </div>
@@ -264,7 +264,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <span class="badge badge-pill badge-primary"><i class="bx bx-images"></i></span>
+                  <span class="badge badge-pill span-badge text-white"><i class="bx bx-images"></i></span>
                   23h
                 </p>
               </div>
@@ -283,7 +283,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <span class="badge badge-pill badge-primary"><i class="bx bxs-quote-right"></i></span>
+                  <span class="badge badge-pill span-badge text-white"><i class="bx bxs-quote-right"></i></span>
                   1d
                 </p>
               </div>
@@ -302,7 +302,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <span class="badge badge-pill badge-primary"><i class="bx bxs-like"></i></span>
+                  <span class="badge badge-pill span-badge text-white"><i class="bx bxs-like"></i></span>
                   2d
                 </p>
               </div>
@@ -320,7 +320,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <span class="badge badge-pill badge-primary"><i class="bx bxs-quote-right"></i></span>
+                  <span class="badge badge-pill span-badge text-white"><i class="bx bxs-quote-right"></i></span>
                   3d
                 </p>
               </div>
@@ -379,6 +379,9 @@
           <?php endif; ?>
         </div>
       </li>
+      <button type="button" class="btn nav-link" id="menu-toggle">
+        <img src="/public/img/icons/theme/navs.png" alt="Navbar navs" />
+      </button>
     </ul>
   </div>
 </nav>
