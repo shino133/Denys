@@ -1,11 +1,11 @@
 <?php
-class RolepermissionModel extends BaseModel
+class RolePermissionModel extends BaseModel
 {
   protected $table = 'role_permissions_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'role_Id' => 'roleId',
-    'permission_Id' => 'permissionId',
-    'created_At' => 'createdAt'
+    'role_id' => 'roleId',
+    'permission_id' => 'permissionId',
+    'created_at' => 'createdAt'
   ];
 }

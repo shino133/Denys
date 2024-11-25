@@ -6,6 +6,6 @@ class StatusModel extends BaseModel
     'id' => 'id',
     'key' => 'key',
     'description' => 'description',
-    'created_At' => 'createdAt'
+    'created_at' => 'createdAt'
   ];
 }

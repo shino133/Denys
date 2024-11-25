@@ -1,17 +1,17 @@
 <?php
-class UserprofileModel extends BaseModel
+class UserProfileModel extends BaseModel
 {
   protected $table = 'user_profiles_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'user_Id' => 'userId',
-    'banner_Url' => 'bannerUrl',
+    'user_id' => 'userId',
+    'banner_url' => 'bannerUrl',
     'location' => 'location',
     'website' => 'website',
-    'social_Accounts' => 'socialAccounts',
+    'social_accounts' => 'socialAccounts',
     'bio' => 'bio',
     'status' => 'status',
-    'created_At' => 'createdAt',
-    'updated_At' => 'updatedAt'
+    'created_at' => 'createdAt',
+    'updated_at' => 'updatedAt'
   ];
 }

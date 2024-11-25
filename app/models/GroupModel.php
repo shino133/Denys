@@ -4,12 +4,12 @@ class GroupModel extends BaseModel
   protected $table = 'groups_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'user_Id' => 'userId',
+    'user_id' => 'userId',
     'name' => 'name',
-    'banner_Url' => 'bannerUrl',
+    'banner_url' => 'bannerUrl',
     'bio' => 'bio',
     'status' => 'status',
-    'created_At' => 'createdAt',
-    'updated_At' => 'updatedAt'
+    'created_at' => 'createdAt',
+    'updated_at' => 'updatedAt'
   ];
 }

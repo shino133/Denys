@@ -7,7 +7,7 @@ class CategoryModel extends BaseModel
     'name' => 'name',
     'description' => 'description',
     'status' => 'status',
-    'created_At' => 'createdAt',
-    'updated_At' => 'updatedAt'
+    'created_at' => 'createdAt',
+    'updated_at' => 'updatedAt'
   ];
 }

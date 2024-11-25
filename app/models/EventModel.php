@@ -4,12 +4,12 @@ class EventModel extends BaseModel
   protected $table = 'events_table'; // Đặt tên bảng
   protected $column = [
     'id' => 'id',
-    'user_Id' => 'userId',
+    'user_id' => 'userId',
     'title' => 'title',
-    'banner_Url' => 'bannerUrl',
+    'banner_url' => 'bannerUrl',
     'content' => 'content',
     'status' => 'status',
-    'created_At' => 'createdAt',
-    'updated_At' => 'updatedAt'
+    'created_at' => 'createdAt',
+    'updated_at' => 'updatedAt'
   ];
 }
