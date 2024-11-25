@@ -1,6 +1,6 @@
 .chat-window {
     bottom: 0;
-    right: 15%;
+    right: 0;
     position: fixed;
     float: right;
     min-width: 380px;

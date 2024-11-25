@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
-  <?php AppLoader::component(path: "Head/main") ?>
+  <?php AppLoader::component(path: "Layout/Head/main") ?>
 </head>
 
-<body>
+<body <?= Store::get('bodyClass') ? ' class="' . Store::get('bodyClass') . '"' : '' ?>>
+
   <?php AppLoader::view(path: $data['pathView'], data: $data) ?>
 
-  <?php Script::renderScripts(position: 'body'); ?>
+  <?php Script::render(position: 'body'); ?>
 </body>
+
 </html>

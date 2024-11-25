@@ -1,8 +1,5 @@
 <?php
 AppLoader::model('UserModel');
-AppLoader::lib("encryptData");
-AppLoader::helper('DataValidator');
-
 class AuthController extends BaseController
 {
   private $model;
@@ -21,18 +18,22 @@ class AuthController extends BaseController
     ];
 
     if (!isset($actionList[$nameAction])) {
-      $this->redirect('/404');
+      $nameAction = 'login';
     }
 
     if (Auth::checkAdmin() == true) {
       $this->redirect('/admin');
     }
 
-    if (Auth::checkLogin() == true) {
+    if (Auth::checkLogin() == true || Auth::checkUser() == true) {
       $this->redirect('/');
     }
 
     Constants::loginPage();
+    if ($nameAction == 'register') {
+      Title::set(APP_NAME . ' - Register');
+    }
+
     $this->render($actionList[$nameAction]);
   }
 
@@ -48,35 +49,52 @@ class AuthController extends BaseController
 
   public function loginRequest()
   {
+    AppLoader::lib('encryptData');
     Url::setUrl('/user/login');
+    $errorEvent = function () {
+      Url::setNofi(msg: 'Invalid_username_or_password', status: 'error');
+      $this->redirect(Url::get());
+    };
+
     $username = $_POST['username'];
     $password = $_POST['password'];
+
     if (!$username || !$password) {
-      Url::setQueryString(['errorMessage' => 'empty_fields']);
-      $this->redirect(Url::get());
+      $errorEvent();
     }
 
-    $userData = $this->userModel->findByCondition(conditions: ['username' => $username], limit: 1)[0];
+    $userData = $this->userModel->find(conditions: ['username' => $username], limit: 1)[0];
 
     if (!isset($userData)) {
-      Url::setQueryString(['errorMessage' => 'user_not_found']);
-      $this->redirect(Url::get());
+      $errorEvent();
     }
 
-    $password = encryptData($password);
-
-    if (!($username == $userData['userName'] || $password == $userData['password'])) {
-      Url::setQueryString(['errorMessage' => 'invalid_username_or_password']);
-      $this->redirect(Url::get());
+    $userData['password'] = decryptData($userData['password']);
+    if (!($username == $userData['userName'] && $password == $userData['password'])) {
+      $errorEvent();
     }
 
+    // WHEN: login success
     Auth::setUser($username);
+    Auth::set('user_id', $userData['id']);
+    if ($userData['role'] == 1) {
+      Auth::setAdmin($username);
+      $this->redirect('/admin');
+    }
+
     $this->redirect('/');
   }
 
   public function registerRequest()
   {
+    AppLoader::util('DataValidator');
+    AppLoader::lib('encryptData');
     Url::setUrl('/user/register');
+    $errorEvent = function ($msg = 'Something_went_wrong') {
+      Url::setNofi(msg: $msg, status: 'error');
+      $this->redirect(Url::get());
+    };
+
     $data = [
       'username' => $_POST['username'],
       'password' => $_POST['password'],
@@ -84,25 +102,24 @@ class AuthController extends BaseController
       'email' => $_POST['email'],
     ];
 
-    $isValidData = DataValidator::check($data);
-    if (!$isValidData) {
-      Url::setQueryString(['errorMessage' => 'empty_fields']);
-      $this->redirect(Url::get());
+    if (DataValidator::check($data) == false) {
+      $errorEvent('Invalid_input');
     }
 
     $data['password'] = encryptData($data['password']);
     $result = $this->userModel->create($data);
     if (!$result) {
-      Url::setQueryString(['errorMessage' => 'username_already_taken']);
-      $this->redirect(Url::get());
+      $errorEvent();
     }
 
-    $this->redirect('/user/login?notification=registered');
+    Url::setUrl('/user/login');
+    Url::setNofi(msg: 'Registered', status: 'success');
+    $this->redirect(Url::get());
   }
 
   public function logout()
   {
     Auth::logout();
-    $this->redirect('/login');
+    $this->redirect('/');
   }
 }

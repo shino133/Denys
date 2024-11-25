@@ -1,15 +1,25 @@
 <?php
+AppLoader::model('PostModel');
+
 class HomeController extends BaseController
 {
+  private $postModel;
+
+  public function __construct()
+  {
+    $this->postModel = new PostModel();
+  }
+
   public function index()
   {
-    $isLogin = Auth::check('username');
-    if (!$isLogin) {
-      $this->redirect('user/login');
+    if (Auth::checkLogin() == false) {
+      $this->redirect('/user/login');
     }
-    Constants::homePage();
-    Title::set(APP_NAME . ' - Social Networking Site');
+    
+    $this->setData('user', Auth::get('username'));
+    $this->setData('posts', $this->postModel->getNewestPost());
 
+    Constants::homePage();
     $this->render('Home/main');
   }
 

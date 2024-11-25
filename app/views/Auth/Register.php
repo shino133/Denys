@@ -1,18 +1,18 @@
 <div class="row ht-100v flex-row-reverse no-gutters">
   <div class="col-md-6 d-flex justify-content-center align-items-center">
-    <div class="signup-form">
+    <div class="container mx-5">
       <div class="auth-logo text-center mb-5">
         <div class="row">
           <div class="col-md-2">
-            <img src="assets/images/logo-64x64.png" class="logo-img" alt="Logo" />
+            <img src="/public/logo/logo-64x64.png" class="logo-img" alt="Logo" />
           </div>
           <div class="col-md-10">
-            <p>Argon Social Network</p>
-            <span>Design System</span>
+            <p>Denys</p>
+            <span>Đăng ký tài khoản</span>
           </div>
         </div>
       </div>
-      <form action="/user/request/register" method="POST" class="pt-5">
+      <form action="/user/request/register" method="POST" class="pt-1">
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
@@ -41,17 +41,16 @@
           </div>
           <div class="col-md-12">
             <p class="agree-privacy">
-              By clicking the Sign Up button below you agreed to our privacy
-              policy and terms of use of our website.
+              Bằng cách nhấp vào nút Đăng ký bên dưới, bạn đã đồng ý với chính sách bảo mật và các điều khoản sử dụng trang web của chúng tôi.
             </p>
           </div>
-          <div class="col-md-6">
-            <span class="go-login">Already a member? <a href="/user/login">Sign In</a></span>
+          <div class="col-md-7">
+            <span class="go-login">Đã có tài khoản? <a href="/user/login">Đăng nhập ngay</a></span>
           </div>
-          <div class="col-md-6 text-right">
+          <div class="col-md-5 text-right">
             <div class="form-group">
-              <button type="submit" class="btn btn-primary sign-up">
-                Sign Up
+              <button type="submit" class="btn btn-orange rounded-pill sign-up">
+                Đăng ký
               </button>
             </div>
           </div>
@@ -63,16 +62,13 @@
     <div class="auth-left-content mt-5 mb-5 text-center">
       <div class="weather-small text-white">
         <p class="current-weather">
-          <i class="bx bx-sun"></i> <span>14&deg;</span>
+          <i class="bx bx-sun"></i> <span>24&deg;</span>
         </p>
-        <p class="weather-city">Gyumri</p>
+        <p class="weather-city">Hà Nam</p>
       </div>
       <div class="text-white mt-5 mb-5">
-        <h2 class="create-account mb-3">Create Account</h2>
-        <p>Enter your personal details and start journey with us.</p>
-      </div>
-      <div class="auth-quick-links">
-        <a href="#" class="btn btn-outline-primary">Purchase template</a>
+        <h2 class="create-account mb-3">Tạo tài khoản</h2>
+        <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình cùng chúng tôi.</p>
       </div>
     </div>
   </div>

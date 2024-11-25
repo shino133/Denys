@@ -13,4 +13,20 @@ class PostModel extends BaseModel
     'created_at' => 'createdAt',
     'updated_at' => 'updatedAt'
   ];
+
+  public function addPost($data) {
+    $postData = [
+      'userId' => $data['user_id'],
+      'title' => $data['title'],
+      'content' => $data['content'],
+      'mediaType' => $data['media_type'],
+      'mediaUrl' => $data['media_url'],
+    ];
+    return $this->create($postData);
+  }
+
+  public function getNewestPost() {
+    $sql = "SELECT * FROM {$this->table} ORDER BY {$this->column['created_at']} DESC LIMIT 1";
+    return $this->fetchAll($sql);
+  }
 }
