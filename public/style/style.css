@@ -137,9 +137,13 @@ button:focus {
 }
 
 .nav-settings {
-  background-color: #d7dce0;
   padding: 0.3rem;
   border-radius: 50%;
+}
+
+.span-badge {
+  background-color: #eb7a09;
+  color: #fff;
 }
 
 .search-form .dropdown-menu {
@@ -300,8 +304,7 @@ button:focus {
 
 .post-form {
   background-color: #d1d3d6;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-radius: 10px;
 }
 
 #postForm {
@@ -380,6 +383,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .post {
   width: 100%;
+  border-radius: 15px;
 }
 
 .post-user-image {
@@ -488,13 +492,13 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .ql-active {
-  background-color: #007bff;
+  background-color: #219b9d;
   color: #fff;
 }
 
 /* Menu */
 .navbar {
-  background-color: #fff !important;
+  background-color: #219b9d !important;
 }
 
 #navbar-main {
@@ -1543,4 +1547,8 @@ img.settings-icon {
   background-color: #e67e22;
   color: #fff;
   border-color: #e67e22;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
