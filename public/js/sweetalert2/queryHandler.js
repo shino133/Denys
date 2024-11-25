@@ -12,7 +12,7 @@ function removeQueryParams() {
 }
 
 // Hàm hiển thị thông báo dựa trên query string
-function handleAlertFromQuery() {
+(() => {
   const message = getQueryParam("msg");
   const status = getQueryParam("status");
 
@@ -20,12 +20,10 @@ function handleAlertFromQuery() {
     Swal.fire({
       text: message.replace(/_/g, " "), // Thay dấu _ bằng dấu cách
       icon: status, // 'success', 'error', 'warning', 'info', hoặc 'question'
+      confirmButtonColor: "#d35400",
       confirmButtonText: "OK",
     }).then(() => {
       removeQueryParams(); // Xóa query sau khi thông báo hiển thị
     });
   }
-}
-
-// Gọi hàm khi trang tải
-handleAlertFromQuery();
+})();
