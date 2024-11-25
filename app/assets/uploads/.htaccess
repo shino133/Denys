@@ -1,5 +1,0 @@
-# Ngăn không cho người dùng truy cập trực tiếp vào tệp hình ảnh trong thư mục uploads
-<Files *>
-    Order Deny,Allow
-    Deny from all
-</Files>
