@@ -28,10 +28,10 @@ $user ??= [];
 
           <!-- Posts -->
           <div class="posts-section mb-5">
-            <?php foreach ($posts as $post) : ?>
-            <div class="pt-3">
-              <?php AppLoader::component("Post/Card", $post); ?>
-            </div>
+            <?php foreach ($posts as $post): ?>
+              <div class="pt-3">
+                <?php AppLoader::component("Post/Card", $post); ?>
+              </div>
             <?php endforeach; ?>
             <?php AppLoader::component("LoadPostBtn") ?>
           </div>
@@ -47,16 +47,10 @@ $user ??= [];
 </div>
 
 
-<!-- Modals -->
-<?php AppLoader::component("Comments/main") ?>
-
-<!-- Chat Popup -->
-<?php AppLoader::component("ChatPopup/main") ?>
-<!-- END Chat Popup -->
-
-<!-- Call modal -->
-<?php AppLoader::component("CallModal/main") ?>
-<!-- END call modal -->
+<?php // Components
+// AppLoader::component("Comments/main");
+// AppLoader::component("ChatPopup/main");
+// AppLoader::component("CallModal/main"); ?>
 </div>
 
 <script>
