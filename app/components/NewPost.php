@@ -4,7 +4,7 @@
       <form action="/post/request/add" method="post" enctype="multipart/form-data">
         <div class="form-group post-input">
           <textarea name="content" class="form-control" id="postForm" rows="3"
-            placeholder="Bạn cảm thấy hôm nay thế nào, <?= Store::get('username') ?>?"></textarea>
+            placeholder="Bạn cảm thấy hôm nay thế nào<?= Store::get('username') ?>?"></textarea>
           <div class="bg-light mh-100 w-full d-flex justify-content-center">
             <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%; display: none;">
           </div>

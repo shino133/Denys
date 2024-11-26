@@ -1,3 +1,8 @@
+<?php
+$user_avatarUrl ??= "";
+$user_fullName ??= "a";
+?>
+
 <nav id="navbar-main" class="navbar navbar-expand-lg shadow-sm sticky-top">
   <div class="w-100 justify-content-md-center">
     <ul class="nav navbar-nav enable-mobile px-2">
@@ -55,7 +60,7 @@
               </div>
               <div class="col-md-10">
                 <span class="fs-9">Group</span>
-                <small id="createGroup" class="form-text text-muted">Find people with shared interests</small>
+                <small id="createGroup" class="form-text text-muted">Tìm những người có chung sở thích</small>
               </div>
             </div>
           </a>
@@ -66,8 +71,7 @@
               </div>
               <div class="col-md-10">
                 <span class="fs-9">Event</span>
-                <small id="createEvent" class="form-text text-muted">bring people together with a public or private
-                  event</small>
+                <small id="createEvent" class="form-text text-muted">Gắn kết mọi người lại với nhau thông qua một sự kiện công cộng hoặc riêng tư</small>
               </div>
             </div>
           </a>
@@ -83,11 +87,11 @@
           <div class="notify-drop-title">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-6 fs-8">
-                Messages | <a href="#">Requests</a>
+                Tin Nhắn | <a href="#">Yêu cầu</a>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6 text-right">
                 <a href="#" class="notify-right-icon">
-                  Mark All as Read
+                  Đánh dấu tất cả là đã đọc
                 </a>
               </div>
             </div>
@@ -107,8 +111,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  <i class="bx bx-check"></i> This party is going to
-                  have a DJ, food, and drinks.
+                  <i class="bx bx-check"></i> Cái tiệc này sẽ có DJ, đồ ăn, và đồ uống.
                 </p>
               </div>
             </li>
@@ -123,7 +126,7 @@
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
-                <p class="time">Great, I’ll see you tomorrow!.</p>
+                <p class="time">"Tuyệt vời, hẹn gặp bạn ngày mai!".</p>
               </div>
             </li>
             <li>
@@ -137,7 +140,7 @@
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
-                <p class="time">yeah, I will be there.</p>
+                <p class="time">"Ừ, tôi sẽ có mặt ở đó.".</p>
               </div>
             </li>
             <li>
@@ -152,7 +155,7 @@
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
                 <p class="time">
-                  I would really like to bring my friend Jake, if...
+                  Tôi thật sự muốn mang bạn tôi, Jake, theo, nếu...
                 </p>
               </div>
             </li>
@@ -167,7 +170,7 @@
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
-                <p class="time">Sure, what can I help you with?</p>
+                <p class="time">"Cảm ơn, tôi có thể giúp gì cho bạn?"</p>
               </div>
             </li>
             <li>
@@ -181,12 +184,12 @@
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
-                <p class="time">Which of those two is best?</p>
+                <p class="time">Cảm ơn, tôi có thể giúp gì cho bạn?</p>
               </div>
             </li>
           </div>
           <div class="notify-drop-footer text-center">
-            <a href="#">See More</a>
+            <a href="#">xem thêm</a>
           </div>
         </ul>
       </li>
@@ -200,12 +203,12 @@
           <div class="notify-drop-title">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-6 fs-8">
-                Notifications
+                Thông báo
                 <span class="badge badge-pill span-badge text-white ml-2">3</span>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6 text-right">
                 <a href="#" class="notify-right-icon">
-                  Mark All as Read
+                  Đánh dấu tất cả là đã đọc
                 </a>
               </div>
             </div>
@@ -221,7 +224,7 @@
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Sean</a>
-                <span class="notification-type">replied to your comment on a post in </span><a href="#"
+                <span class="notification-type">"Đã trả lời bình luận của bạn trên một bài đăng trong..." </span><a href="#"
                   class="notification-for">PHP</a>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
@@ -240,7 +243,7 @@
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Kimberly</a>
-                <span class="notification-type">likes your comment "I would really...
+                <span class="notification-type">"Thích bình luận của bạn 'Tôi thật sự muốn...'"
                 </span>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
@@ -258,8 +261,7 @@
                 </div>
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
-                <span class="notification-type">10 people saw your story before it disappeared. See
-                  who saw it.</span>
+                <span class="notification-type">"10 người đã xem câu chuyện của bạn trước khi nó biến mất. Xem ai đã xem nó.".</span>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
@@ -277,8 +279,7 @@
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Michelle</a>
-                <span class="notification-type">posted in </span><a href="#" class="notification-for">Argon Social
-                  Design System</a>
+                <span class="notification-type">Đăng trong </span><a href="#" class="notification-for">Hệ thống xã hội Argon</a>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
@@ -296,7 +297,7 @@
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Karen</a>
-                <span class="notification-type">likes your comment "Sure, here...
+                <span class="notification-type">Chắc chắn, ở đây...
                 </span>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
@@ -315,7 +316,7 @@
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Irwin</a>
-                <span class="notification-type">posted in </span><a href="#" class="notification-for">Themeforest</a>
+                <span class="notification-type">Đăng trong </span><a href="#" class="notification-for">Themeforest</a>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
@@ -337,15 +338,20 @@
           <img src="/public/img/icons/navbar/flag.png" alt="navbar icon" />
         </a>
         <div class="dropdown-menu dropdown-menu-right nav-drop">
-          <a class="dropdown-item" href="newsfeed-2.html">Newsfeed 2</a>
-          <a class="dropdown-item" href="sign-in.html">Sign in</a>
-          <a class="dropdown-item" href="sign-up.html">Sign up</a>
+          <a class="dropdown-item" href="newsfeed-2.html">Bảng tin 2</a>
+          <a class="dropdown-item" href="sign-in.html">Đăng Nhập</a>
+          <a class="dropdown-item" href="sign-up.html">Đăng Kí</a>
         </div>
       </li>
       <li class="nav-item s-nav">
         <a href="/user/profile" class="nav-link nav-links">
           <div class="menu-user-image">
-            <img src="/public/img/users/user-4.jpg" class="menu-user-img ml-1" alt="Menu Image" />
+            <?php if ($user_avatarUrl): ?>
+              <img src="<?= "/assets/img/users/$user_avatarUrl" ?>" alt="Online user" class="mr-3 post-user-image" style="height: 40px; width: 40px;" />
+            <?php else: ?>
+              <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image" style="height: 40px; width: 40px;"><span
+                  class=""><?= strtoupper($user_fullName)[0] ?></span></div>
+            <?php endif; ?>
           </div>
         </a>
       </li>
@@ -356,10 +362,10 @@
         <div class="dropdown-menu dropdown-menu-right settings-dropdown shadow-sm" aria-labelledby="settings-dropdown">
           <a class="dropdown-item" href="#">
             <img src="/public/img/icons/navbar/help.png" alt="Navbar icon" />
-            Help Center</a>
+            Trung tâm trợ giúp</a>
           <a class="dropdown-item d-flex align-items-center dark-mode" href="#">
             <img src="/public/img/icons/navbar/moon.png" alt="Navbar icon" />
-            Dark Mode
+            Chế Độ Tối
             <button type="button" class="btn btn-lg btn-toggle ml-auto" data-toggle="button" aria-pressed="false"
               autocomplete="off">
               <div class="handle"></div>
@@ -367,15 +373,15 @@
           </a>
           <a class="dropdown-item" href="/user/settings">
             <img src="/public/img/icons/navbar/gear-1.png" alt="Navbar icon" />
-            Settings</a>
+            Cài Đặt Chung</a>
 
           <?php if (Auth::checkLogin()): ?>
             <a class="dropdown-item logout-btn" href="/logout">
               <img src="/public/img/icons/navbar/logout.png" alt="Navbar icon" />
-              Log Out</a>
+              Đăng Xuất</a>
           <?php else: ?>
-            <a class="dropdown-item logout-btn" href="/user/login">Login</a>
-            <a class="dropdown-item logout-btn" href="/user/register">Register</a>
+            <a class="dropdown-item logout-btn" href="/user/login">Đăng Nhập</a>
+            <a class="dropdown-item logout-btn" href="/user/register">Đăng Kí</a>
           <?php endif; ?>
         </div>
       </li>

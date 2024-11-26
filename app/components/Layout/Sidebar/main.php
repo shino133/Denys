@@ -45,11 +45,5 @@
         Argon For Teams</a>
       <span class="badge span-badge badge-pill"><i class="bx bx-chevron-right"></i></span>
     </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center newsLink">
-      <a href="https://github.com/ArtMin96/argon-social" target="_blank" class="sidebar-item"><img
-          src="/public/img/icons/left-sidebar/news.png" alt="find-friends" />
-        News</a>
-      <span class="badge span-badge badge-pill"><i class="bx bx-chevron-right"></i></span>
-    </li>
   </ul>
 </div>
