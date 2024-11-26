@@ -383,7 +383,6 @@ body::-webkit-scrollbar-thumb:hover {
 
 .post {
   width: 100%;
-  border-radius: 15px;
 }
 
 .post-user-image {
@@ -1525,6 +1524,10 @@ img.settings-icon {
   border-right: 0px;
 }
 
+.bg-orange {
+  background-color: #e67e22;
+}
+
 .btn-orange {
   background-color: #e67e22;
   color: #fff;
@@ -1551,4 +1554,12 @@ img.settings-icon {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.border-card {
+  border-radius: 15px;
+}
+
+.border-content {
+  border-radius: 10px;
 }

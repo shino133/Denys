@@ -39,7 +39,7 @@ class PostModel extends BaseModel
       ],
     ];
 
-    $columns = ["$post.*", "$user.username as user_name", "$user.avatarUrl as user_avatarUrl"];
+    $columns = ["$post.*", "$user.fullName as user_fullName", "$user.avatarUrl as user_avatarUrl"];
 
     $conditionsValid = [];
     foreach ($conditions as $field => $value) {

@@ -16,8 +16,16 @@ class HomeController extends BaseController
       $this->redirect('/user/login');
     }
     
+    $posts = $this->postModel->getPosts();
+
+    // set time ago
+    AppLoader::util('TimeHelper');
+    foreach ($posts as $key => $post) {
+      $posts[$key]['timeAgo'] = TimeHelper::timeAgo($post['createdAt']);
+    }
+
     $this->setData('user', Auth::get('username'));
-    $this->setData('posts', $this->postModel->getPosts());
+    $this->setData('posts', $posts);
 
     Constants::homePage();
     $this->render('Home/main');
