@@ -1,8 +1,8 @@
 <?php
 class PostLikeModel extends BaseModel
 {
-  protected $table = 'post_likes_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'post_likes_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'post_id' => 'posId',
     'user_id' => 'userId',

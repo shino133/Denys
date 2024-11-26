@@ -1,8 +1,8 @@
 <?php
 class CommentModel extends BaseModel
 {
-  protected $table = 'comments_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'comments_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'content' => 'content',

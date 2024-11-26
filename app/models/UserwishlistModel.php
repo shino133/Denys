@@ -1,8 +1,8 @@
 <?php
 class UserWishlistModel extends BaseModel
 {
-  protected $table = 'user_wishlist'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'user_wishlist'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'category_id' => 'categoryId',
