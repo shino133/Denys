@@ -1,8 +1,8 @@
 <?php
 class PostModel extends BaseModel
 {
-  protected $table = 'posts_table'; // Đặt tên bảng
-  protected $columns = [
+  public $table = 'posts_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'title' => 'title',
@@ -50,5 +50,4 @@ class PostModel extends BaseModel
 
     return $this->join($joins, $columns, $conditionsValid, $orderBy, $limit);
   }
-
 }

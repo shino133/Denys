@@ -1,8 +1,8 @@
 <?php
 class UserProfileModel extends BaseModel
 {
-  protected $table = 'user_profiles_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'user_profiles_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'banner_url' => 'bannerUrl',

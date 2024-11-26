@@ -1,8 +1,8 @@
 <?php
 class EventModel extends BaseModel
 {
-  protected $table = 'events_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'events_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'title' => 'title',

@@ -1,8 +1,8 @@
 <?php
 class CategoryModel extends BaseModel
 {
-  protected $table = 'categories_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'categories_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'name' => 'name',
     'description' => 'description',

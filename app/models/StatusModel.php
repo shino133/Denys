@@ -1,8 +1,8 @@
 <?php
 class StatusModel extends BaseModel
 {
-  protected $table = 'status_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'status_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'key' => 'key',
     'description' => 'description',

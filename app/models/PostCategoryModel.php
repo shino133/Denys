@@ -1,8 +1,8 @@
 <?php
 class PostCategoryModel extends BaseModel
 {
-  protected $table = 'post_categories_table'; // Đặt tên bảng
-  protected $column = [
+  public $table = 'post_categories_table'; // Đặt tên bảng
+  public $columns = [
     'id' => 'id',
     'post_id' => 'postId',
     'category_id' => 'categoryId',
