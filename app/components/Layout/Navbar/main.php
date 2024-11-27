@@ -1,6 +1,6 @@
 <?php
-$user_avatarUrl ??= "";
-$user_fullName ??= "a";
+$avatar_url = $userData['avatar_url'] ?? "";
+$full_name = $userData['full_name'] ?? "Anonymous";
 ?>
 
 <nav id="navbar-main" class="navbar navbar-expand-lg shadow-sm sticky-top">
@@ -346,11 +346,11 @@ $user_fullName ??= "a";
       <li class="nav-item s-nav">
         <a href="/user/profile" class="nav-link nav-links">
           <div class="menu-user-image">
-            <?php if ($user_avatarUrl): ?>
-              <img src="<?= "/assets/img/users/$user_avatarUrl" ?>" alt="Online user" class="mr-3 post-user-image" style="height: 40px; width: 40px;" />
+            <?php if ($avatar_url): ?>
+              <img src="<?= "/assets/img/users/$avatar_url" ?>" alt="Online user" class="mr-3 post-user-image" style="height: 40px; width: 40px;" />
             <?php else: ?>
               <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image" style="height: 40px; width: 40px;"><span
-                  class=""><?= strtoupper($user_fullName)[0] ?></span></div>
+                  class=""><?= strtoupper($full_name)[0] ?></span></div>
             <?php endif; ?>
           </div>
         </a>

@@ -3,6 +3,7 @@ $posts = $data['posts'] ?? [];
 // dumpVar($posts);
 ?>
 
+
 <!-- Content -->
 <div class="row newsfeed-right-side-content mt-3">
   <!-- Sidebar Left  -->
@@ -15,9 +16,6 @@ $posts = $data['posts'] ?? [];
     <div class="mb-3">
       <?php AppLoader::component("ToolBaseBtn"); ?>
     </div>
-    <div class="pb-3">
-      <?php AppLoader::component("NewPost"); ?>
-    </div>
 
     <!-- Posts -->
     <div class="posts-section mb-5">
@@ -26,7 +24,6 @@ $posts = $data['posts'] ?? [];
           <?php AppLoader::component("Post/main", $post); ?>
         </div>
       <?php endforeach; ?>
-      <?php AppLoader::component("LoadPostBtn") ?>
     </div>
   </div>
 
@@ -35,3 +32,13 @@ $posts = $data['posts'] ?? [];
     <?php AppLoader::component("Layout/Sidebar/Right"); ?>
   </div>
 </div>
+
+
+
+<?php // Components
+// AppLoader::component("Comments/main");
+// AppLoader::component("ChatPopup/main");
+// AppLoader::component("CallModal/main"); 
+
+AppLoader::component("NewPostModal");
+?>

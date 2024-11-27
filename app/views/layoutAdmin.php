@@ -1,0 +1,1 @@
+<?php AppLoader::view(path: $pathView, data: $data) ?>

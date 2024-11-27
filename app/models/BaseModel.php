@@ -188,7 +188,7 @@ class BaseModel
   }
 
 
-  public function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null)
+  public function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null , $offset = null, $groupBy = null)
   {
     $columnString = implode(', ', $columns);
     $sql = "SELECT $columnString FROM {$this->table}";
@@ -202,6 +202,11 @@ class BaseModel
     $whereData = $this->buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
+    // Thêm GROUP BY nếu có
+    if ($groupBy) {
+      $sql .= " GROUP BY $groupBy";
+    }
+
     // Thêm ORDER BY nếu có
     if ($orderBy) {
       $sql .= " ORDER BY $orderBy";
@@ -212,6 +217,12 @@ class BaseModel
     if ($limit) {
       $sql .= " LIMIT :limit";
       $params[':limit'] = $limit;
+    }
+
+    // Thêm OFFSET nếu có
+    if ($offset) {
+      $sql .= " OFFSET :offset";
+      $params[':offset'] = $offset;
     }
 
     // dumpVar(['sql' => $sql, 'params' => $params]);

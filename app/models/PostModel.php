@@ -25,29 +25,4 @@ class PostModel extends BaseModel
     ];
     return $this->create($postData);
   }
-
-  public function getPosts($orderBy = 'created_at', $conditions = ['status' => "active"], $limit = 10)
-  {
-    $user = "users_table";
-    $post = "posts_table";
-
-    $joins = [
-      [
-        'type' => 'INNER',
-        'table' => $user,
-        'on' => "$user.id = $post.userId"
-      ],
-    ];
-
-    $columns = ["$post.*", "$user.fullName as user_fullName", "$user.avatarUrl as user_avatarUrl"];
-
-    $conditionsValid = [];
-    foreach ($conditions as $field => $value) {
-      $conditionsValid["$post.$field"] = $value;
-    }
-
-    $orderBy = "$post." . $this->columns[$orderBy] . " DESC";
-
-    return $this->join($joins, $columns, $conditionsValid, $orderBy, $limit);
-  }
 }

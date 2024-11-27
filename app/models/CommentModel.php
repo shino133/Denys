@@ -12,4 +12,14 @@ class CommentModel extends BaseModel
     'created_at' => 'createdAt',
     'updated_at' => 'updatedAt'
   ];
+
+  public function addComment($data)
+  {
+    return $this->create([
+      'userId' => $data['user_id'],
+      'content' => $data['content'],
+      'mediaType' => $data['media_type'],
+      'mediaUrl' => $data['media_url'],
+    ]);
+  }
 }

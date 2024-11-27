@@ -1,13 +1,11 @@
 <?php
-AppLoader::model('PostModel');
-
 class HomeController extends BaseController
 {
   private $postModel;
 
   public function __construct()
   {
-    $this->postModel = new PostModel();
+    // $this->postModel = new PostModel();
   }
 
   public function index()
@@ -16,15 +14,10 @@ class HomeController extends BaseController
       $this->redirect('/user/login');
     }
     
-    $posts = $this->postModel->getPosts();
+    AppLoader::controller('PostController');
+    $posts = (new PostController())->getNewPosts();
 
-    // set time ago
-    AppLoader::util('TimeHelper');
-    foreach ($posts as $key => $post) {
-      $posts[$key]['timeAgo'] = TimeHelper::timeAgo($post['createdAt']);
-    }
-
-    $this->setData('user', Auth::get('username'));
+    $this->setData('userData', Auth::getUser());
     $this->setData('posts', $posts);
 
     Constants::homePage();

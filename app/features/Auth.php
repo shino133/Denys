@@ -2,36 +2,25 @@
 class Auth extends Authentication
 {
   // Phương thức cho username
-  public static function setUser($username)
+  public static function setUser($userData)
   {
-    return self::set("username", $username);
+    return self::set("user", $userData);
   }
 
   public static function getUser()
   {
-    return self::get("username");
+    return self::get("user");
   }
 
   public static function checkUser()
   {
-    return self::check("username");
-  }
-
-  // Phương thức cho user_id
-  public static function setUserId($user_id)
-  {
-    return self::set("user_id", $user_id);
-  }
-
-  public static function getUserId()
-  {
-    return self::get("user_id");
+    return self::check("user");
   }
 
   // Phương thức cho admin
-  public static function setAdmin($username)
+  public static function setAdmin($userData)
   {
-    return self::set("admin", $username);
+    return self::set("admin", $userData);
   }
 
   public static function getAdmin()

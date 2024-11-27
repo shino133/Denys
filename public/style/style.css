@@ -248,7 +248,7 @@ button:focus {
 }
 
 .newsfeed-left-sidebar li.sd-active {
-  border-left: 4px solid #007bff;
+  border-left: 4px solid #219b9d;
   background-color: #f6f6f6;
 }
 
@@ -404,13 +404,15 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .post-card-buttons {
-  margin-top: 15px;
-  padding: 10px 25px;
   color: #6c757d;
 }
 
 .post-card-buttons:hover {
-  color: #6c757d;
+  color: #219b9d;
+}
+
+.like-btn.active {
+  color: #219b9d;
 }
 
 .post-card-buttons i {
@@ -588,12 +590,7 @@ body::-webkit-scrollbar-thumb:hover {
   display: inline-block;
 }
 
-.comment-wrapper .panel-body {
-  max-height: 650px;
-  overflow: hidden;
-}
-
-.comment-wrapper .media-list .media img {
+.comment-wrapper .media-list .media .avt {
   width: 30px;
   border-radius: 50%;
   margin-right: 10px;
@@ -630,16 +627,26 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .comment-form-btn {
-  background-color: #d1d3d6;
-  color: #6c757d;
+  color: #219b9d;
   border-radius: 50%;
   padding: 0.2rem 0.5rem;
-  margin-left: 0.5rem;
 }
 
 .comment-form-btn:hover {
-  background-color: #6c757d;
-  color: #d1d3d6;
+  background-color: #219b9d;
+  color: #ffffff;
+}
+
+.comment-form-btn-send {
+  background-color: #219b9d;
+  color: #ffffff;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+}
+
+.comment-form-btn-send:hover {
+  background-color: #eb7a09;
+  color: #ffffff;
 }
 
 .commentLR button {

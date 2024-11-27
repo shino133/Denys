@@ -4,9 +4,22 @@ function dumpVar($var)
   // Lấy thông tin stack trace để xác định vị trí hàm được gọi
   $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
   $callerInfo = $backtrace[0];
-
+  ?>
+  <style>
+    pre {
+      max-width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 20px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+  </style>
+  <?php
   // Hiển thị vị trí được gọi
-  echo '<pre style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 20px; line-height: 1.5;">';
+  echo '<pre>';
   echo "Called at: {$callerInfo['file']} on line {$callerInfo['line']}\n\n";
 
   // Chuyển đổi dữ liệu sang JSON (nếu được)

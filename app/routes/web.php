@@ -12,9 +12,13 @@ function routeForUser()
 
   // Post CRUD
   Route::post('/post/request/add', 'PostController@addPost');
-  Route::post('/post/request/get/{id}', 'PostController@getPost');
   Route::post('/post/request/edit/{id}', 'PostController@editPost');
   Route::post('/post/request/destroy/{id}', 'PostController@destroyPost');
+  
+  Route::get('/post/{postId}', 'PostController@getPostById');
+
+  // Comment
+  Route::post('/comment/request/add/{postId}', 'CommentController@addComment');
 
   // Asset
   Route::get('/assets/img/{fileName}', 'AssetController@getImage');
@@ -24,6 +28,7 @@ function routeForUser()
   Route::get('/assets/uploads/{fileName}', 'AssetController@getUpload');
   Route::get('/assets/img/{fileName}', 'AssetController@getUpload');
   Route::get('/assets/img/posts/{fileName}', 'AssetController@getUpload');
+  Route::get('/assets/img/comments/{fileName}', 'AssetController@getUpload');
   Route::get('/assets/img/users/{fileName}', 'AssetController@getUpload');
   Route::get('/assets/img/events/{fileName}', 'AssetController@getUpload');
   Route::get('/assets/img/groups/{fileName}', 'AssetController@getUpload');

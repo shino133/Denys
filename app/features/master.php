@@ -25,7 +25,7 @@ AppLoader::constant('master');
 AppLoader::lib('dumpVar');
 
 // Cache setup
-Cache::configure(__DIR__. '../cache', 3600);
+Cache::configure(__DIR__. '/cache/', 3600);
 
 // Library
 // AppLoader::lib('encryptData');

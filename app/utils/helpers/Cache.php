@@ -8,32 +8,32 @@ class Cache
   // Hàm khởi tạo tĩnh để thiết lập thư mục và thời gian hết hạn mặc định
   public static function configure($cacheDir = null, $defaultExpiration = 3600)
   {
-    self::$cacheDir = $cacheDir ?? __DIR__ ;
+    self::$cacheDir = $cacheDir ?? __DIR__;
     self::$defaultExpiration = $defaultExpiration;
 
     // Tạo thư mục cache nếu chưa tồn tại
-    // if (!is_dir(self::$cacheDir)) {
-      // mkdir(self::$cacheDir, 0777, true);
-    // }
+    if (!is_dir(self::$cacheDir)) {
+      mkdir(self::$cacheDir, 0777, true);
+    }
   }
 
   // Lưu dữ liệu vào cache
-  public static function set($key, $data, $expiration = null)
+  public static function set($key, $data, $expiration = null, $cacheFolder = null)
   {
     $expiration ??= self::$defaultExpiration;
-    $cacheFile = self::getCacheFilePath($key);
+    $cacheFile = self::getCacheFilePath(key: $key, cacheFolder: $cacheFolder);
     $cacheData = [
       'data' => $data,
       'expiration' => time() + $expiration,
     ];
 
-    file_put_contents($cacheFile, serialize($cacheData));
+    return file_put_contents($cacheFile, serialize($cacheData));
   }
 
   // Lấy dữ liệu từ cache
-  public static function get($key)
+  public static function get($key, $cacheFolder = null)
   {
-    $cacheFile = self::getCacheFilePath($key);
+    $cacheFile = self::getCacheFilePath($key, $cacheFolder);
 
     if (!file_exists($cacheFile)) {
       return false;
@@ -42,19 +42,18 @@ class Cache
     $cacheData = unserialize(file_get_contents($cacheFile));
 
     // Kiểm tra thời gian hết hạn
-    if (time() < $cacheData['expiration']) {
-      return $cacheData['data'];
+    if (time() >= $cacheData['expiration']) {
+      self::delete($key, $cacheFolder);// Xóa cache nếu đã hết hạn
+      return false;
     }
 
-    // Xóa cache nếu đã hết hạn
-    self::delete($key);
-    return false;
+    return $cacheData['data'];
   }
 
   // Xóa cache của một key cụ thể
-  public static function delete($key)
+  public static function delete($key, $cacheFolder = null)
   {
-    $cacheFile = self::getCacheFilePath($key);
+    $cacheFile = self::getCacheFilePath($key, $cacheFolder);
     if (file_exists($cacheFile)) {
       unlink($cacheFile);
     }
@@ -70,8 +69,21 @@ class Cache
   }
 
   // Lấy đường dẫn file cache dựa trên key
-  private static function getCacheFilePath($key)
+  private static function getCacheFilePath($key, $cacheFolder = null): string
   {
-    return self::$cacheDir . '/' . md5($key) . '.cache';
+    self::createCacheFolder($cacheFolder);
+    return self::$cacheDir . $cacheFolder . md5($key) . '.cache';
+  }
+
+  private static function createCacheFolder($cacheFolder)
+  {
+    if (isset($cacheFolder) == false) {
+      return;
+    }
+
+    $cacheDir = self::$cacheDir . $cacheFolder;
+    if (!is_dir($cacheDir)) {
+      mkdir($cacheDir, 0777, true);
+    }
   }
 }

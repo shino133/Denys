@@ -6,25 +6,19 @@ class BaseController
     'pathView' => 'path to view'
   ];
 
-  protected function setData($key, $value)
+  protected function setData($key, $value): void
   {
-    if (!isset($dataKeyConstants[$key])) {
-      $this->data[$key] = $value;
-    }
-
-    return $this->data[$key] == $value;
+    $this->data[$key] = $value;
   }
 
-  protected function render($view, $useBaseLayout = true)
+  protected function render($view, $useBaseLayout = true, $pathLayout = 'layout')
   {
-    $pathView = $view;
-
-    if ($useBaseLayout) {
-      $this->data['pathView'] = $pathView;
-      $pathView = 'layout';
-    }
-
-    AppLoader::view($pathView, $this->data);
+    AppLoader::view('main', [
+      'data' => $this->data,
+      'pathView' => $view,
+      'useBaseLayout' => $useBaseLayout,
+      'pathLayout' => $pathLayout
+    ]);
   }
 
   protected function redirect($url)

@@ -31,8 +31,9 @@ class TimeHelper
    * @param string|null $timezone Tên timezone (nếu null, sử dụng hằng TIMEZONE)
    * @return string Chuỗi kết quả dạng 'X phút trước' hoặc 'X giờ nữa'
    */
-  public static function timeAgo(string $datetime, string $timezone = TIMEZONE ?? 'UTC'): string
+  public static function timeAgo(string $datetime, string $timezone = TIMEZONE ?? 'UTC'): string | false
   {
+    if(!$datetime) return false;
     // Khởi tạo timezone và thời gian hiện tại
     self::initialize($timezone);
 

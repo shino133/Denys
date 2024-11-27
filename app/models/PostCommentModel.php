@@ -8,4 +8,12 @@ class PostCommentModel extends BaseModel
     'comments_id' => 'commentsId',
     'created_at' => 'createdAt'
   ];
+
+  public function addPostComment($data)
+  {
+    return $this->create([
+      'postId' => $data['post_id'],
+      'commentsId' => $data['comments_id']
+    ]);
+  }
 }
