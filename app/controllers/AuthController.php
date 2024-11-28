@@ -1,15 +1,9 @@
 <?php
 AppLoader::model('UserModel');
+
 class AuthController extends BaseController
 {
-  private $model;
-  private $userModel;
-
-  public function __construct()
-  {
-    $this->userModel = new UserModel();
-  }
-  public function actionDefault($nameAction)
+  public static function actionDefault($nameAction)
   {
     $actionList = [
       // action => view
@@ -22,11 +16,11 @@ class AuthController extends BaseController
     }
 
     if (Auth::checkAdmin() == true) {
-      $this->redirect('/admin');
+      self::redirect('/admin');
     }
 
     if (Auth::checkLogin() == true || Auth::checkUser() == true) {
-      $this->redirect('/');
+      self::redirect('/');
     }
 
     Constants::loginPage();
@@ -34,26 +28,26 @@ class AuthController extends BaseController
       Title::set(APP_NAME . ' - Register');
     }
 
-    $this->render($actionList[$nameAction], false);
+    self::render($actionList[$nameAction], false);
   }
 
-  public function register()
+  public static function register()
   {
-    $this->actionDefault('register');
+    self::actionDefault('register');
   }
 
-  public function login()
+  public static function login()
   {
-    $this->actionDefault('login');
+    self::actionDefault('login');
   }
 
-  public function loginRequest()
+  public static function loginRequest()
   {
     AppLoader::lib('encryptData');
 
     Action::set('errorEvent', function ($msg = 'Something went wrong') {
       Url::setNofi(msg: $msg, status: 'error');
-      $this->reverse(Url::getQueryString());
+      self::reverse(Url::getQueryString());
     });
 
     $username = $_POST['username'];
@@ -65,18 +59,18 @@ class AuthController extends BaseController
     }
 
     // Check username valid
-    if ($this->validUsername($username == true)) {
+    if (self::validUsername($username == true)) {
       $msg = 'Username chỉ có thể chứa chữ và số';
       Action::run('errorEvent', $msg);
     }
 
     // Check password valid
-    if ($this->validPassword($password) == false) {
+    if (self::validPassword($password) == false) {
       $msg = 'Password phải có ít nhất 8 ký tự, 1 chữ thường, 1 chữ hoa, 1 số, 1 ký tự đặc biệt';
       Action::run('errorEvent', $msg);
     }
 
-    $userData = $this->userModel->find(conditions: ['username' => $username], limit: 1)[0];
+    $userData = UserModel::find(conditions: ['username' => $username], limit: 1)[0];
 
     if (!isset($userData) || $userData['status'] == 'delete') {
       $msg = "{$username} không tồn tại";
@@ -90,27 +84,26 @@ class AuthController extends BaseController
     }
 
     // get user public data
-    AppLoader::controller('UserController');
-    $userData = (new UserController())->validatePublicData($userData);
-    
+    $userData = UserModel::validatePublicData($userData);
+
     // WHEN: login success
     Auth::setUser($userData);
     if ($userData['role'] == 1) {
       Auth::setAdmin($username);
-      $this->redirect('/admin');
+      self::redirect('/admin');
     }
 
-    $this->redirect('/');
+    self::redirect('/');
   }
 
-  public function registerRequest()
+  public static function registerRequest()
   {
     AppLoader::util('DataValidator');
     AppLoader::lib('encryptData');
 
     Action::set('errorEvent', function ($msg = 'Người dùng đã tồn tại') {
       Url::setNofi(msg: $msg, status: 'error');
-      $this->reverse(Url::getQueryString());
+      self::reverse(Url::getQueryString());
     });
 
     $data = [
@@ -134,60 +127,65 @@ class AuthController extends BaseController
     }
 
     // Check full name valid
-    if ($this->validFullName($data['fullName']) == false) {
+    if (self::validFullName($data['fullName']) == false) {
       $msg = 'Tên không hợp le';
       Action::run('errorEvent', $msg);
     }
 
     // Check username valid
-    if ($this->validUsername($data['username']) == true) {
+    if (self::validUsername($data['username']) == true) {
       $msg = 'Username chỉ có thể chứa chữ và số';
       Action::run('errorEvent', $msg);
     }
 
     // Check password valid
-    if ($this->validPassword($data['password']) == false) {
+    if (self::validPassword($data['password']) == false) {
       $msg = 'Password phải có ít nhất 8 ký tự, 1 chữ thường, 1 chữ hoa, 1 số, 1 ký tự đặc biệt';
       Action::run('errorEvent', $msg);
     }
 
     // Check email valid
-    if ($this->validEmail($data['email']) == false) {
+    if (self::validEmail($data['email']) == false) {
       $msg = 'Email phải là email hợp lệ';
       Action::run('errorEvent', $msg);
     }
+    
     $data['password'] = encryptData($data['password']);
-    $result = $this->userModel->create($data);
+    $result = UserModel::create($data);
     if (!$result) {
       Action::run('errorEvent', $msg);
     }
 
     Url::setUrl('/user/login');
     Url::setNofi(msg: 'Registered', status: 'success');
-    $this->redirect(Url::get());
+    self::redirect(Url::get());
   }
 
-  public function logout()
+  public static function logout()
   {
     Auth::logout();
-    $this->redirect('/');
+    self::redirect('/');
   }
 
-  public function validPassword($password) {
+  public static function validPassword($password)
+  {
     AppLoader::lib('isStrongPassword');
     return isStrongPassword($password);
   }
 
-  public function validEmail($email) {
+  public static function validEmail($email)
+  {
     AppLoader::lib('isValidEmail');
     return isValidEmail($email);
   }
 
-  public function validUsername($username) {
+  public static function validUsername($username)
+  {
     return preg_match('/[^a-zA-Z0-9\-\._]/', $username) === 1;
   }
 
-  public function validFullName($fullName) {
+  public static function validFullName($fullName)
+  {
     return preg_match('/^[\p{L}\s]+$/u', $fullName) === 1;
   }
 }

@@ -2,7 +2,7 @@
 
 class AssetController
 {
-  public function serveFile($filePath)
+  public static function serveFile($filePath)
   {
     // Kiểm tra file có tồn tại không
     if (!file_exists($filePath)) {
@@ -23,31 +23,31 @@ class AssetController
     exit;
   }
 
-  public function getImage($fileName)
+  public static function getImage($fileName)
   {
     $imagePath = AppLoader::getPath("assets/img/$fileName");
-    $this->serveFile($imagePath);
+    self::serveFile($imagePath);
   }
 
-  public function getUpload($fileName)
+  public static function getUpload($fileName)
   {
     $filePath = AppLoader::getPath("assets/uploads/$fileName");
-    $this->serveFile($filePath);
+    self::serveFile($filePath);
   }
 
-  public function getJs($fileName)
+  public static function getJs($fileName)
   {
     $jsPath = AppLoader::getPath("assets/js/$fileName");
-    $this->serveFile($jsPath);
+    self::serveFile($jsPath);
   }
 
-  public function getCss($fileName)
+  public static function getCss($fileName)
   {
     $cssPath = AppLoader::getPath("assets/css/$fileName");
-    $this->serveFile($cssPath);
+    self::serveFile($cssPath);
   }
 
-  public function upImage($inputName, $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'], $maxFileSize = 10)
+  public static function upImage($inputName, $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'], $maxFileSize = 10)
   {
     AppLoader::lib('uploadImage');
 

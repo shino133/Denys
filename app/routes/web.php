@@ -10,6 +10,10 @@ function routeForUser()
   Route::get('/about', 'PageController@about');
   Route::post('/contact', 'ContactController@submit');
 
+  // User
+  Route::get('/user/profile', 'UserController@getProfile');
+
+
   // Post CRUD
   Route::post('/post/request/add', 'PostController@addPost');
   Route::post('/post/request/edit/{id}', 'PostController@editPost');

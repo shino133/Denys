@@ -1,33 +1,30 @@
 <?php
 class BaseController
 {
-  protected $data = [];
-  protected $dataKeyConstants = [
-    'pathView' => 'path to view'
-  ];
+  protected static $data = [];
 
-  protected function setData($key, $value): void
+  protected static function setData($key, $value): void
   {
-    $this->data[$key] = $value;
+    self::$data[$key] = $value;
   }
 
-  protected function render($view, $useBaseLayout = true, $pathLayout = 'layout')
+  protected static function render($view, $useBaseLayout = true, $pathLayout = 'layout')
   {
     AppLoader::view('main', [
-      'data' => $this->data,
+      'data' => self::$data,
       'pathView' => $view,
       'useBaseLayout' => $useBaseLayout,
       'pathLayout' => $pathLayout
     ]);
   }
 
-  protected function redirect($url)
+  protected static function redirect($url)
   {
     header("Location: $url");
     exit();
   }
 
-  protected function reverse($query_string = null)
+  protected static function reverse($query_string = null)
   {
     $action = function ($url, $query_string) {
       header("Location: " . $url . $query_string);

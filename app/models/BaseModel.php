@@ -1,20 +1,29 @@
 <?php
 class BaseModel
 {
-  protected $pdo;
-  protected $table;
+  protected static $pdo;
+  protected static $table;
 
-  public function __construct()
+  protected static function pdo()
   {
-    // Kết nối tới cơ sở dữ liệu (ví dụ dùng PDO)
-    $this->pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
-    $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if (!self::$pdo) {
+      // Kết nối tới cơ sở dữ liệu (ví dụ dùng PDO)
+      self::$pdo = new PDO(
+        dsn: 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME,
+        username: DB_USER,
+        password: DB_PASSWORD
+      );
+      self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
+    return self::$pdo;
   }
 
   // Truy vấn SQL
-  protected function query($sql, $params = []): bool|PDOStatement
+  protected static function query($sql, $params = []): bool|PDOStatement
   {
-    $stmt = $this->pdo->prepare($sql);
+    // dumpVar(['sql' => $sql, 'params' => $params]);
+    $stmt = self::pdo()->prepare($sql);
     // Bind các tham số để đảm bảo kiểu dữ liệu đúng
     foreach ($params as $key => $value) {
       $type = match (true) {
@@ -30,7 +39,7 @@ class BaseModel
   }
 
   // Xây dựng SQL clause
-  protected function buildSqlClause(array $conditions, $clauseType = 'WHERE'): array
+  protected static function buildSqlClause(array $conditions, $clauseType = 'WHERE'): array
   {
     if (empty($conditions)) {
       return ['sql' => '', 'bindings' => []];
@@ -58,27 +67,27 @@ class BaseModel
   }
 
   // Lấy tất cả bản ghi
-  public function fetchAll($sql, $params = []): array
+  public static function fetchAll($sql, $params = []): array
   {
-    return $this->query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+    return self::query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
   }
 
   // Lấy một bản ghi
-  public function fetchOne($sql, $params = []): mixed
+  public static function fetchOne($sql, $params = []): mixed
   {
-    return $this->query($sql, $params)->fetch(PDO::FETCH_ASSOC);
+    return self::query($sql, $params)->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function fetchColumn($sql, $params = []): array
+  public static function fetchColumn($sql, $params = []): array
   {
-    return $this->query($sql, $params)->fetchColumn();
+    return self::query($sql, $params)->fetchColumn();
   }
 
   // Lấy tất cả dữ liệu từ bảng hiện tại
-  public function read($columns = ['*'], $orderBy = null, $limit = null)
+  public static function read($columns = ['*'], $orderBy = null, $limit = null)
   {
     $columnString = implode(', ', $columns);
-    $sql = "SELECT $columnString FROM {$this->table}";
+    $sql = "SELECT $columnString FROM " . static::$table . " ";
 
     if ($orderBy) {
       $sql .= " ORDER BY $orderBy";
@@ -92,17 +101,17 @@ class BaseModel
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
-    return $this->fetchAll($sql, $params);
+    return self::fetchAll($sql, $params);
   }
 
   // Phương thức để tìm bản ghi theo điều kiện
-  public function find($conditions = [], $columns = ['*'], $limit = null, $offset = null)
+  public static function find($conditions = [], $columns = ['*'], $limit = null, $orderBy = null, $offset = null)
   {
     $columnsList = implode(', ', $columns);
-    $sql = "SELECT $columnsList FROM {$this->table}";
+    $sql = "SELECT $columnsList FROM " . static::$table . " ";
 
     // Gọi hàm buildClause để thêm điều kiện WHERE
-    $whereData = $this->buildSqlClause($conditions);
+    $whereData = self::buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     // Thêm LIMIT với OFFSET
@@ -111,16 +120,20 @@ class BaseModel
       $sql .= " LIMIT " . (int) $limit;
     }
 
+    if ($orderBy) {
+      $sql .= " ORDER BY $orderBy";
+    }
+
     if ($offset) {
       $sql .= " OFFSET " . (int) $offset;
     }
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
-    return $this->fetchAll($sql, $params);
+    return self::fetchAll($sql, $params);
   }
 
   // Phương thức để tạo một bản ghi mới
-  public function create($data): bool|string
+  public static function create($data): bool|string
   {
     $params = [];
     $dataKeys = [];
@@ -132,66 +145,66 @@ class BaseModel
 
     $columns = implode(', ', $dataKeys);
     $placeholders = ':' . implode(', :', $dataKeys);
-    $sql = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
+    $sql = "INSERT INTO " . static::$table . " ($columns) VALUES ($placeholders)";
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
-    $this->query($sql, $params);
-    return $this->pdo->lastInsertId();
+    self::query($sql, $params);
+    return self::pdo()->lastInsertId();
   }
 
   // Phương thức để cập nhật một bản ghi theo ID
-  public function update($conditions, array $data): bool
+  public static function update($conditions, array $data): bool
   {
     // Xây dựng SET clause, WHERE clause
-    $setClauses = $this->buildSqlClause($data, 'SET');
-    $whereClause = $this->buildSqlClause($conditions);
+    $setClauses = self::buildSqlClause($data, 'SET');
+    $whereClause = self::buildSqlClause($conditions);
 
     // Câu lệnh SQL UPDATE
-    $sql = "UPDATE {$this->table}";
+    $sql = "UPDATE " . static::$table . " ";
     $sql .= $setClauses['sql'];
     $sql .= $whereClause['sql'];
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
-    $res = $this->query($sql, array_merge($setClauses['bindings'], $whereClause['bindings']));
+    $res = self::query($sql, array_merge($setClauses['bindings'], $whereClause['bindings']));
     return $res !== false;
   }
 
   // Phương thức để xóa một bản ghi theo ID
-  public function delete($conditions = []): bool
+  public static function delete($conditions = []): bool
   {
-    $sql = "DELETE FROM {$this->table}";
+    $sql = "DELETE FROM " . static::$table . " ";
 
-    $whereData = $this->buildSqlClause($conditions);
+    $whereData = self::buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
-    $res = $this->query($sql, $whereData['bindings']);
+    $res = self::query($sql, $whereData['bindings']);
     return $res !== false;
   }
 
   // Đếm số lượng bản ghi trong bảng, với điều kiện tùy chọn
-  public function count($conditions = []): int
+  public static function count($conditions = []): int
   {
-    $sql = "SELECT COUNT(*) FROM {$this->table}";
+    $sql = "SELECT COUNT(*) FROM " . static::$table . " ";
 
     // Gọi hàm buildClause để thêm điều kiện WHERE
-    $whereData = $this->buildSqlClause($conditions);
+    $whereData = self::buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
     // Trả về kết quả đếm được
-    return (int) $this->fetchColumn($sql, $whereData['bindings']);
+    return (int) self::fetchColumn($sql, $whereData['bindings']);
   }
 
 
-  public function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null , $offset = null, $groupBy = null)
+  public static function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null, $offset = null, $groupBy = null)
   {
     $columnString = implode(', ', $columns);
-    $sql = "SELECT $columnString FROM {$this->table}";
+    $sql = "SELECT $columnString FROM " . static::$table . " ";
 
     // Thêm các JOIN
     foreach ($joins as $join) {
@@ -199,7 +212,7 @@ class BaseModel
     }
 
     // Thêm điều kiện WHERE nếu có
-    $whereData = $this->buildSqlClause($conditions);
+    $whereData = self::buildSqlClause($conditions);
     $sql .= $whereData['sql'];
 
     // Thêm GROUP BY nếu có
@@ -227,6 +240,6 @@ class BaseModel
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
-    return $this->fetchAll($sql, $params);
+    return self::fetchAll($sql, $params);
   }
 }

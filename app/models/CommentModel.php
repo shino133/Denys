@@ -1,8 +1,8 @@
 <?php
 class CommentModel extends BaseModel
 {
-  public $table = 'comments_table'; // Đặt tên bảng
-  public $columns = [
+  public static $table = 'comments_table'; // Đặt tên bảng
+  public static $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'content' => 'content',
@@ -13,9 +13,9 @@ class CommentModel extends BaseModel
     'updated_at' => 'updatedAt'
   ];
 
-  public function addComment($data)
+  public static function addComment($data)
   {
-    return $this->create([
+    return self::create([
       'userId' => $data['user_id'],
       'content' => $data['content'],
       'mediaType' => $data['media_type'],

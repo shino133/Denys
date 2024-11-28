@@ -3,17 +3,13 @@ AppLoader::model('CommentModel');
 class CommentController extends BaseController
 {
   private $commentModel;
-  public function __construct()
-  {
-    $this->commentModel = new CommentModel();
-  }
 
-  public function addComment($postId)
+  public static function addComment($postId)
   {
     // Action reverse
     Action::set('reverse', function ($msg, $status = 'error') {
       Url::setNofi($msg, $status);
-      $this->reverse(Url::getQueryString());
+      self::reverse(Url::getQueryString());
     });
 
     // Action default
@@ -27,7 +23,7 @@ class CommentController extends BaseController
 
     // Action add comment
     Action::set('addComment', function ($data) {
-      $newCommentId = $this->commentModel->addComment($data);
+      $newCommentId = CommentModel::addComment($data);
       $isSuccess = $newCommentId !== false;
       if ($isSuccess) {
         $data['comments_id'] = $newCommentId;
@@ -39,7 +35,7 @@ class CommentController extends BaseController
 
     Action::set('addPostComment', function ($data) {
       AppLoader::model('PostCommentModel');
-      $newPostCommentId = (new PostCommentModel())->addPostComment($data);
+      $newPostCommentId = PostCommentModel::addPostComment($data);
       $isSuccess = $newPostCommentId !== false;
       Action::run('default', $isSuccess);
     });
@@ -65,7 +61,7 @@ class CommentController extends BaseController
     // Upload image
     if ($isHaveImage == true) {                                                               
       AppLoader::controller('AssetController');
-      $uploadImage = (new AssetController())->upImage("comment_image");
+      $uploadImage = AssetController::upImage("comment_image");
 
       // Validate
       if (!isset($uploadImage['success']) || $uploadImage['success'] === false) {
@@ -86,7 +82,7 @@ class CommentController extends BaseController
     Action::run('addComment', $data);
   }
 
-  public function getCommentByPostId($postId, $orderBy = 'createdAt', $limit = null): array
+  public static function getCommentByPostId($postId, $orderBy = 'createdAt', $limit = null): array
   {
     $userTable = "users_table";
     $commentTable = "comments_table";
@@ -127,7 +123,7 @@ class CommentController extends BaseController
       $orderBy = "$postCommentTable.$orderBy DESC";
     }
 
-    $comments = $this->commentModel->join($joins, $columns, $conditions, $orderBy, $limit);
+    $comments = CommentModel::join($joins, $columns, $conditions, $orderBy, $limit);
 
     if (!isset($comments) || $comments === false) {
       return [];

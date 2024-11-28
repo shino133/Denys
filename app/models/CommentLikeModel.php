@@ -1,8 +1,8 @@
 <?php
 class CommentLikeModel extends BaseModel
 {
-  public $table = 'comment_likes_table'; // Đặt tên bảng
-  public $columns = [
+  public static $table = 'comment_likes_table'; // Đặt tên bảng
+  public static $columns = [
     'id' => 'id',
     'comment_id' => 'commentId',
     'user_id' => 'userId',

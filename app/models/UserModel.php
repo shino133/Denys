@@ -1,8 +1,8 @@
 <?php
 class UserModel extends BaseModel
 {
-  public $table = 'users_table'; // Đặt tên bảng
-  public $columns = [
+  public static $table = 'users_table'; // Đặt tên bảng
+  public static $columns = [
     'id' => 'id',
     'user_name' => 'userName',
     'password' => 'password',
@@ -15,4 +15,16 @@ class UserModel extends BaseModel
     'created_at' => 'createdAt',
     'update_at' => 'updateAt'
   ];
+
+  public static function validatePublicData($data)
+  {
+    return [
+      'id' => $data['id'],
+      'user_name' => $data['userName'],
+      'email' => $data['email'],
+      'full_name' => $data['fullName'],
+      'avatar_url' => $data['avatarUrl'],
+      'role' => $data['role']
+    ];
+  }
 }

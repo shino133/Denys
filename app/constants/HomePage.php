@@ -3,6 +3,7 @@ Script::addExternalScript(src: "https://cdn.jsdelivr.net/npm/chart.js@2.8.0");
 Script::addExternalScript(src: "/public/js/components/components.js");
 Script::addExternalScript(src: "/public/js/app.js");
 
+Script::addExternalScript(src: "/assets/js/Ajax.js");
 Script::addExternalScript(src: "/assets/js/menuToggle.js");
 Script::addExternalScript(src: "/assets/js/imagePreview.js");
 

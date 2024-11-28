@@ -2,7 +2,7 @@ app/env.php
 app/assets/uploads/*
 app/trash/*
 
-app/features/helpers/*.cache
+app/features/cache/
 app/cache/*
 
 !*.htaccess

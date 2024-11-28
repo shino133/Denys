@@ -4,24 +4,19 @@ class PostController extends BaseController
 {
   private $postModel;
 
-  public function __construct()
-  {
-    $this->postModel = new PostModel();
-  }
-
-  public function addPost()
+  public static function addPost()
   {
     AppLoader::util('DataValidator');
 
     // Action reverse
     Action::set('reverse', function ($msg, $status = 'error') {
       Url::setNofi($msg, $status);
-      $this->reverse(Url::getQueryString());
+      self::reverse(Url::getQueryString());
     });
 
     // Action add post
     Action::set('addPost', function ($data) {
-      $res = $this->postModel->addPost($data);
+      $res = PostModel::addPost($data);
       $args = $res == false
         ? ['Vui lòng thử lại', 'error']
         : ['Đăng bài viết thành công', 'success'];
@@ -45,7 +40,7 @@ class PostController extends BaseController
     $uploadImage = [];
     if (isset($_FILES["post_image"]) && $_FILES["post_image"]['name'] != '') {
       AppLoader::controller('AssetController');
-      $uploadImage = (new AssetController())->upImage("post_image");
+      $uploadImage = AssetController::upImage("post_image");
     }
 
     if (isset($uploadImage['success']) && $uploadImage['success'] === false) {
@@ -58,22 +53,21 @@ class PostController extends BaseController
     Action::run('addPost', $data);
   }
 
-  public function getPostById($postId)
+  public static function getPostById($postId)
   {
     Action::set('reverse', function ($msg, $status = 'error') {
       Url::setNofi($msg, $status);
-      $this->reverse(Url::getQueryString());
+      self::reverse(Url::getQueryString());
     });
 
     // Set action get comments
-    Action::set('getComments', function ($postId) {
+    Action::set('getComments', function () use ($postId) {
       AppLoader::controller('CommentController');
-      return (new CommentController())->getCommentByPostId($postId);
+      return CommentController::getCommentByPostId($postId);
     });
 
     // Get post 
-    
-    $posts = $this->getPosts(
+    $posts = PostModel::getPosts(
       orderBy: null,
       conditions: ['id' => $postId],
       limit: 1,
@@ -85,95 +79,26 @@ class PostController extends BaseController
 
     // Get comments
     $postId = $posts[0]['post_id'];
-    $posts[0]['comments'] = Action::run('getComments', $postId);
+    $posts[0]['comments'] = Action::run('getComments');
 
     //Get isLikedByCurrentUser
     $posts[0]['isLikedByCurrentUser'] = $posts[0]['isLikedByCurrentUser'] == 1;
 
-    $this->setData('posts', $posts);
+    self::setData('posts', $posts);
 
     Constants::homePage();
-    $this->render('Post/main');
+    self::render('Post/main');
   }
 
-  public function getPosts($orderBy = 'created_at', $conditions = ['status' => "active"], $limit = 10): array|bool
+  public static function getNewPosts($limit = 10, $useCache = true)
   {
-    $userTable = "users_table";
-    $postTable = "posts_table";
-    $postCommentTable = "post_comments_table";
-    $postLikeTable = "post_likes_table";
-
-    $joins = [
-      [
-        'type' => 'INNER',
-        'table' => $userTable,
-        'on' => "$userTable.id = $postTable.userId"
-      ],
-      [
-        'type' => 'LEFT',
-        'table' => $postCommentTable,
-        'on' => "$postCommentTable.postId = $postTable.id"
-      ],
-      [
-        'type' => 'LEFT',
-        'table' => $postLikeTable,
-        'on' => "$postLikeTable.postId = $postTable.id"
-      ]
-    ];
-
-    $columns = [
-      "$postTable.id as post_id",
-      "$postTable.content as post_content",
-      "$postTable.mediaType as post_mediaType",
-      "$postTable.mediaUrl as post_mediaUrl",
-      "$postTable.createdAt as post_createdAt",
-      "$postTable.userId as user_userId",
-      "$userTable.userName as user_userName",
-      "$userTable.fullName as user_fullName",
-      "$userTable.avatarUrl as user_avatarUrl",
-      "COUNT(DISTINCT $postCommentTable.id) as commentCount",
-      "COUNT(DISTINCT $postLikeTable.postId) as likeCount",
-    ];
-
-    $currentUserId = Auth::getUser()['id'];
-    if ($currentUserId) {
-      $columns[] = "MAX($postLikeTable.userId = $currentUserId) as isLikedByCurrentUser";
-    }
-
-    $conditionsValid = [];
-    foreach ($conditions as $field => $value) {
-      $conditionsValid["$postTable.$field"] = $value;
-    }
-
-    if ($orderBy) {
-      $orderBy = "$postTable." . $this->postModel->columns[$orderBy] . " DESC";
-    }
-
-    $groupBy = "$postTable.id";
-
-    $posts = $this->postModel->join($joins, $columns, $conditionsValid, $orderBy, $limit, null, $groupBy);
-
-    if (!isset($posts) || $posts == false) {
-      return false;
-    }
-
-    AppLoader::util('TimeHelper');
-    foreach ($posts as $key => $post) {
-      $posts[$key]['timeAgo'] = TimeHelper::timeAgo($post['post_createdAt']);
-    }
-
-    return $posts;
-  }
-
-  public function getNewPosts($limit = 10, $useCache = true)
-  {
-    Action::set('getNewPosts', function ($limit) {
-      return $this->getPosts('created_at', ['status' => "active"], $limit);
+    Action::set('getNewPosts', function () use ($limit) {
+      return PostModel::getPosts('created_at', ['status' => "active"], $limit);
     });
 
     //WHEN: Don't use cache
     if ($useCache == false) {
-      return Action::run('getNewPosts', $limit);
+      return Action::run('getNewPosts');
     }
 
     // Get from cache
@@ -183,7 +108,7 @@ class PostController extends BaseController
     }
 
     // Get from database
-    $posts = Action::run('getNewPosts', $limit);
+    $posts = Action::run('getNewPosts');
 
     // Save to cache
     Cache::set('newPosts', $posts, 60, 'posts/');

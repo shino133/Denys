@@ -3,25 +3,19 @@ class HomeController extends BaseController
 {
   private $postModel;
 
-  public function __construct()
-  {
-    // $this->postModel = new PostModel();
-  }
-
-  public function index()
+  public static function index()
   {
     if (Auth::checkLogin() == false) {
-      $this->redirect('/user/login');
+      self::redirect('/user/login');
     }
     
     AppLoader::controller('PostController');
-    $posts = (new PostController())->getNewPosts();
 
-    $this->setData('userData', Auth::getUser());
-    $this->setData('posts', $posts);
+    self::setData('userData', Auth::getUser());
+    self::setData('posts', PostController::getNewPosts());
 
     Constants::homePage();
-    $this->render('Home/main');
+    self::render('Home/main');
   }
 
 }
