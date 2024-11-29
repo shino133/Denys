@@ -7,7 +7,7 @@ class EventController extends AdminBaseController
   {
     ConstantsAdmin::eventPage();
 
-    $eventData = EventModel::read(columns: ['*']);
+    $eventData = EventModel::getEvents(conditions: [] , limit: null);
 
     $this->setData('eventData', $eventData);
 
