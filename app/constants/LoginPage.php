@@ -12,3 +12,4 @@ Link::addStylesheet(href: '/public/style/forms.css');
 Link::addStylesheet(href: '/public/style/media.css');
 
 Script::addExternalScript(src: '/public/js/Auth/validateForm.js');
+Script::addExternalScript(src: '/public/js/Auth/togglePassword.js');

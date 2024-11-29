@@ -90,7 +90,7 @@ class AuthController extends BaseController
     Auth::setUser($userData);
     if ($userData['role'] == 1) {
       Auth::setAdmin($username);
-      self::redirect('/admin');
+      self::redirect('/admin/dashboard');
     }
 
     self::redirect('/');

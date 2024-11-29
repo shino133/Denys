@@ -14,7 +14,7 @@ function generateBreadcrumb() {
   const homeLink = document.createElement("a");
   homeLink.className = "opacity-5 text-dark";
   homeLink.href = "/";
-  homeLink.textContent = "Home";
+  homeLink.textContent = "Denys";
   homeLi.appendChild(homeLink);
   breadcrumbContainer.appendChild(homeLi);
 

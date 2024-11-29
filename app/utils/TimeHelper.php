@@ -7,6 +7,15 @@ class TimeHelper
   // Biến lưu trữ DateTime hiện tại
   private static ?DateTime $currentTime = null;
 
+  // Định nghĩa các hệ số chuyển đổi
+  private static $timeUnits = [
+    's' => 1,               // giây
+    'm' => 60,              // phút
+    'h' => 3600,            // giờ
+    'd' => 86400,           // ngày
+    'w' => 604800           // tuần
+  ];
+
   /**
    * Khởi tạo DateTimeZone và DateTime mặc định
    * @param string|null $timezone Tên timezone (TIMEZONE || UTC)
@@ -31,9 +40,10 @@ class TimeHelper
    * @param string|null $timezone Tên timezone (nếu null, sử dụng hằng TIMEZONE)
    * @return string Chuỗi kết quả dạng 'X phút trước' hoặc 'X giờ nữa'
    */
-  public static function timeAgo(string $datetime, string $timezone = TIMEZONE ?? 'UTC'): string | false
+  public static function timeAgo(string $datetime, string $timezone = TIMEZONE ?? 'UTC'): string|false
   {
-    if(!$datetime) return false;
+    if (!$datetime)
+      return false;
     // Khởi tạo timezone và thời gian hiện tại
     self::initialize($timezone);
 
@@ -47,20 +57,56 @@ class TimeHelper
     $isPast = self::$currentTime > $targetTime;
 
     // Xây dựng chuỗi kết quả
-    if ($interval->y > 0) {
-      $timeAgo = $interval->y . ' năm';
-    } elseif ($interval->m > 0) {
-      $timeAgo = $interval->m . ' tháng';
-    } elseif ($interval->d > 0) {
-      $timeAgo = $interval->d . ' ngày';
-    } elseif ($interval->h > 0) {
-      $timeAgo = $interval->h . ' giờ';
-    } elseif ($interval->i > 0) {
-      $timeAgo = $interval->i . ' phút';
-    } else {
-      $timeAgo = 'vài giây';
-    }
+    $years = $interval->y;
+    $months = $interval->m;
+    $days = $interval->d;
+    $hours = $interval->h;
+    $minutes = $interval->i;
+
+    $timeAgo = match (true) {
+      $years > 0 => "$years năm",
+      $months > 0 => "$months tháng",
+      $days > 0 => "$days ngày",
+      $hours > 0 => "$hours giờ",
+      $minutes > 0 => "$minutes phút",
+      default => 'vài giây',
+    };
 
     return $timeAgo . ($isPast ? ' trước' : ' nữa');
+  }
+
+
+  /**
+   * Chuyển đổi chuỗi thời gian thành giây.
+   *
+   * @param string $timeString Chuỗi thời gian, ví dụ "1d", "2h", "30m".
+   * @return int|null Trả về số giây hoặc null nếu định dạng không hợp lệ.
+   */
+  public static function toSeconds($timeString)
+  {
+    // Kiểm tra chuỗi đầu vào có hợp lệ không (dạng số + ký tự)
+    if (preg_match('/^(\d+)([smhdw])$/', $timeString, $matches)) {
+      $value = (int) $matches[1];          // Lấy phần số
+      $unit = $matches[2];                // Lấy phần đơn vị thời gian
+      return $value * self::$timeUnits[$unit];
+    }
+    return null; // Trả về null nếu định dạng không hợp lệ
+  }
+
+  /**
+   * Lấy ngày từ chuỗi thời gian với định dạng tùy chọn
+   *
+   * @param string $datetime Thời gian đầu vào (định dạng 'Y-m-d H:i:s')
+   * @param string $format Định dạng đầu ra (mặc định 'Y-m-d')
+   * @return string|null Ngày/giờ theo định dạng hoặc null nếu không hợp lệ
+   */
+  public static function formatDate(string $datetime, string $format = 'Y-m-d'): ?string
+  {
+    try {
+      $date = new DateTime($datetime);
+      return $date->format($format);
+    } catch (Exception $e) {
+      return null;
+    }
   }
 }

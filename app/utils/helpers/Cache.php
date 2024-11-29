@@ -62,9 +62,37 @@ class Cache
   // Xóa toàn bộ dữ liệu cache
   public static function clear()
   {
-    $files = glob(self::$cacheDir . '/*.cache');
+    $items = glob(self::$cacheDir . '/*', GLOB_MARK); // Lấy danh sách tất cả tệp và thư mục (GLOB_MARK thêm dấu '/' vào cuối nếu là thư mục)
+
+    foreach ($items as $item) {
+      if (is_dir($item)) {
+        // Nếu là thư mục, gọi đệ quy để xóa nội dung bên trong
+        self::deleteDirectory($item);
+      } elseif (is_file($item) && str_ends_with($item, '.cache')) {
+        // Nếu là tệp và có đuôi '.cache', thì xóa
+        unlink($item);
+      }
+    }
+  }
+
+  // Hàm phụ để xóa thư mục và nội dung bên trong
+  private static function deleteDirectory(string $dir)
+  {
+    $files = glob($dir . '*', GLOB_MARK); // Lấy danh sách nội dung (thêm '/' nếu là thư mục)
+
     foreach ($files as $file) {
-      unlink($file);
+      if (is_dir($file)) {
+        // Nếu là thư mục con, gọi đệ quy
+        self::deleteDirectory($file);
+      } elseif (is_file($file) && str_ends_with($file, '.cache')) {
+        // Nếu là tệp và có đuôi '.cache', thì xóa
+        unlink($file);
+      }
+    }
+
+    // Chỉ xóa thư mục nếu rỗng
+    if (count(glob($dir . '*', GLOB_MARK)) === 0) {
+      rmdir($dir);
     }
   }
 

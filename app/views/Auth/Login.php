@@ -22,7 +22,14 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <input type="password" class="form-control" name="password" placeholder="Password" />
+              <div class="input-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" />
+                <div class="input-group-prepend">
+                  <button type="button" class="btn btn-sm toggle-password">
+                    Hiện
+                  </button>
+                </div>
+              </div>
               <div class="text-sm text-danger" id="error-password"></div>
             </div>
           </div>

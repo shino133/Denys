@@ -7,11 +7,48 @@ class ConstantsAdmin
     AdminLoader::constant('BaseTagAdmin');
   }
 
-  public static function home()
+  public static function homePage()
   {
     self::baseTag();
-    AdminLoader::constant('HomeAdmin');
+    AdminLoader::constant('HomePage');
   }
+
+  public static function userPage()
+  {
+    self::baseTag();
+    AdminLoader::constant('UserPage');
+  }
+
+  public static function postPage()
+  {
+    self::baseTag();
+    AdminLoader::constant('PostPage');
+  }
+
+  public static function groupPage()
+  {
+    self::baseTag();
+    AdminLoader::constant('GroupPage');
+  }
+
+  public static function commentPage()
+  {
+    self::baseTag();
+    AdminLoader::constant('CommentPage');
+  }
+
+  public static function eventPage()
+  {
+    self::baseTag();
+    AdminLoader::constant('EventPage');
+  }
+
+  public static function teamManagerPage()
+  {
+    self::baseTag();
+    AdminLoader::constant('TeamManagerPage');
+  }
+
 
   public static function settings()
   {

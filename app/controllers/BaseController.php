@@ -8,6 +8,11 @@ class BaseController
     self::$data[$key] = $value;
   }
 
+  protected static function setAllData($data)
+  {
+    self::$data = $data;
+  }
+
   protected static function render($view, $useBaseLayout = true, $pathLayout = 'layout')
   {
     AppLoader::view('main', [

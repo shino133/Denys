@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Thêm sự kiện vào các input
   inputs.forEach((input) => {
-    input.addEventListener("input", () => validateField(input));
+    // input.addEventListener("input", () => validateField(input));
     input.addEventListener("blur", () => validateField(input));
   });
 

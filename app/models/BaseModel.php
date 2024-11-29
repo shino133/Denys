@@ -105,7 +105,7 @@ class BaseModel
   }
 
   // Phương thức để tìm bản ghi theo điều kiện
-  public static function find($conditions = [], $columns = ['*'], $limit = null, $orderBy = null, $offset = null)
+  public static function find($conditions = [], $columns = ['*'], $limit = null, $orderBy = null, $offset = null): array
   {
     $columnsList = implode(', ', $columns);
     $sql = "SELECT $columnsList FROM " . static::$table . " ";
