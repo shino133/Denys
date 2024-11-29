@@ -2,7 +2,54 @@
 function routeForAdmin()
 {
   Route::get('/admin', 'Admin/HomeController@index');
-  Route::get('/admin/user', 'UserController@index');
+  Route::get('/admin/dashboard', 'Admin/HomeController@index');
+  
+  // User manager
+  Route::get('/admin/manager/user', 'Admin/HomeController@index');
+  Route::get('/admin/manager/user/add', 'Admin/HomeController@index');
+  Route::get('/admin/manager/user/edit/{id}', 'Admin/HomeController@index');
+
+  Route::post('/admin/manager/user/request/add', 'Admin/HomeController@index');
+  Route::post('/admin/manager/user/request/edit/{id}', 'Admin/HomeController@index');
+  Route::post('/admin/manager/user/request/destroy/{id}', 'Admin/HomeController@index');
+
+  // Post manager
+  Route::get('/admin/manager/post', 'Admin/HomeController@index');
+  Route::get('/admin/manager/post/add', 'Admin/HomeController@index');
+  Route::get('/admin/manager/post/edit/{id}', 'Admin/HomeController@index');
+
+  Route::post('/admin/manager/post/request/add', 'Admin/HomeController@index');
+  Route::post('/admin/manager/post/request/edit/{id}', 'Admin/HomeController@index');
+  Route::post('/admin/manager/post/request/destroy/{id}', 'Admin/HomeController@index');
+
+  // Group manager
+  Route::get('/admin/manager/group', 'Admin/HomeController@index');
+  Route::get('/admin/manager/group/add', 'Admin/HomeController@index');
+  Route::get('/admin/manager/group/edit/{id}', 'Admin/HomeController@index');
+
+  Route::post('/admin/manager/group/request/add', 'Admin/HomeController@index');
+  Route::post('/admin/manager/group/request/edit/{id}', 'Admin/HomeController@index');
+  Route::post('/admin/manager/group/request/destroy/{id}', 'Admin/HomeController@index'); 
+
+  // Comment manager
+  Route::get('/admin/manager/comment', 'Admin/HomeController@index');
+  Route::get('/admin/manager/comment/add', 'Admin/HomeController@index');
+  Route::get('/admin/manager/comment/edit/{id}', 'Admin/HomeController@index');
+
+  Route::post('/admin/manager/comment/request/add', 'Admin/HomeController@index');
+  Route::post('/admin/manager/comment/request/edit/{id}', 'Admin/HomeController@index');
+  Route::post('/admin/manager/comment/request/destroy/{id}', 'Admin/HomeController@index');
+
+  // Team manager
+  Route::get('/admin/team-manager', 'Admin/HomeController@index');
+  Route::get('/admin/team-manager/add', 'Admin/HomeController@index');
+  Route::get('/admin/team-manager/edit/{id}', 'Admin/HomeController@index');
+
+  Route::post('/admin/team-manager/request/add', 'Admin/HomeController@index');
+  Route::post('/admin/team-manager/request/edit/{id}', 'Admin/HomeController@index');
+  Route::post('/admin/team-manager/request/destroy/{id}', 'Admin/HomeController@index');
+
+  Route::get('/admin/user/settings', 'Admin/HomeController@index');
 }
 
 function routeForUser()

@@ -11,3 +11,4 @@ Link::addStylesheet(href: '/public/style/auth.css');
 Link::addStylesheet(href: '/public/style/forms.css');
 Link::addStylesheet(href: '/public/style/media.css');
 
+Script::addExternalScript(src: '/public/js/Auth/validateForm.js');

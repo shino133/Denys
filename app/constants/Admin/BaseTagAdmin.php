@@ -39,3 +39,6 @@ if (win && document.querySelector("#sidenav-scrollbar")) {
 
 Script::addExternalScript(src: "https://buttons.github.io/buttons.js", attributes: ['async' => null, 'defer' => null]);
 Script::addExternalScript(src: "/public/js/material-dashboard.min.js?v=3.2.0");
+Script::addExternalScript(src: "/assets/js/generateBreadcrumb.js");
+
+Store::set('bodyClass', 'g-sidenav-show bg-gray-100');

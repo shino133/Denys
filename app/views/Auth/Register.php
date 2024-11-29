@@ -17,31 +17,37 @@
           <div class="col-md-12">
             <div class="form-group">
               <input type="text" class="form-control" name="fullName" placeholder="Full Name" />
+              <div class="form-text text-danger" id="error-fullName"></div>
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <input type="email" class="form-control" name="email" placeholder="Email Address" />
+              <div class="form-text text-danger" id="error-email"></div>
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <input type="text" class="form-control" name="username" placeholder="Username" />
+              <div class="form-text text-danger" id="error-username"></div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <input type="password" class="form-control" name="password" placeholder="Password" />
+               <div class="form-text text-danger" id="error-password"></div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" />
+               <div class="form-text text-danger" id="error-confirmPassword"></div>
             </div>
           </div>
           <div class="col-md-12">
             <p class="agree-privacy">
-              Bằng cách nhấp vào nút Đăng ký bên dưới, bạn đã đồng ý với chính sách bảo mật và các điều khoản sử dụng trang web của chúng tôi.
+              Bằng cách nhấp vào nút Đăng ký bên dưới, bạn đã đồng ý với chính sách bảo mật và các điều khoản sử dụng
+              trang web của chúng tôi.
             </p>
           </div>
           <div class="col-md-7">

@@ -71,7 +71,8 @@ $full_name = $userData['full_name'] ?? "Anonymous";
               </div>
               <div class="col-md-10">
                 <span class="fs-9">Event</span>
-                <small id="createEvent" class="form-text text-muted">Gắn kết mọi người lại với nhau thông qua một sự kiện công cộng hoặc riêng tư</small>
+                <small id="createEvent" class="form-text text-muted">Gắn kết mọi người lại với nhau thông qua một sự
+                  kiện công cộng hoặc riêng tư</small>
               </div>
             </div>
           </a>
@@ -224,8 +225,8 @@ $full_name = $userData['full_name'] ?? "Anonymous";
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Sean</a>
-                <span class="notification-type">"Đã trả lời bình luận của bạn trên một bài đăng trong..." </span><a href="#"
-                  class="notification-for">PHP</a>
+                <span class="notification-type">"Đã trả lời bình luận của bạn trên một bài đăng trong..." </span><a
+                  href="#" class="notification-for">PHP</a>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
@@ -261,7 +262,8 @@ $full_name = $userData['full_name'] ?? "Anonymous";
                 </div>
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
-                <span class="notification-type">"10 người đã xem câu chuyện của bạn trước khi nó biến mất. Xem ai đã xem nó.".</span>
+                <span class="notification-type">"10 người đã xem câu chuyện của bạn trước khi nó biến mất. Xem ai đã xem
+                  nó.".</span>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
@@ -279,7 +281,8 @@ $full_name = $userData['full_name'] ?? "Anonymous";
               </div>
               <div class="col-md-10 col-sm-10 col-xs-10">
                 <a href="#" class="notification-user">Michelle</a>
-                <span class="notification-type">Đăng trong </span><a href="#" class="notification-for">Hệ thống xã hội Argon</a>
+                <span class="notification-type">Đăng trong </span><a href="#" class="notification-for">Hệ thống xã hội
+                  Argon</a>
                 <a href="#" class="notify-right-icon">
                   <i class="bx bx-radio-circle-marked"></i>
                 </a>
@@ -347,10 +350,11 @@ $full_name = $userData['full_name'] ?? "Anonymous";
         <a href="/user/profile" class="nav-link nav-links">
           <div class="menu-user-image">
             <?php if ($avatar_url): ?>
-              <img src="<?= "/assets/img/users/$avatar_url" ?>" alt="Online user" class="mr-3 post-user-image" style="height: 40px; width: 40px;" />
+              <img src="<?= "/assets/img/users/$avatar_url" ?>" alt="Online user" class="mr-3 post-user-image"
+                style="height: 40px; width: 40px;" />
             <?php else: ?>
-              <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image" style="height: 40px; width: 40px;"><span
-                  class=""><?= strtoupper($full_name)[0] ?></span></div>
+              <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image"
+                style="height: 40px; width: 40px;"><span class=""><?= strtoupper($full_name)[0] ?></span></div>
             <?php endif; ?>
           </div>
         </a>
@@ -363,17 +367,15 @@ $full_name = $userData['full_name'] ?? "Anonymous";
           <a class="dropdown-item" href="#">
             <img src="/public/img/icons/navbar/help.png" alt="Navbar icon" />
             Trung tâm trợ giúp</a>
-          <a class="dropdown-item d-flex align-items-center dark-mode" href="#">
-            <img src="/public/img/icons/navbar/moon.png" alt="Navbar icon" />
-            Chế Độ Tối
-            <button type="button" class="btn btn-lg btn-toggle ml-auto" data-toggle="button" aria-pressed="false"
-              autocomplete="off">
-              <div class="handle"></div>
-            </button>
-          </a>
           <a class="dropdown-item" href="/user/settings">
             <img src="/public/img/icons/navbar/gear-1.png" alt="Navbar icon" />
             Cài Đặt Chung</a>
+
+          <?php if (Auth::checkAdmin()): ?>
+            <a class="dropdown-item" href="/admin/dashboard">
+              <img src="/public/img/icons/navbar/logout.png" alt="Navbar icon" />
+              Vào trang quản trị</a>
+          <?php endif; ?>
 
           <?php if (Auth::checkLogin()): ?>
             <a class="dropdown-item logout-btn" href="/logout">

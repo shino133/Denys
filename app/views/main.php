@@ -5,7 +5,7 @@
   <?php AppLoader::component(path: "Layout/Head/main") ?>
 </head>
 
-<body class="p-0 <?= Store::get('bodyClass') ?>">
+<body class="<?= Store::get('bodyClass') ?>">
 
   <?php if ($useBaseLayout) {
     AppLoader::view(path: $pathLayout, data: [

@@ -18,23 +18,4 @@ class Constants
     self::baseTag();
     AppLoader::constant('LoginPage');
   }
-
-
-  // Admin pages
-  public static function baseTagAdmin()
-  {
-    AppLoader::constant('Admin/BaseTagAdmin');
-  }
-
-  public static function homeAdmin()
-  {
-    self::baseTagAdmin();
-    AppLoader::constant('Admin/HomeAdmin');
-  }
-
-  public static function settingsAdmin()
-  {
-    self::baseTagAdmin();
-    AppLoader::constant('Admin/SettingsAdmin');
-  }
 }

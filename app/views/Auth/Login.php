@@ -17,24 +17,19 @@
           <div class="col-md-12">
             <div class="form-group">
               <input type="text" class="form-control" name="username" placeholder="Username" />
+              <div class="form-text text-danger" id="error-username"></div>
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <input type="password" class="form-control" name="password" placeholder="Password" />
+              <div class="text-sm text-danger" id="error-password"></div>
             </div>
           </div>
           <div class="col-md-12 mb-3">
             <a href="/user/forgot-password">Quên mật khẩu?</a>
           </div>
-          <div class="col-md-6">
-            <label class="custom-control material-checkbox">
-              <input type="checkbox" class="material-control-input" />
-              <span class="material-control-indicator"></span>
-              <span class="material-control-description">Remember me</span>
-            </label>
-          </div>
-          <div class="col-md-6 text-right">
+          <div class="col-md-12 text-right">
             <div class="form-group">
               <button type="submit" class="btn btn-orange rounded-pill sign-up">
                 Đăng nhập
