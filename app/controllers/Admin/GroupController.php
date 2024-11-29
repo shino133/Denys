@@ -7,7 +7,7 @@ class GroupController extends AdminBaseController
   {
     ConstantsAdmin::groupPage();
 
-    $groupData = GroupModel::read(columns: ['*']);
+    $groupData = GroupModel::getGroups(conditions: []);
 
     $this->setData('groupData', $groupData);
 
