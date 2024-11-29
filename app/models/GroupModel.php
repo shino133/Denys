@@ -1,8 +1,8 @@
 <?php
 class GroupModel extends BaseModel
 {
-  public $table = 'groups_table'; // Đặt tên bảng
-  public $columns = [
+  public static $table = 'groups_table'; // Đặt tên bảng
+  public static $columns = [
     'id' => 'id',
     'user_id' => 'userId',
     'name' => 'name',

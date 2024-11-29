@@ -1,8 +1,8 @@
 <?php
 class MessageModel extends BaseModel
 {
-  public $table = 'messages_table'; // Đặt tên bảng
-  public $columns = [
+  public static $table = 'messages_table'; // Đặt tên bảng
+  public static $columns = [
     'id' => 'id',
     'sender_id' => 'senderId',
     'room_id' => 'roomId',
