@@ -1,8 +1,8 @@
 <?php
 class MediaTypeModel extends BaseModel
 {
-  public $table = 'media_type_table'; // Đặt tên bảng
-  public $columns = [
+  public static $table = 'media_type_table'; // Đặt tên bảng
+  public static $columns = [
     'id' => 'id',
     'key' => 'key',
     'description' => 'description',
