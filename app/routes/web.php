@@ -24,12 +24,22 @@ function routeForAdmin()
 
   // Group manager
   Route::get('/admin/manager/group', 'Admin/GroupController@index');
+  Route::get('/admin/manager/group/get/{id}', 'Admin/GroupController@index');
   Route::get('/admin/manager/group/add', 'Admin/GroupController@index');
   Route::get('/admin/manager/group/edit/{id}', 'Admin/GroupController@index');
 
   Route::post('/admin/manager/group/request/add', 'Admin/GroupController@index');
   Route::post('/admin/manager/group/request/edit/{id}', 'Admin/GroupController@index');
   Route::post('/admin/manager/group/request/destroy/{id}', 'Admin/GroupController@index'); 
+
+  //Event manager
+  Route::get('/admin/manager/event', 'Admin/EventController@index');
+  Route::get('/admin/manager/event/add', 'Admin/EventController@index');
+  Route::get('/admin/manager/event/edit/{id}', 'Admin/EventController@index');
+
+  Route::post('/admin/manager/event/request/add', 'Admin/EventController@index');
+  Route::post('/admin/manager/event/request/edit/{id}', 'Admin/EventController@index');
+  Route::post('/admin/manager/event/request/destroy/{id}', 'Admin/EventController@index');
 
   // Comment manager
   Route::get('/admin/manager/comment', 'Admin/CommentController@index');
