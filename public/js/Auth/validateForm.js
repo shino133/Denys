@@ -33,9 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (name === "password") {
-      if (!value) errorMessage = "Mật khẩu không được để trống.";
-      else if (value.length < 8)
+      const hasLowerCase = /[a-z]/.test(value); // Kiểm tra chữ thường
+      const hasUpperCase = /[A-Z]/.test(value); // Kiểm tra chữ hoa
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value); // Kiểm tra ký tự đặc biệt
+      const hasNumber = /\d/.test(value); // Kiểm tra số
+
+      if (!value) {
+        errorMessage = "Mật khẩu không được để trống.";
+      } else if (value.length < 8) {
         errorMessage = "Mật khẩu phải có ít nhất 8 ký tự.";
+      } else if (!hasLowerCase) {
+        errorMessage = "Mật khẩu phải chứa ít nhất một chữ thường.";
+      } else if (!hasUpperCase) {
+        errorMessage = "Mật khẩu phải chứa ít nhất một chữ hoa.";
+      } else if (!hasSpecialChar) {
+        errorMessage = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
+      } else if (!hasNumber) {
+        errorMessage = "Mật khẩu phải chứa ít nhất một số.";
+      }
     }
 
     if (name === "confirmPassword") {
@@ -78,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isValidForm) {
       Swal.fire({
         icon: "success",
-        title: "Đăng ký thành công!",
+        title: "Xác nhận thành công!",
         text: "Thông tin của bạn đã hợp lệ.",
         confirmButtonText: "Hoàn tất",
       }).then(() => {
