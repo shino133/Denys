@@ -18,7 +18,7 @@ class PostModel extends BaseModel
   {
     $postData = [
       'userId' => $data['user_id'],
-      'title' => $data['title'],
+      'title' => $data['title'] ?? '',
       'content' => $data['content'],
       'mediaType' => $data['media_type'],
       'mediaUrl' => $data['media_url'],
