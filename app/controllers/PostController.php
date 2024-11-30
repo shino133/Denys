@@ -109,6 +109,9 @@ class PostController extends BaseController
 
     // Get from database
     $posts = Action::run('getNewPosts');
+    if ($posts == false) {
+      return [];
+    }
 
     // Save to cache
     Cache::set('newPosts', $posts, 60, 'posts/');
