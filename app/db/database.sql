@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Nov 23, 2024 at 04:56 PM
+-- Host: localhost
+-- Generation Time: Dec 06, 2024 at 06:45 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -180,7 +180,7 @@ CREATE TABLE `permissions_table` (
 CREATE TABLE `posts_table` (
   `id` int NOT NULL,
   `userId` int NOT NULL,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `content` text,
   `mediaType` varchar(255) DEFAULT NULL,
   `mediaUrl` varchar(255) DEFAULT NULL,
@@ -291,6 +291,18 @@ CREATE TABLE `user_profiles_table` (
   `status` varchar(255) DEFAULT 'active',
   `createdAt` timestamp NULL DEFAULT (now()),
   `updatedAt` timestamp NULL DEFAULT (now())
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `__drizzle_migrations`
+--
+
+CREATE TABLE `__drizzle_migrations` (
+  `id` bigint UNSIGNED NOT NULL,
+  `hash` text NOT NULL,
+  `created_at` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -447,6 +459,13 @@ ALTER TABLE `user_profiles_table`
   ADD KEY `status_idx` (`status`);
 
 --
+-- Indexes for table `__drizzle_migrations`
+--
+ALTER TABLE `__drizzle_migrations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -557,6 +576,12 @@ ALTER TABLE `user_permissions_table`
 --
 ALTER TABLE `user_profiles_table`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `__drizzle_migrations`
+--
+ALTER TABLE `__drizzle_migrations`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
