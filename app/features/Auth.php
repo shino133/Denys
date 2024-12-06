@@ -28,9 +28,25 @@ class Auth extends Authentication
     return self::get("admin");
   }
 
+  // Phương thức cho Admin Editor
+  public static function setAdminEditor($userData)
+  {
+    return self::set("adminEditor", $userData);
+  }
+
+  public static function getAdminEditor()
+  {
+    return self::get("adminEditor");
+  }
+
+  public static function checkAdminEditor()
+  {
+    return self::check("adminEditor");
+  }
+
   public static function checkAdmin()
   {
-    return self::check("admin");
+    return self::check("admin") || self::check("adminEditor");
   }
 
   // Phương thức cho login
@@ -40,11 +56,10 @@ class Auth extends Authentication
   }
 
   // Phương thức cho csrf_token
-  public static function setToken($secretKey = null)
+  public static function setToken($length = 32)
   {
-    AppLoader::lib('encryptData');
-    $secretKey ??= "csrf_token_of_" . self::getUser();
-    $csrf_token = encryptData($secretKey);
+    AppLoader::lib('generateToken');
+    $csrf_token = generateToken($length);
 
     return self::set("csrf_token", $csrf_token);
   }
@@ -52,5 +67,29 @@ class Auth extends Authentication
   public static function getToken()
   {
     return self::get("csrf_token");
+  }
+
+  public static function checkToken()
+  {
+    return self::check("csrf_token");
+  }
+
+  public static function destroyToken()
+  {
+    return self::destroy("csrf_token");
+  }
+
+  public static function setLoginTime($time = 'now'){
+    $time = $time === 'now' ? time() : $time;
+    return self::set('login_time', $time);
+  }
+
+  public static function getLoginTime(){
+    return self::get('login_time');
+  }
+
+  public static function setActiveUser($userName)
+  {
+    Cache::set($userName , ['status' => 'active'], 60, 'users/');
   }
 }

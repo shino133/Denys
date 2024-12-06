@@ -1,5 +1,5 @@
 <?php
-$posts = $data['posts'] ?? [];
+$posts ??= [];
 // dumpVar($posts);
 ?>
 

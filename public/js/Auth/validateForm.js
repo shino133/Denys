@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputs = form.querySelectorAll("input");
 
   // Regex tiêu chí
-  const fullNameRegex =
-    /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéìíòóôõùúăđĩũơƯăâêôơđửấầẫậắằặẳãễêểễêảủ ]+$/;
+  const fullNameRegex = /^[\p{L}\s]+$/u;
   const usernameRegex = /^[a-z0-9._]+$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -12,8 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const validateField = (input) => {
     const name = input.name;
     const value = input.value.trim();
-    let errorMessage = null;
     const errorElement = document.getElementById(`error-${name}`);
+
+    let errorMessage = "";
 
     if (name === "fullName") {
       if (!value) errorMessage = "Họ và tên không được để trống.";
@@ -33,24 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (name === "password") {
-      const hasLowerCase = /[a-z]/.test(value); // Kiểm tra chữ thường
-      const hasUpperCase = /[A-Z]/.test(value); // Kiểm tra chữ hoa
-      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value); // Kiểm tra ký tự đặc biệt
-      const hasNumber = /\d/.test(value); // Kiểm tra số
-
-      if (!value) {
-        errorMessage = "Mật khẩu không được để trống.";
-      } else if (value.length < 8) {
+      if (!value) errorMessage = "Mật khẩu không được để trống.";
+      else if (value.length < 8)
         errorMessage = "Mật khẩu phải có ít nhất 8 ký tự.";
-      } else if (!hasLowerCase) {
-        errorMessage = "Mật khẩu phải chứa ít nhất một chữ thường.";
-      } else if (!hasUpperCase) {
-        errorMessage = "Mật khẩu phải chứa ít nhất một chữ hoa.";
-      } else if (!hasSpecialChar) {
-        errorMessage = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
-      } else if (!hasNumber) {
-        errorMessage = "Mật khẩu phải chứa ít nhất một số.";
-      }
     }
 
     if (name === "confirmPassword") {
@@ -62,50 +47,30 @@ document.addEventListener("DOMContentLoaded", function () {
         errorMessage = "Mật khẩu xác nhận không khớp.";
     }
 
-    const isValid = errorMessage === null;
+    // Hiển thị lỗi
     errorElement.innerText = errorMessage;
 
-    return [isValid, errorMessage]; // Hợp lệ
+    // Trả về trạng thái hợp lệ
+    return errorMessage === "";
   };
 
   // Thêm sự kiện vào các input
   inputs.forEach((input) => {
-    // input.addEventListener("input", () => validateField(input));
+    input.addEventListener("input", () => validateField(input));
     input.addEventListener("blur", () => validateField(input));
   });
 
   // Ngăn submit nếu có lỗi
   form.addEventListener("submit", (event) => {
-    event.preventDefault(); // Ngăn gửi form mặc định
-
-    let isValidForm = true;
-    let errorMessageNofi = null;
+    let isValid = true;
 
     inputs.forEach((input) => {
-      const [isValid, errorMessage] = validateField(input);
-      if (isValid == false) {
-        isValidForm = false;
-        errorMessageNofi = errorMessage;
-        return;
-      }
+      if (!validateField(input)) isValid = false;
     });
 
-    if (isValidForm) {
-      Swal.fire({
-        icon: "success",
-        title: "Xác nhận thành công!",
-        text: "Thông tin của bạn đã hợp lệ.",
-        confirmButtonText: "Hoàn tất",
-      }).then(() => {
-        form.submit(); // Gửi form nếu hợp lệ
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi nhập liệu",
-        text: errorMessageNofi,
-        confirmButtonText: "Đồng ý",
-      });
+    if (!isValid) {
+      event.preventDefault();
+      alert("Vui lòng sửa các lỗi trước khi gửi.");
     }
   });
 });

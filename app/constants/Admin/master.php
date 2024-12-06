@@ -13,10 +13,13 @@ class ConstantsAdmin
     AdminLoader::constant('HomePage');
   }
 
-  public static function userPage()
+  public static function userPage($name = null)
   {
+    $name = isset($name) ? "/$name" : '';
+    $path = 'UserPage' . $name;
+    
     self::baseTag();
-    AdminLoader::constant('UserPage');
+    AdminLoader::constant($path);
   }
 
   public static function postPage()

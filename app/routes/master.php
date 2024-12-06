@@ -15,7 +15,7 @@ if (!$route) {
 }
 
 // Lưu dữ liệu với key queryParams
-Store::set('queryParams', $route['queryParams']);
+Store::setQueryParams($route['queryParams']);
 
 // Gọi controller và action
 [$fullControllerPath, $action] = explode('@', $route['controllerPath']);

@@ -20,22 +20,27 @@ class BaseModel
   }
 
   // Truy vấn SQL
-  protected static function query($sql, $params = []): bool|PDOStatement
+  protected static function query($sql, $params = [])
   {
-    // dumpVar(['sql' => $sql, 'params' => $params]);
-    $stmt = self::pdo()->prepare($sql);
-    // Bind các tham số để đảm bảo kiểu dữ liệu đúng
-    foreach ($params as $key => $value) {
-      $type = match (true) {
-        is_int($value) => PDO::PARAM_INT,
-        default => PDO::PARAM_STR,
-      };
+    try {
+      $stmt = self::pdo()->prepare($sql);
 
-      $stmt->bindValue($key, $value, $type);
+      foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+      }
+
+      $stmt->execute();
+
+      // Logging (tùy chọn)
+      error_log("Executed query: $sql with params: " . json_encode($params));
+
+      return $stmt;
+    } catch (PDOException $e) {
+      // error_log("Query error: " . $e->getMessage());
+      // throw $e;
+      
+      return false;
     }
-
-    $stmt->execute();
-    return $stmt;
   }
 
   // Xây dựng SQL clause
@@ -78,7 +83,7 @@ class BaseModel
     return self::query($sql, $params)->fetch(PDO::FETCH_ASSOC);
   }
 
-  public static function fetchColumn($sql, $params = []): array
+  public static function fetchColumn($sql, $params = [])
   {
     return self::query($sql, $params)->fetchColumn();
   }
@@ -116,17 +121,18 @@ class BaseModel
 
     // Thêm LIMIT với OFFSET
     $params = $whereData['bindings'];
-    if ($limit) {
-      $sql .= " LIMIT " . (int) $limit;
-    }
-
     if ($orderBy) {
       $sql .= " ORDER BY $orderBy";
     }
 
+    if ($limit) {
+      $sql .= " LIMIT " . (int) $limit;
+    }
+    
     if ($offset) {
       $sql .= " OFFSET " . (int) $offset;
     }
+
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
     return self::fetchAll($sql, $params);
@@ -186,7 +192,7 @@ class BaseModel
   }
 
   // Đếm số lượng bản ghi trong bảng, với điều kiện tùy chọn
-  public static function count($conditions = []): int
+  public static function count($conditions = [])
   {
     $sql = "SELECT COUNT(*) FROM " . static::$table . " ";
 
@@ -197,7 +203,7 @@ class BaseModel
     // dumpVar(['sql' => $sql, 'params' => $params]);
 
     // Trả về kết quả đếm được
-    return (int) self::fetchColumn($sql, $whereData['bindings']);
+    return self::fetchColumn($sql, $whereData['bindings']);
   }
 
 
@@ -229,7 +235,7 @@ class BaseModel
     $params = $whereData['bindings'];
     if ($limit) {
       $sql .= " LIMIT :limit";
-      $params[':limit'] = $limit;
+      $params[':limit'] = (int) $limit;
     }
 
     // Thêm OFFSET nếu có
@@ -242,4 +248,37 @@ class BaseModel
 
     return self::fetchAll($sql, $params);
   }
+
+  public static function search($keyword = [], $op = 'AND')
+  {
+    $sql = "SELECT * FROM " . static::$table . " WHERE ";
+
+    $keywordClause = [];
+    $paramsClause = [];
+    foreach ($keyword as $key => $value) {
+      $keywordClause[] = "$key LIKE :$key";
+      $paramsClause[":$key"] = "%$value%";
+    }
+
+    $sql .= implode(" $op ", $keywordClause);
+
+    // dumpVar(['sql' => $sql , 'params' => $paramsClause]);
+
+    return self::fetchAll($sql, $paramsClause);
+  }
+
+  public static function paginate($page = 1, $perPage = 10, $conditions = [], $data = []): array
+  {
+    // Đếm tổng số bản ghi
+    $total = self::count($conditions);
+
+    return [
+      'data' => $data,
+      'total' => $total,
+      'per_page' => $perPage,
+      'current_page' => $page,
+      'last_page' => ceil($total / $perPage),
+    ];
+  }
+
 }

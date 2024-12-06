@@ -1,5 +1,5 @@
 <?php
-include 'app/utils/helpers/Loader.php';
+include __DIR__ . '/../utils/helpers/Loader.php';
 
 // App Loader
 Loader::include('features/AppLoader');
@@ -16,7 +16,9 @@ AppLoader::helper('Cache');
 AppLoader::helper('Title');
 AppLoader::helper('Url');
 
+// Auth feature
 AppLoader::feature('Auth');
+AppLoader::feature('AutoLogout');
 
 // Constants
 AppLoader::constant('master');
@@ -35,3 +37,6 @@ Cache::configure(APP_CACHE_PATH ?? __DIR__. '/cache/', 3600);
 if (Auth::checkAdmin() == true) {
   AppLoader::feature('Admin/master');
 }
+
+// AutoLogout
+AutoLogout::run();

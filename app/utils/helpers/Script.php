@@ -13,8 +13,8 @@ class Script
   {
     self::$scripts[$position][] = [
       'type' => 'external',
+      'attributes' => $attributes,
       'src' => $src,
-      'attributes' => $attributes
     ];
   }
 
@@ -23,8 +23,8 @@ class Script
   {
     self::$scripts[$position][] = [
       'type' => 'inline',
+      'attributes' => $attributes,
       'content' => $content,
-      'attributes' => $attributes
     ];
   }
 
@@ -47,7 +47,7 @@ class Script
       }
 
       if ($script['type'] === 'external') {
-        echo "<script src=\"{$script['src']}\" $attrString></script>\n";
+        echo "<script $attrString src=\"{$script['src']}\" ></script>\n";
       } elseif ($script['type'] === 'inline') {
         echo "<script $attrString>" . $script['content'] ."</script>\n";
       }

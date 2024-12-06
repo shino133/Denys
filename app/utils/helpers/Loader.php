@@ -2,19 +2,20 @@
 class Loader
 {
   // Core helpers
-  public static function include($path, $data = [], $include_once = true)
+  public static function include($path, $extractDataDetails = [], $include_once = true)
   {
-    $fullPath = __DIR__ . '/../../' . $path . ".php";
+    $fullPath_starts_from_this_file_location = __DIR__ . '/../../' . $path . ".php";
 
     // Kiểm tra nếu file tồn tại trước khi include
-    if (file_exists($fullPath)) {
-      extract($data);
-      $include_once
-        ? include_once $fullPath
-        : include $fullPath;
+    if (file_exists($fullPath_starts_from_this_file_location)) {
+      $It_does_not_need_to_be_called_again = $include_once;
+      extract($extractDataDetails);
+
+      $It_does_not_need_to_be_called_again
+        ? include_once $fullPath_starts_from_this_file_location
+        : include $fullPath_starts_from_this_file_location;
     } else {
-      http_response_code(404);
-      echo "404 - File not found: $fullPath";
+      echo "404 - File not found: $fullPath_starts_from_this_file_location";
     }
   }
 

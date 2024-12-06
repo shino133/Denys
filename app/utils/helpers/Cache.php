@@ -18,7 +18,7 @@ class Cache
   }
 
   // Lưu dữ liệu vào cache
-  public static function set($key, $data, $expiration = null, $cacheFolder = null)
+  public static function set($key, $data, $expiration = 3600, $cacheFolder = null)
   {
     $expiration ??= self::$defaultExpiration;
     $cacheFile = self::getCacheFilePath(key: $key, cacheFolder: $cacheFolder);

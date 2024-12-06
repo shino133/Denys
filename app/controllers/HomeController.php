@@ -11,8 +11,11 @@ class HomeController extends BaseController
     
     AppLoader::controller('PostController');
 
-    self::setData('userData', Auth::getUser());
-    self::setData('posts', PostController::getNewPosts());
+    // Set data for View
+    self::setAllData(data: [
+      'userData' => Auth::getUser(),
+      'posts' => PostController::getNewPosts(),
+    ]);
 
     Constants::homePage();
     self::render('Home/main');

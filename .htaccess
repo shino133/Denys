@@ -1,13 +1,4 @@
-# Tắt liệt kê thư mục
-Options -Indexes
-
-RewriteEngine On
-RewriteBase /
-
-# Chỉ chuyển hướng các yêu cầu không nằm trong thư mục /public/ tới index.php
-RewriteCond %{REQUEST_URI} !^/public/
-
-# Chỉ chuyển hướng yêu cầu không phải là tệp hoặc thư mục có thực
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

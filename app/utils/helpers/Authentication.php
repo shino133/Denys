@@ -4,11 +4,8 @@ class Authentication
   // Phương thức đăng nhập: thiết lập session nếu thông tin người dùng hợp lệ
   public static function set($key, $value)
   {
-    if (!isset($_SESSION[$key])) {
-      $_SESSION[$key] = $value;
-    }
-
-    return $_SESSION[$key] == $value;
+    $_SESSION[$key] = $value;
+    return isset($_SESSION[$key]);
   }
 
   public static function get($key) {
@@ -26,5 +23,11 @@ class Authentication
   public static function check($key)
   {
     return isset($_SESSION[$key]);
+  }
+
+  public static function destroy($key) {
+    if (isset($_SESSION[$key])) {
+      unset($_SESSION[$key]);
+    }
   }
 }

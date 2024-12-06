@@ -5,7 +5,7 @@ class AssetController
   public static function serveFile($filePath)
   {
     // Kiểm tra file có tồn tại không
-    if (!file_exists($filePath)) {
+    if (! file_exists($filePath)) {
       header("HTTP/1.0 404 Not Found");
       echo "File not found.";
       return;
@@ -47,12 +47,17 @@ class AssetController
     self::serveFile($cssPath);
   }
 
-  public static function upImage($inputName, $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'], $maxFileSize = 10)
+  public static function upImage($inputName, $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'], $maxFileSize = 5, $pathToSave = null)
   {
     AppLoader::lib('uploadImage');
 
-    $path = AppLoader::getPath("assets/uploads/");
+    $pathToSave ??= "assets/uploads/";
+    $path = AppLoader::getPath($pathToSave);
 
-    return uploadImage(inputName: $inputName, targetDir: $path, allowedExtensions: $allowedExtensions, maxFileSize: $maxFileSize * 1024 * 1024);
+    return uploadImage(
+      inputName: $inputName, 
+      targetDir: $path, 
+      allowedExtensions: $allowedExtensions, 
+      maxFileSize: $maxFileSize * 1024 * 1024);
   }
 }

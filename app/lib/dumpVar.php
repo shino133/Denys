@@ -1,5 +1,5 @@
 <?php
-function dumpVar($var)
+function dumpVar($var, $allowContinue = false, $allowWrap = true)
 {
   // Lấy thông tin stack trace để xác định vị trí hàm được gọi
   $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
@@ -13,8 +13,9 @@ function dumpVar($var)
       border-radius: 5px;
       font-size: 20px;
       line-height: 1.5;
-      word-wrap: break-word;
-      white-space: pre-wrap;
+      <?php if ($allowWrap) { ?>
+        word-wrap: break-word;
+      <?php } ?>
     }
   </style>
   <?php
@@ -31,5 +32,8 @@ function dumpVar($var)
   }
 
   echo '</pre>';
+
+  if ($allowContinue)
+    return;
   die();
 }

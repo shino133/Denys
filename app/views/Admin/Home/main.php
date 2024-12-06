@@ -7,14 +7,34 @@
     </p>
   </div>
   <div class="row py-3">
-    <?php AdminLoader::component('DataCard') ?>
+    <?php
+    AdminLoader::component('DataCard', [
+      'userCount' => $userCount,
+      'postCount' => $postCount,
+      'groupCount' => $groupCount,
+      'eventCount' => $eventCount
+    ]) ?>
   </div>
 
   <div class="row">
     <div class="col-12">
-      <?php AdminLoader::component('Table/TeamManagerTable', [
-        'teamManagerData' => $teamManagerData ?? []
-      ]) ?>
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3 ">Danh sách quản trị viên</h6>
+          </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+          <?php AdminLoader::component('Table/UserTable', [
+            'userData' => $userData ?? [],
+            'totalPage' => $totalPage,
+            'currentPage' => $currentPage,
+            'lastPage' => $lastPage,
+            'nextPage' => $nextPage,
+            'previousPage' => $previousPage,
+          ]) ?>
+        </div>
+      </div>
     </div>
   </div>
 </div>

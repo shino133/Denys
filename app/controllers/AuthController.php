@@ -11,7 +11,7 @@ class AuthController extends BaseController
       'register' => 'Auth/Register',
     ];
 
-    if (!isset($actionList[$nameAction])) {
+    if (! isset($actionList[$nameAction])) {
       $nameAction = 'login';
     }
 
@@ -53,13 +53,13 @@ class AuthController extends BaseController
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    if (!$username || !$password) {
-      $msg = 'Vui lý nhập dữ liệu';
+    if (! $username || ! $password) {
+      $msg = 'Vui lòng nhập dữ liệu';
       Action::run('errorEvent', $msg);
     }
 
     // Check username valid
-    if (self::validUsername($username == true)) {
+    if (self::validUsername($username) == false) {
       $msg = 'Username chỉ có thể chứa chữ và số';
       Action::run('errorEvent', $msg);
     }
@@ -70,16 +70,18 @@ class AuthController extends BaseController
       Action::run('errorEvent', $msg);
     }
 
-    $userData = UserModel::find(conditions: ['username' => $username], limit: 1)[0];
+    $userData = UserModel::find(conditions: [
+      'username' => $username,
+    ], limit: 1)[0];
 
-    if (!isset($userData) || $userData['status'] == 'delete') {
+    if (! isset($userData) || $userData['status'] == 'delete') {
       $msg = "{$username} không tồn tại";
       Action::run('errorEvent', $msg);
     }
 
     $userData['password'] = decryptData($userData['password']);
-    if (!($username == $userData['userName'] && $password == $userData['password'])) {
-      $msg = 'Sai tài khoản hoặc mật khẻu';
+    if (! ($username == $userData['userName'] && $password == $userData['password'])) {
+      $msg = 'Sai tài khoản hoặc mật khẩu';
       Action::run('errorEvent', $msg);
     }
 
@@ -88,8 +90,17 @@ class AuthController extends BaseController
 
     // WHEN: login success
     Auth::setUser($userData);
-    if ($userData['role'] == 1) {
+    Auth::setLoginTime();
+    
+    if ((int) $userData['role'] === 1) {
       Auth::setAdmin($username);
+    }
+
+    if ((int) $userData['role'] === 0) {
+      Auth::setAdminEditor($username);
+    }
+
+    if (Auth::checkAdmin() == true) {
       self::redirect('/admin/dashboard');
     }
 
@@ -98,13 +109,22 @@ class AuthController extends BaseController
 
   public static function registerRequest()
   {
-    AppLoader::util('DataValidator');
-    AppLoader::lib('encryptData');
-
     Action::set('errorEvent', function ($msg = 'Người dùng đã tồn tại') {
       Url::setNofi(msg: $msg, status: 'error');
       self::reverse(Url::getQueryString());
     });
+
+    self::registerRun();
+
+    Url::setUrl('/user/login');
+    Url::setNofi(msg: 'Registered', status: 'success');
+    self::redirect(Url::get());
+  }
+
+  public static function registerRun() : bool|string
+  {
+    AppLoader::util('DataValidator');
+    AppLoader::lib('encryptData');
 
     $data = [
       'username' => $_POST['username'],
@@ -117,7 +137,7 @@ class AuthController extends BaseController
 
     // Check null or empty data
     if (DataValidator::check($data) == false) {
-      $msg = 'Vui lý nhập dữ liệu';
+      $msg = 'Vui lòng nhập dữ liệu';
       Action::run('errorEvent', $msg);
     }
 
@@ -133,7 +153,7 @@ class AuthController extends BaseController
     }
 
     // Check username valid
-    if (self::validUsername($data['username']) == true) {
+    if (self::validUsername($data['username']) == false) {
       $msg = 'Username chỉ có thể chứa chữ và số';
       Action::run('errorEvent', $msg);
     }
@@ -149,22 +169,54 @@ class AuthController extends BaseController
       $msg = 'Email phải là email hợp lệ';
       Action::run('errorEvent', $msg);
     }
-    
-    $data['password'] = encryptData($data['password']);
-    $result = UserModel::create($data);
-    if (!$result) {
+
+    // Check username exist
+    $user = UserModel::find(conditions: ['username' => $data['username']], limit: 1)[0];
+    if (isset($user)) {
+      $msg = 'Username được dùng';
       Action::run('errorEvent', $msg);
     }
 
-    Url::setUrl('/user/login');
-    Url::setNofi(msg: 'Registered', status: 'success');
-    self::redirect(Url::get());
+    // Check email exist
+    $user = UserModel::find(conditions: ['email' => $data['email']], limit: 1)[0];
+    if (isset($user)) {
+      $msg = 'Email được dùng';
+      Action::run('errorEvent', $msg);
+    }
+
+    $data['password'] = encryptData($data['password']);
+    $result = UserModel::create($data);
+    if ($result == false) {
+      Action::run('errorEvent', $msg);
+    }
+
+    return $result;
   }
 
   public static function logout()
   {
     Auth::logout();
     self::redirect('/');
+  }
+
+  public static function getCurrentUserData($redirectToLogin = true) : array|null
+  {
+    // Check login
+    $userData = Auth::getUser();
+    if (isset($userData) == false || empty($userData)) {
+      $redirectToLogin ? self::redirectToLogin() : null;
+      return null;
+    }
+
+    return $userData;
+  }
+
+  public static function redirectToLogin() : void
+  {
+    Auth::logout();
+    Url::setUrl('/user/login');
+    Url::setNofi('Vui lòng dăng nhập', 'error');
+    self::redirect(Url::get());
   }
 
   public static function validPassword($password)
@@ -181,7 +233,7 @@ class AuthController extends BaseController
 
   public static function validUsername($username)
   {
-    return preg_match('/[^a-zA-Z0-9\-\._]/', $username) === 1;
+    return preg_match('/[^a-zA-Z0-9\-\._]/', $username) !== 1;
   }
 
   public static function validFullName($fullName)

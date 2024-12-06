@@ -1,28 +1,32 @@
 // Setup
-const inputsId = ["postImage", "commentImage"];
+const inputsId = ["postImage", "commentImage", "userImage"];
 const imgId = {
   postImage: "imagePreview",
   commentImage: "commentImagePreview",
+  userImage: "userImagePreview",
 };
 
 // Function
-$(document).ready(function () {
-  inputsId.forEach((inputId, index) => {
-    if (!$("#" + inputId)) return;
-    $("#" + inputId).on("change", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
+  inputsId.forEach((inputId) => {
+    const inputElement = document.getElementById(inputId); // Lấy input theo ID
+    const imgElement = document.getElementById(imgId[inputId]); // Lấy ảnh theo ID
+
+    if (!inputElement || !imgElement) return;
+
+    inputElement.addEventListener("change", function (event) {
       const file = event.target.files[0]; // Lấy file đầu tiên từ input
       if (file) {
         const reader = new FileReader(); // Tạo FileReader để đọc file
 
         reader.onload = function (e) {
-          $("#" + imgId[inputId])
-            .attr("src", e.target.result) // Đặt ảnh được load từ FileReader
-            .show(); // Hiển thị ảnh
+          imgElement.src = e.target.result; // Đặt ảnh được load từ FileReader
+          imgElement.style.display = "block"; // Hiển thị ảnh
         };
 
         reader.readAsDataURL(file); // Đọc file dưới dạng DataURL
       } else {
-        $("#" + imgId).hide(); // Ẩn ảnh nếu không có file
+        imgElement.style.display = "none"; // Ẩn ảnh nếu không có file
       }
     });
   });

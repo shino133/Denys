@@ -18,4 +18,16 @@ class Constants
     self::baseTag();
     AppLoader::constant('LoginPage');
   }
+
+  public static function profilePage()
+  {
+    self::baseTag();
+    AppLoader::constant('ProfilePage');
+  }
+
+  public static function settingPage()
+  {
+    self::baseTag();
+    AppLoader::constant('SettingPage');
+  }
 }

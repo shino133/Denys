@@ -16,4 +16,20 @@ class Store
     // Kiểm tra xem key có tồn tại không, nếu có thì trả về, nếu không thì trả về giá trị mặc định
     return self::$data[$key] ?? $default;
   }
+
+
+  public static function delete($key)
+  {
+    unset(self::$data[$key]);
+  }
+
+  public static function setQueryParams($params = []): void
+  {
+    self::$data['queryParams'] = $params;
+  }
+
+  public static function getQueryParams(): array
+  {
+    return self::$data['queryParams'] ?? [];
+  }
 }

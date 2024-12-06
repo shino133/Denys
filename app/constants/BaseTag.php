@@ -25,3 +25,4 @@ Script::addExternalScript(src: "/public/js/popper/popper.min.js");
 Script::addExternalScript(src: "/public/js/bootstrap/bootstrap.min.js");
 
 Script::addExternalScript(src: "/public/js/sweetalert2/queryHandler.js");
+Script::addExternalScript(src: "/public/js/sweetalert2/sweetalertSuccess.js");

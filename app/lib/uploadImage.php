@@ -4,8 +4,7 @@
 *
 * @param string $inputName The name of the file input field in the HTML form.
 * @param string $targetDir The directory where the uploaded file will be saved.
-* @param array $allowedExtensions Default is ["jpg", "jpeg", "png", "gif",
-"webp"].
+* @param array $allowedExtensions Default is ["jpg", "jpeg", "png", "gif","webp"].
 * @param int $maxFileSize Default is 10MB.
 * @return array An associative array with keys:
 * - 'success': true if the upload is successful.
@@ -30,7 +29,7 @@ function uploadImage(
   };
 
   if (!isset($_FILES[$inputName])) {
-    return $action('No file uploaded.');
+    return $action(error: 'No file uploaded.');
   }
 
   $file = $_FILES[$inputName];

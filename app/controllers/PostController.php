@@ -69,7 +69,10 @@ class PostController extends BaseController
     // Get post 
     $posts = PostModel::getPosts(
       orderBy: null,
-      conditions: ['id' => $postId],
+      conditions: [
+        'id' => $postId,
+        'status' => 'active'
+      ],
       limit: 1,
     );
 

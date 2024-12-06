@@ -26214,11 +26214,10 @@ hr.horizontal.gray-light {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #737373;
   padding: 0;
   margin: 0 3px;
   border-radius: 50% !important;
-  width: 36px;
+  min-width: 36px;
   height: 36px;
   font-size: 0.875rem;
 }

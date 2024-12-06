@@ -15,6 +15,7 @@ class BaseController
 
   protected static function render($view, $useBaseLayout = true, $pathLayout = 'layout')
   {
+    // dumpVar(self::$data);
     AppLoader::view('main', [
       'data' => self::$data,
       'pathView' => $view,

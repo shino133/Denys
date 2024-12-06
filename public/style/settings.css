@@ -453,7 +453,7 @@
 /*    border-left: 4px solid #5d5c60;*/
 }
 
-#message-frame .message-sidepanel .message-contacts ul li.setting-active {
+#message-frame .message-sidepanel .message-contacts ul li:hover {
     border-left: 4px solid #007bff;
     color: #007bff;
 }

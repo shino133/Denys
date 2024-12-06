@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputs = form.querySelectorAll("input");
 
   // Regex tiêu chí
-  const fullNameRegex =
-    /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăâêôơđửấầẫậắằặẳãễêểễêảủ ]+$/;
+  const fullNameRegex = /^[\p{L}\s]+$/u;
   const usernameRegex = /^[a-z0-9._]+$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -75,4 +74,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
- 

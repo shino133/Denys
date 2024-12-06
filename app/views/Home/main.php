@@ -1,5 +1,5 @@
 <?php
-$posts = $data['posts'] ?? [];
+$posts ??= [];
 // dumpVar($posts);
 ?>
 
@@ -21,9 +21,11 @@ $posts = $data['posts'] ?? [];
 
     <!-- Posts -->
     <div class="posts-section mb-5">
-      <?php foreach ($posts as $post): ?>
+      <?php foreach ($posts as $post) : ?>
         <div class="pt-3">
-          <?php AppLoader::component("Post/main", $post); ?>
+          <div class="post border-card border-bottom p-3 bg-white w-shadow" id="post-card-<?= $post_id ?>">
+            <?php AppLoader::component("Post/Card", $post); ?>
+          </div>
         </div>
       <?php endforeach; ?>
       <?php AppLoader::component("LoadPostBtn") ?>

@@ -1,4 +1,5 @@
 <?php
+// dumpVar($extractDataDetails);
 $avatar_url = $userData['avatar_url'] ?? "";
 $full_name = $userData['full_name'] ?? "Anonymous";
 ?>
@@ -350,10 +351,10 @@ $full_name = $userData['full_name'] ?? "Anonymous";
         <a href="/user/profile" class="nav-link nav-links">
           <div class="menu-user-image">
             <?php if ($avatar_url): ?>
-              <img src="<?= "/assets/img/users/$avatar_url" ?>" alt="Online user" class="mr-3 post-user-image"
+              <img src="<?= "/assets/img/users/$avatar_url" ?>" alt="Online user" class="mr-3 post-user-image border shadow object-fit-cover"
                 style="height: 40px; width: 40px;" />
             <?php else: ?>
-              <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image"
+              <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image border border-white shadow"
                 style="height: 40px; width: 40px;"><span class=""><?= strtoupper($full_name)[0] ?></span></div>
             <?php endif; ?>
           </div>

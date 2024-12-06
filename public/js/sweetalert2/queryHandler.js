@@ -15,6 +15,7 @@ function removeQueryParams() {
 (() => {
   const message = getQueryParam("msg");
   const status = getQueryParam("status");
+  removeQueryParams();
 
   if (message && status) {
     Swal.fire({
@@ -22,8 +23,6 @@ function removeQueryParams() {
       icon: status, // 'success', 'error', 'warning', 'info', hoặc 'question'
       confirmButtonColor: "#d35400",
       confirmButtonText: "OK",
-    }).then(() => {
-      removeQueryParams(); // Xóa query sau khi thông báo hiển thị
-    });
+    })
   }
 })();

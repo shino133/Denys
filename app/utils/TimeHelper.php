@@ -109,4 +109,10 @@ class TimeHelper
       return null;
     }
   }
+
+  public static function getNow($format = 'Y-m-d H:i:s', $timezone = TIMEZONE ?? 'UTC')
+  {
+    self::initialize($timezone);
+    return self::$currentTime->format($format);
+  }
 }

@@ -1,65 +1,72 @@
 <?php
+function setCRUDRoute($url, $controller, $actionList = [])
+{
+  if (empty($actionList)) {
+    Route::get("{$url}", "{$controller}@index");
+    Route::get("{$url}/{id}", "{$controller}@getData");
+    Route::get("{$url}/{id}/edit", "{$controller}@editPage");
+    Route::post("{$url}/{id}/edit/request", "{$controller}@editData");
+    Route::get("{$url}/add", "{$controller}@addPage");
+    Route::post("{$url}/add/request", "{$controller}@addData");
+    Route::get("{$url}/{id}/destroy/request", "{$controller}@destroyData");
+    return;
+  }
+
+  $ac = [
+    'index' => Route::get($url, $controller . '@' . $actionList['index']),
+    'getData' => Route::get($url . '/{id}', $controller . '@' . $actionList['getData']),
+    'editPage' => Route::get($url . '/{id}/edit', $controller . '@' . $actionList['editPage']),
+    'editData' => Route::post($url . '/{id}/edit/request', $controller . '@' . $actionList['editData']),
+    'addPage' => Route::get($url . '/add', $controller . '@' . $actionList['addPage']),
+    'addData' => Route::post($url . '/add/request', $controller . '@' . $actionList['addData']),
+    'destroyData' => Route::post($url . '/{id}/destroy/request', $controller . '@' . $actionList['destroyData']),
+  ];
+
+  foreach ($actionList as $key => $value) {
+    if (isset($ac[$key])) {
+      $ac[$key];
+    }
+  }
+}
+
+
 function routeForAdmin()
 {
-  Route::get('/admin', 'Admin/HomeController@index');
-  Route::get('/admin/dashboard', 'Admin/HomeController@dashboard');
-  
-  // User manager
-  Route::get('/admin/manager/user', 'Admin/UserController@index');
-  Route::get('/admin/manager/user/add', 'Admin/UserController@index');
-  Route::get('/admin/manager/user/edit/{id}', 'Admin/UserController@index');
+  Route::get('/admin', 'Admin/HomeAdminController@index');
+  Route::get('/admin/manager', 'Admin/HomeAdminController@index');
+  Route::get('/admin/dashboard', 'Admin/HomeAdminController@dashboard');
 
-  Route::post('/admin/manager/user/request/add', 'Admin/UserController@index');
-  Route::post('/admin/manager/user/request/edit/{id}', 'Admin/UserController@index');
-  Route::post('/admin/manager/user/request/destroy/{id}', 'Admin/UserController@index');
+  // Route::get('/admin/user/settings', 'Admin/HomeAdminController@index');
+  Route::get('/admin/manager/user/search', 'Admin/UserAdminController@searchData');
 
-  // Post manager
-  Route::get('/admin/manager/post', 'Admin/PostController@index');
-  Route::get('/admin/manager/post/add', 'Admin/PostController@index');
-  Route::get('/admin/manager/post/edit/{id}', 'Admin/PostController@index');
+  Route::get("/admin/team-manager", "Admin/TeamManagerAdminController@index");
 
-  Route::post('/admin/manager/post/request/add', 'Admin/PostController@index');
-  Route::post('/admin/manager/post/request/edit/{id}', 'Admin/PostController@index');
-  Route::post('/admin/manager/post/request/destroy/{id}', 'Admin/PostController@index');
+  $routerCRUD = [
+    'user' => [
+      'url' => '/admin/manager/user',
+      'controller' => 'Admin/UserAdminController',
+    ],
+    'post' => [
+      'url' => '/admin/manager/post',
+      'controller' => 'Admin/PostAdminController',
+    ],
+    'group' => [
+      'url' => '/admin/manager/group',
+      'controller' => 'Admin/GroupAdminController',
+    ],
+    'event' => [
+      'url' => '/admin/manager/event',
+      'controller' => 'Admin/EventAdminController',
+    ],
+    'comment' => [
+      'url' => '/admin/manager/comment',
+      'controller' => 'Admin/CommentAdminController',
+    ],
+  ];
 
-  // Group manager
-  Route::get('/admin/manager/group', 'Admin/GroupController@index');
-  Route::get('/admin/manager/group/get/{id}', 'Admin/GroupController@index');
-  Route::get('/admin/manager/group/add', 'Admin/GroupController@index');
-  Route::get('/admin/manager/group/edit/{id}', 'Admin/GroupController@index');
-
-  Route::post('/admin/manager/group/request/add', 'Admin/GroupController@index');
-  Route::post('/admin/manager/group/request/edit/{id}', 'Admin/GroupController@index');
-  Route::post('/admin/manager/group/request/destroy/{id}', 'Admin/GroupController@index'); 
-
-  //Event manager
-  Route::get('/admin/manager/event', 'Admin/EventController@index');
-  Route::get('/admin/manager/event/add', 'Admin/EventController@index');
-  Route::get('/admin/manager/event/edit/{id}', 'Admin/EventController@index');
-
-  Route::post('/admin/manager/event/request/add', 'Admin/EventController@index');
-  Route::post('/admin/manager/event/request/edit/{id}', 'Admin/EventController@index');
-  Route::post('/admin/manager/event/request/destroy/{id}', 'Admin/EventController@index');
-
-  // Comment manager
-  Route::get('/admin/manager/comment', 'Admin/CommentController@index');
-  Route::get('/admin/manager/comment/add', 'Admin/CommentController@index');
-  Route::get('/admin/manager/comment/edit/{id}', 'Admin/CommentController@index');
-
-  Route::post('/admin/manager/comment/request/add', 'Admin/CommentController@index');
-  Route::post('/admin/manager/comment/request/edit/{id}', 'Admin/CommentController@index');
-  Route::post('/admin/manager/comment/request/destroy/{id}', 'Admin/CommentController@index');
-
-  // Team manager
-  Route::get('/admin/team-manager', 'Admin/TeamManagerController@index');
-  Route::get('/admin/team-manager/add', 'Admin/TeamManagerController@addPage');
-  Route::get('/admin/team-manager/edit/{id}', 'Admin/HomeController@index');
-
-  Route::post('/admin/team-manager/request/add', 'Admin/HomeController@index');
-  Route::post('/admin/team-manager/request/edit/{id}', 'Admin/HomeController@index');
-  Route::post('/admin/team-manager/request/destroy/{id}', 'Admin/HomeController@index');
-
-  Route::get('/admin/user/settings', 'Admin/HomeController@index');
+  foreach ($routerCRUD as $key => $value) {
+    setCRUDRoute($value['url'], $value['controller']);
+  }
 }
 
 function routeForUser()
@@ -67,19 +74,37 @@ function routeForUser()
   Route::get('/about', 'PageController@about');
   Route::post('/contact', 'ContactController@submit');
 
+  Route::get('/user/settings', 'SettingController@index');
+  Route::get('/user/settings/account', 'SettingController@accountPage');
+  Route::get('/user/settings/contact', 'SettingController@contactPage');
+  Route::get('/user/settings/password', 'SettingController@passwordPage');
+
+
+  Route::post('/user/settings/account/request', 'SettingController@accountPageRequest');
+  Route::post('/user/settings/contact/request', 'SettingController@contactPageRequest');
+  Route::post('/user/settings/password/request', 'SettingController@passwordPageRequest');
+
   // User
-  Route::get('/user/profile', 'UserController@getProfile');
+  Route::get('/user/profile', 'UserController@profilePage');
+  Route::post('/user/profile/avatar/upload/request', 'UserController@uploadAvatar');
+  Route::post('/user/profile/banner/upload/request', 'UserController@uploadBanner');
 
 
   // Post CRUD
   Route::post('/post/request/add', 'PostController@addPost');
   Route::post('/post/request/edit/{id}', 'PostController@editPost');
   Route::post('/post/request/destroy/{id}', 'PostController@destroyPost');
-  
+
   Route::get('/post/{postId}', 'PostController@getPostById');
 
   // Comment
   Route::post('/comment/request/add/{postId}', 'CommentController@addComment');
+  
+
+
+
+
+
 
   // Asset
   Route::get('/assets/img/{fileName}', 'AssetController@getImage');
@@ -100,7 +125,7 @@ function routeForGuest()
   Route::get('/', 'HomeController@index');
   Route::get('/logout', 'AuthController@logout');
   Route::get('/404', 'ErrorController@notFoundPage');
-  
+
   Route::get('/user/login', 'AuthController@login');
   Route::get('/user/register', 'AuthController@register');
   Route::get('/user/logout', 'AuthController@logout');

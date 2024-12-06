@@ -3,7 +3,7 @@
 $activeTextColor = function ($status) {
   return match ($status) {
     'active' => 'bg-gradient-success',
-    'deleted' => 'bg-gradient-danger',
+    'delete' => 'bg-gradient-secondary',
     'pending' => 'bg-gradient-warning',
   };
 }

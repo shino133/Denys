@@ -26,8 +26,13 @@ class PostModel extends BaseModel
     return self::create($postData);
   }
 
-  public static function getPosts($orderBy = 'created_at', $conditions = ['status' => "active"], $limit = 10): array|bool
-  {
+  public static function getPosts(
+    $orderBy = 'created_at',
+    $conditions = ['status' => "active"],
+    $limit = 10,
+    $offset = 0
+  ) : array|bool {
+
     $userTable = "users_table";
     $postCommentTable = "post_comments_table";
     $postLikeTable = "post_likes_table";
@@ -55,7 +60,10 @@ class PostModel extends BaseModel
       self::$table . ".content as post_content",
       self::$table . ".mediaType as post_mediaType",
       self::$table . ".mediaUrl as post_mediaUrl",
+      self::$table . ".status as post_status",
       self::$table . ".createdAt as post_createdAt",
+      self::$table . ".updatedAt as post_updatedAt",
+
       self::$table . ".userId as user_userId",
       "$userTable.userName as user_userName",
       "$userTable.fullName as user_fullName",
@@ -80,17 +88,27 @@ class PostModel extends BaseModel
 
     $groupBy = "" . self::$table . ".id";
 
-    $posts = self::join($joins, $columns, $conditionsValid, $orderBy, $limit, null, $groupBy);
+    $data = self::join(
+      joins: $joins,
+      columns: $columns,
+      conditions: $conditionsValid,
+      orderBy: $orderBy,
+      limit: (int) $limit,
+      offset: (int) $offset,
+      groupBy: $groupBy
+    );
 
-    if (!isset($posts) || $posts == false) {
+    if (! isset($data) || $data == false) {
       return false;
     }
 
+
     AppLoader::util('TimeHelper');
-    foreach ($posts as $key => $post) {
-      $posts[$key]['timeAgo'] = TimeHelper::timeAgo($post['post_createdAt']);
+    foreach ($data as $key => $post) {
+      $data[$key]['timeAgo'] = TimeHelper::timeAgo($post['post_createdAt']);
     }
 
-    return $posts;
+    return $data;
   }
 }
+
