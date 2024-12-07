@@ -4,6 +4,7 @@ $profileData['profile_bannerUrl'] = isset($profileData['profile_bannerUrl'])
 	? "/assets/img/users/" . $profileData['profile_bannerUrl']
 	: "/public/img/users/cover/cover.webp";
 $postData ??= [];
+$isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
 
 // dumpVar([
 // 	"data" => $extractDataDetails,
@@ -15,20 +16,22 @@ $postData ??= [];
 <div class="row profile-right-side-content">
 	<div class="user-profile">
 		<!-- Banner  -->
-		<div class="profile-header-background  overflow-hidden">
-			<form action="/user/profile/banner/upload/request" method="post" enctype="multipart/form-data"
-				class="profile-cover">
-				<img src="<?= $profileData['profile_bannerUrl'] ?>" alt="Profile Header Background"
-					class="w-100 object-fit-cover" />
-				<div class="cover-overlay">
-					<label for="banner" class="btn btn-update-cover">
-						<i class="bx bxs-camera"></i>
-						Đăng ảnh bìa mới
-					</label>
-					<input type="file" name="banner" id="banner" accept="image/jpeg, image/png, image/gif, image/webp, image/jpg"
-						hidden>
-				</div>
-			</form>
+		<div class="profile-header-background overflow-hidden">
+			<img src="<?= $profileData['profile_bannerUrl'] ?>" alt="Profile Header Background"
+				class="w-100 object-fit-cover" />
+			<?php if ($isCurrentUser) : ?>
+				<form action="/user/profile/banner/upload/request" method="post" enctype="multipart/form-data"
+					class="profile-cover">
+					<div class="cover-overlay">
+						<label for="banner" class="btn btn-update-cover">
+							<i class="bx bxs-camera"></i>
+							Đăng ảnh bìa mới
+						</label>
+						<input type="file" name="banner" id="banner" accept="image/jpeg, image/png, image/gif, image/webp, image/jpg"
+							hidden>
+					</div>
+				</form>
+			<?php endif ?>
 		</div>
 
 		<div class="row profile-rows px-5">

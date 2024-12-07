@@ -3,18 +3,24 @@
 // dumpVar(var: $extractDataDetails, allowWrap: false, allowContinue: true);
 // return;
 
+$socialAccounts = $profileData['profile_socialAccounts'] ?? [];
+
+AppLoader::lib('getFriendlyUrlName');
+$isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
 ?>
 <div class="profile-info-left">
   <div class="text-center">
 
     <!-- Profile Image -->
     <div class="profile-img w-shadow">
-      <div class="profile-img-overlay"></div>
+      <?php if ($isCurrentUser) : ?>
+        <div class="profile-img-overlay"></div>
+      <?php endif; ?>
 
       <!-- Avatar -->
       <?php if (isset($profileData['user_avatarUrl'])) : ?>
-        <img src="<?= "/assets/img/users/" . $profileData['user_avatarUrl'] ?>" alt="Avatar" class="avatar img-circle w-100 object-fit-cover"
-          id="profileAvatar" />
+        <img src="<?= "/assets/img/users/" . $profileData['user_avatarUrl'] ?>" alt="Avatar"
+          class="avatar img-circle w-100 object-fit-cover" id="profileAvatar" />
       <?php else : ?>
         <div class="d-flex justify-content-center align-items-center bg-orange text-white avatar img-circle"
           style="height: 150px; width: 150px; font-size: 50px;" id="profileAvatar">
@@ -22,15 +28,17 @@
         </div>
       <?php endif; ?>
 
-      <!-- Caption with Upload Button -->
-      <form method="post" enctype="multipart/form-data" class="profile-img-caption" id="updateProfilePicForm"
-        action="/user/profile/avatar/upload/request">
-        <label for="updateProfilePicInput" class="upload">
-          <i class="bx bxs-camera"></i> Cập nhật
-          <input type="file" id="updateProfilePicInput" class="upload"
-            accept="image/jpeg, image/png, image/gif, image/webp, image/jpg, image/svg" name="avatar" />
-        </label>
-      </form>
+      <?php if ($isCurrentUser) : ?>
+        <!-- Caption with Upload Button -->
+        <form method="post" enctype="multipart/form-data" class="profile-img-caption" id="updateProfilePicForm"
+          action="/user/profile/avatar/upload/request">
+          <label for="updateProfilePicInput" class="upload">
+            <i class="bx bxs-camera"></i> Cập nhật
+            <input type="file" id="updateProfilePicInput" class="upload"
+              accept="image/jpeg, image/png, image/gif, image/webp, image/jpg, image/svg" name="avatar" />
+          </label>
+        </form>
+      <?php endif ?>
     </div>
 
     <p class="profile-fullname mt-3" id="profileFullName">
@@ -41,7 +49,7 @@
     </p>
   </div>
 
-  <?php if ($profileData['user_id'] != Auth::getUser()['id']) : ?>
+  <?php if ($isCurrentUser == false) : ?>
     <div class="intro mt-4">
       <div class="row g-3">
         <button type="button" class="btn btn-outline-primary rounded-pill mx-2 col">
@@ -58,7 +66,7 @@
   <?php endif; ?>
 
   <div class="intro mt-4 mv-hidden">
-    <hr/>
+    <hr />
     <div class="intro-item d-flex justify-content-between align-items-center m-0">
       <h3 class="intro-about">Giới thiệu</h3>
     </div>
@@ -91,35 +99,39 @@
       </p>
     </div>
 
-    <div class="intro-item d-flex justify-content-between align-items-center">
-      <a href="#" class="btn btn-quick-link join-group-btn border w-100">
-        Chỉnh sửa chi tiết
-      </a>
-    </div>
+    <?php if ($isCurrentUser) : ?>
+      <div class="intro-item d-flex justify-content-between align-items-center">
+        <a href="/user/settings/contact" class="btn btn-quick-link join-group-btn border w-100">
+          Chỉnh sửa chi tiết
+        </a>
+      </div>
+    <?php endif; ?>
   </div>
 
   <div class="intro mt-5 mv-hidden">
-    <hr/>
+    <hr />
     <div class="intro-item d-flex justify-content-between align-items-center">
       <h4 class="intro-about">Các tài khoản khác</h4>
     </div>
-    <div class="intro-item d-flex justify-content-between align-items-center">
-      <p class="intro-title text-muted">
-        <i class="bx bxl-facebook-square facebook-color"></i>
-        <a href="#" target="_blank">facebook.com/username</a>
-      </p>
-    </div>
-    <div class="intro-item d-flex justify-content-between align-items-center">
-      <p class="intro-title text-muted">
-        <i class="bx bxl-twitter twitter-color"></i>
-        <a href="#" target="_blank">twitter.com/username</a>
-      </p>
-    </div>
-    <div class="intro-item d-flex justify-content-between align-items-center">
-      <p class="intro-title text-muted">
-        <i class="bx bxl-instagram instagram-color"></i>
-        <a href="#" target="_blank">instagram.com/username</a>
-      </p>
-    </div>
+    <?php if (empty($socialAccounts) == false) : ?>
+      <?php foreach ($socialAccounts as $platform => $account) : ?>
+        <?php $friendlyName = getFriendlyUrlName($account); ?>
+        <div class="intro-item d-flex justify-content-between align-items-center">
+          <p class="intro-title text-muted">
+            <i class="bx bxl-<?= $platform ?> <?= $platform ?>-color"></i>
+            <a href="<?= $account ?>" target="_blank" rel="nofollow noreferrer">
+              <?= $friendlyName ?>
+            </a>
+          </p>
+        </div>
+      <?php endforeach; ?>
+
+    <?php else : ?>
+      <div class="pt-3">
+        <div class="alert text-center rounded">
+          Không có tài khoản nào
+        </div>
+      </div>
+    <?php endif; ?>
   </div>
 </div>

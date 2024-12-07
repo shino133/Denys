@@ -7,10 +7,9 @@ Link::addLink(rel: 'icon', href: '/public/logo/logo-16x16.png', attributes: ['ty
 
 // Font 
 Link::addStylesheet(href: 'https://fonts.googleapis.com/css?family=Major+Mono+Display');
-Link::addStylesheet(href: "/public/style/boxicons.min.css");
 
 // Css
-Link::addStylesheet(href: 'https://cdn.jsdelivr.net/npm/boxicons@1.9.2/css/boxicons.min.css');
+Link::addStylesheet(href: '/public/style/boxicons-2.1.4/css/boxicons.min.css');
 
 Link::addStylesheet(href: '/public/style/bootstrap/bootstrap.min.css');
 Link::addStylesheet(href: '/public/style/sweetalert2/sweetalert2.min.css');

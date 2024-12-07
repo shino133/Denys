@@ -2,6 +2,7 @@
 class CommentModel extends BaseModel
 {
   public static $table = 'comments_table'; // Đặt tên bảng
+  public static $alias = 'comment';
   public static $columns = [
     'id' => 'id',
     'user_id' => 'userId',

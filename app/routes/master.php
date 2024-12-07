@@ -8,9 +8,14 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 $route = Route::match($requestUri, $requestMethod);
 
 // 404
-if (!$route) {
+if (! $route) {
   AppLoader::controller('ErrorController');
-  (new ErrorController())->notFoundPage();
+
+  $action = Auth::checkLogin()
+    ? 'notFoundPage'
+    : 'homePage';
+
+  ErrorController::$action();
   exit();
 }
 

@@ -52,4 +52,9 @@ class AppLoader extends Loader
   {
     self::include("lib/$path");
   }
+
+  public static function routeAccess($path)
+  {
+    self::include("routes/Access/$path");
+  }
 }

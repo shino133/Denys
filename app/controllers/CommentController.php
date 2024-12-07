@@ -26,7 +26,7 @@ class CommentController extends BaseController
       $newCommentId = CommentModel::addComment($data);
       $isSuccess = $newCommentId !== false;
       if ($isSuccess) {
-        $data['comments_id'] = $newCommentId;
+        $data['comment_id'] = $newCommentId;
         Action::run('addPostComment', $data);
       }
 

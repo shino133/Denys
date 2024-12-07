@@ -2,6 +2,7 @@
 class PostModel extends BaseModel
 {
   public static $table = 'posts_table'; // Đặt tên bảng
+  public static $alias = 'post';
   public static $columns = [
     'id' => 'id',
     'user_id' => 'userId',
@@ -27,16 +28,56 @@ class PostModel extends BaseModel
   }
 
   public static function getPosts(
-    $orderBy = 'created_at',
-    $conditions = ['status' => "active"],
-    $limit = 10,
-    $offset = 0
+    string|null $orderBy = 'created_at',
+    array $conditions = ['status' => 'active'],
+    int $limit = 10,
+    int $offset = 0
   ) : array|bool {
+    // Lấy thông tin bảng
+    AppLoader::model('UserModel');
+    AppLoader::model('PostCommentModel');
+    AppLoader::model('PostLikeModel');
 
-    $userTable = "users_table";
-    $postCommentTable = "post_comments_table";
-    $postLikeTable = "post_likes_table";
+    $postCommentTable = PostCommentModel::$table;
+    $postLikeTable = PostLikeModel::$table;
+    $userTable = UserModel::$table;
+    $userAlias = UserModel::$alias;
 
+    $userColumns = self::aliasColumns(columns: UserModel::$columns,
+      table: $userTable, alias: $userAlias, overrides: [
+        'userName' => 'user_userName',
+        'fullName' => 'user_fullName',
+        'avatarUrl' => 'user_avatarUrl',
+      ]);
+
+    $postColumns = self::aliasColumns(columns: self::$columns,
+      table: self::$table, alias: self::$alias, overrides: [
+        'id' => 'post_id',
+        'content' => 'post_content',
+        'mediaType' => 'post_mediaType',
+        'mediaUrl' => 'post_mediaUrl',
+        'status' => 'post_status',
+        'createdAt' => 'post_createdAt',
+        'updatedAt' => 'post_updatedAt',
+        'userId' => 'user_userId',
+      ]);
+
+    // Thêm cột bổ sung
+    $extraColumns = [
+      "COUNT(DISTINCT $postCommentTable.id) AS commentCount",
+      "COUNT(DISTINCT $postLikeTable.postId) AS likeCount",
+    ];
+
+    // Xác định người dùng hiện tại
+    $currentUserId = Auth::getUser()['id'] ?? null;
+    if ($currentUserId) {
+      $extraColumns[] = "MAX($postLikeTable.userId = $currentUserId) AS isLikedByCurrentUser";
+    }
+
+    // Gộp tất cả các cột
+    $columns = array_merge($postColumns, $userColumns, $extraColumns);
+
+    // Cấu hình join
     $joins = [
       [
         'type' => 'INNER',
@@ -55,54 +96,30 @@ class PostModel extends BaseModel
       ]
     ];
 
-    $columns = [
-      self::$table . ".id as post_id",
-      self::$table . ".content as post_content",
-      self::$table . ".mediaType as post_mediaType",
-      self::$table . ".mediaUrl as post_mediaUrl",
-      self::$table . ".status as post_status",
-      self::$table . ".createdAt as post_createdAt",
-      self::$table . ".updatedAt as post_updatedAt",
+    // Xử lý điều kiện
+    $conditionsValid = self::prefixConditions($conditions, self::$table);
 
-      self::$table . ".userId as user_userId",
-      "$userTable.userName as user_userName",
-      "$userTable.fullName as user_fullName",
-      "$userTable.avatarUrl as user_avatarUrl",
-      "COUNT(DISTINCT $postCommentTable.id) as commentCount",
-      "COUNT(DISTINCT $postLikeTable.postId) as likeCount",
-    ];
+    // Xử lý orderBy
+    $orderBy = $orderBy
+      ? self::$table . '.' . self::$columns[$orderBy] . ' DESC'
+      : null;
 
-    $currentUserId = Auth::getUser()['id'];
-    if ($currentUserId) {
-      $columns[] = "MAX($postLikeTable.userId = $currentUserId) as isLikedByCurrentUser";
-    }
-
-    $conditionsValid = [];
-    foreach ($conditions as $field => $value) {
-      $conditionsValid["" . self::$table . ".$field"] = $value;
-    }
-
-    if ($orderBy) {
-      $orderBy = "" . self::$table . "." . self::$columns[$orderBy] . " DESC";
-    }
-
-    $groupBy = "" . self::$table . ".id";
-
+    // Truy vấn
     $data = self::join(
       joins: $joins,
       columns: $columns,
       conditions: $conditionsValid,
       orderBy: $orderBy,
-      limit: (int) $limit,
-      offset: (int) $offset,
-      groupBy: $groupBy
+      limit: $limit,
+      offset: $offset,
+      groupBy: self::$table . '.id'
     );
 
-    if (! isset($data) || $data == false) {
+    if (! $data) {
       return false;
     }
 
-
+    // Thêm cột `timeAgo`
     AppLoader::util('TimeHelper');
     foreach ($data as $key => $post) {
       $data[$key]['timeAgo'] = TimeHelper::timeAgo($post['post_createdAt']);

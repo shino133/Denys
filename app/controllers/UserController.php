@@ -40,6 +40,36 @@ class UserController extends BaseController
     self::render('User/Profile/main');
   }
 
+  public static function profilePublicPage($username = null)
+  {
+    Action::set('reverse', function ($msg, $status = 'error') {
+      Url::setNofi($msg, $status);
+      self::reverse(Url::getQueryString());
+    });
+
+    Action::set('errorEvent', function ($msg = 'Không tìm thấy người dùng') {
+      Action::run('reverse', $msg, 'error');
+    });
+
+    if ($username == null) {
+      return Action::run('errorEvent');
+    }
+
+    $userId = UserModel::find(conditions: [
+      'userName' => $username
+    ], columns: [
+      'id' => 'id'
+    ], limit: 1);
+
+    if (empty($userId)) {
+      return Action::run('errorEvent');
+    }
+
+    $user_id = $userId[0]['id'];
+
+    self::profilePage($user_id);
+  }
+
   public static function uploadAvatar()
   {
     Action::set('reverse', function ($msg, $status = 'error') {
@@ -105,10 +135,10 @@ class UserController extends BaseController
 
     Action::run('reverse', $msg, $status);
   }
-  public static function getProfile($user_id = null)
+  public static function getProfile($user_id = null, $include_userData = true)
   {
     // dumpVar(Auth::getUser());
-    
+
     // Set action
     $user_id ??= Auth::getUser()['id'];
 
@@ -119,17 +149,28 @@ class UserController extends BaseController
 
     AppLoader::model('UserProfileModel');
     // Find user profile
-    Action::set($ac['find'], function () use ($user_id) : array {
-      return UserProfileModel::getProfile(
-        userId: $user_id,
-        limit: 1
-      );
+    Action::set($ac['find'], function ($profileId = null) use ($user_id, $include_userData) : array {
+      $table = UserProfileModel::$table;
+      $conditions = $profileId
+        ? ["$table.id" => $profileId]
+        : ["$table.userId" => $user_id];
+      return $include_userData
+        ? UserProfileModel::getProfile(
+          userId: $user_id,
+          conditions: $conditions,
+          limit: 1
+        )
+        : UserProfileModel::find(
+          conditions: $conditions,
+          limit: 1,
+          include_alias: true
+        );
     });
 
     // Create user profile and Find again
     Action::set($ac['createAndFind'], function () use ($ac, $user_id) : array {
-      UserProfileModel::create(['userId' => $user_id]);
-      return Action::run($ac['find'], $user_id);
+      $profileId = UserProfileModel::create(['userId' => $user_id]);
+      return Action::run($ac['find'], $profileId);
     });
 
     // Get user profile
@@ -138,10 +179,17 @@ class UserController extends BaseController
       $profileData = Action::run($ac['createAndFind']);
     }
 
-    return $profileData[0] ?? [];
+    $profileData = $profileData[0];
+
+    $socialAccounts = $profileData['profile_socialAccounts'];
+    if (isset($socialAccounts)) {
+      $profileData['profile_socialAccounts'] = json_decode($socialAccounts, true);
+    }
+
+    return $profileData;
   }
 
-  public static function getUserById($user_id = null, $conditions = ['status' => 'active'], $limit = 1)
+  public static function getUserById($user_id = null, $conditions = ['status' => 'active'], $limit = 1) : array
   {
     if (isset($user_id) === false) {
       // Get current user from session
@@ -156,22 +204,8 @@ class UserController extends BaseController
     return UserModel::find(conditions: $conditions, limit: $limit);
   }
 
-  public static function getCurrentUserData($conditions = ['status' => 'active']) {
-    $userData = self::getUserById(conditions: $conditions, limit: 1);
-
-    // dumpVar($userData[0]);
-
-    if (empty($userData)) {
-      AppLoader::controller('AuthController');
-      AuthController::redirectToLogin();
-    }
-
-    $userData = $userData[0];
-
-    // Refresh session data
-    Auth::setUser(UserModel::validatePublicData($userData));
-
-
-    return $userData;
+  public static function getCurrentUserData($conditions = ['status' => 'active']) : array
+  {
+    return self::getUserById(conditions: $conditions, limit: 1)[0] ?? [];
   }
 }

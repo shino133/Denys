@@ -2,10 +2,10 @@
 class AutoLogout
 {
 
-  public static function run()
+  public static function run(): bool
   {
     if (!Auth::checkUser()) {
-      return;
+      return false;
     }
 
     $timeCurrent = time();
@@ -13,20 +13,22 @@ class AutoLogout
     $timeOut = 1 * 60; // 1 minutes
 
     if ($timeCurrent - $timeLogin <= $timeOut) {
-      return;
+      return false;
     }
 
     AppLoader::controller('UserController');
-    AppLoader::model('UserModel');
     $userCurrentData = UserController::getCurrentUserData();
-
-    if (empty($userCurrentData)) {
-      Auth::logout();
-      return;
+    
+    if (empty($userCurrentData) == false) {
+      AppLoader::model('UserModel');
+      Auth::setUser(UserModel::validatePublicData($userCurrentData));
+      Auth::setLoginTime();
+      return false;
     }
 
-    Auth::setUser(UserModel::validatePublicData($userCurrentData));
-    Auth::setLoginTime();
+    AppLoader::controller('AuthController');
+    AuthController::redirectToLogin();
+    return true;
   }
 }
 

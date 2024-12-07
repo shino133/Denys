@@ -7,8 +7,11 @@ class Auth extends Authentication
     return self::set("user", $userData);
   }
 
-  public static function getUser()
+  public static function getUser($key = null)
   {
+    if (isset($key)) {
+      return self::get("user")[$key] ?? null;
+    }
     return self::get("user");
   }
 

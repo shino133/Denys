@@ -3,10 +3,11 @@ class BaseModel
 {
   protected static $pdo;
   protected static $table;
+  protected static $alias;
 
   protected static function pdo()
   {
-    if (!self::$pdo) {
+    if (! self::$pdo) {
       // Kết nối tới cơ sở dữ liệu (ví dụ dùng PDO)
       self::$pdo = new PDO(
         dsn: 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME,
@@ -36,15 +37,18 @@ class BaseModel
 
       return $stmt;
     } catch (PDOException $e) {
-      // error_log("Query error: " . $e->getMessage());
-      // throw $e;
-      
+      if (DEV_MODE) {
+        // dumpVar(['sql' => $sql, 'params' => $params], allowWrap: true);
+        error_log("Query error: " . $e->getMessage());
+        throw $e;
+      }
+
       return false;
     }
   }
 
   // Xây dựng SQL clause
-  protected static function buildSqlClause(array $conditions, $clauseType = 'WHERE'): array
+  protected static function buildSqlClause(array $conditions, $clauseType = 'WHERE') : array
   {
     if (empty($conditions)) {
       return ['sql' => '', 'bindings' => []];
@@ -72,13 +76,13 @@ class BaseModel
   }
 
   // Lấy tất cả bản ghi
-  public static function fetchAll($sql, $params = []): array
+  public static function fetchAll($sql, $params = []) : array
   {
     return self::query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
   }
 
   // Lấy một bản ghi
-  public static function fetchOne($sql, $params = []): mixed
+  public static function fetchOne($sql, $params = []) : mixed
   {
     return self::query($sql, $params)->fetch(PDO::FETCH_ASSOC);
   }
@@ -110,7 +114,7 @@ class BaseModel
   }
 
   // Phương thức để tìm bản ghi theo điều kiện
-  public static function find($conditions = [], $columns = ['*'], $limit = null, $orderBy = null, $offset = null): array
+  public static function find($conditions = [], $columns = ['*'], $limit = null, $orderBy = null, $offset = null, $include_alias = false) : array
   {
     $columnsList = implode(', ', $columns);
     $sql = "SELECT $columnsList FROM " . static::$table . " ";
@@ -128,18 +132,31 @@ class BaseModel
     if ($limit) {
       $sql .= " LIMIT " . (int) $limit;
     }
-    
+
     if ($offset) {
       $sql .= " OFFSET " . (int) $offset;
     }
 
 
     // dumpVar(['sql' => $sql, 'params' => $params]);
-    return self::fetchAll($sql, $params);
+
+    $res = self::fetchAll($sql, $params);
+
+    if ($include_alias) {
+      foreach ($res as &$row) {
+        foreach ($row as $key => $value) {
+          $row[static::$alias . '_' . $key] = $value;
+          unset($row[$key]); // Xóa khóa cũ
+        }
+      }
+      unset($row); // Giải phóng tham chiếu
+    }
+    return $res;
+
   }
 
   // Phương thức để tạo một bản ghi mới
-  public static function create($data): bool|string
+  public static function create($data) : bool|string
   {
     $params = [];
     $dataKeys = [];
@@ -160,7 +177,7 @@ class BaseModel
   }
 
   // Phương thức để cập nhật một bản ghi theo ID
-  public static function update($conditions, array $data): bool
+  public static function update($conditions, array $data) : bool
   {
     // Xây dựng SET clause, WHERE clause
     $setClauses = self::buildSqlClause($data, 'SET');
@@ -178,7 +195,7 @@ class BaseModel
   }
 
   // Phương thức để xóa một bản ghi theo ID
-  public static function delete($conditions = []): bool
+  public static function delete($conditions = []) : bool
   {
     $sql = "DELETE FROM " . static::$table . " ";
 
@@ -267,7 +284,7 @@ class BaseModel
     return self::fetchAll($sql, $paramsClause);
   }
 
-  public static function paginate($page = 1, $perPage = 10, $conditions = [], $data = []): array
+  public static function paginate($page = 1, $perPage = 10, $conditions = [], $data = []) : array
   {
     // Đếm tổng số bản ghi
     $total = self::count($conditions);
@@ -280,5 +297,27 @@ class BaseModel
       'last_page' => ceil($total / $perPage),
     ];
   }
+
+  public static function aliasColumns(array $columns, string $table, string $alias, array $overrides = []) : array
+  {
+    return array_map(
+      fn ($column, $key) => isset ($overrides[$key])
+      ? $table . ".$key AS {$overrides[$key]}"
+      : $table . ".$key AS {$alias}_$column",
+      $columns,
+      array_values($columns)
+    );
+  }
+
+  /**
+   * Thêm tiền tố bảng vào điều kiện
+   */
+  public static function prefixConditions(array $conditions, string $table) : array
+  {
+    return array_combine(
+      array_map(fn ($key) => "$table.$key", array_keys($conditions)),
+      array_values($conditions));
+  }
+
 
 }

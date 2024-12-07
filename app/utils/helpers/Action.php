@@ -27,4 +27,13 @@ class Action
 
     return call_user_func_array(self::$storedAction[$key], $args);
   }
+
+  public static function runAuto(callable $callback) : void
+  {
+    try {
+      $callback();
+    } catch (Throwable $e) {
+      echo "Error: " . $e->getMessage();
+    }
+  } 
 }

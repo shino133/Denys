@@ -13,7 +13,7 @@ class PostCommentModel extends BaseModel
   {
     return self::create([
       'postId' => $data['post_id'],
-      'commentsId' => $data['comments_id']
+      'commentsId' => $data['comment_id']
     ]);
   }
 }

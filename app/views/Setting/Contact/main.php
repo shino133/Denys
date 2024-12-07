@@ -1,13 +1,19 @@
 <?php
 
 // dumpVar($extractDataDetails);
-$userData ??= [
+
+$baseUrl = "/user/settings/contact";
+$profileData ??= [
   'id' => 0,
-  'userName' => '',
-  'fullName' => '',
-  'email' => '',
-  'avatarUrl' => '',
-  'role' => '',
+  'userId' => 0,
+  'bannerUrl' => '',
+  'location' => '',
+  'website' => '',
+  'socialAccounts' => '',
+  'bio' => '',
+  'status' => '',
+  'createdAt' => '',
+  'updatedAt' => ''
 ];
 
 ?>
@@ -20,32 +26,38 @@ $userData ??= [
 
       <div class="content">
         <div class="settings-form p-4">
-          <h2>Tài khoản</h2>
-          <form action="/user/settings/account/request" method="POST" class="mt-4 settings-form">
+          <h2>Thông tin liên hệ</h2>
+          <form action="<?= $baseUrl ?>/request" method="POST" class="mt-4 settings-form">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="fullName">Họ và Tên</label>
-                <input type="text" class="form-control" value="<?= $userData['fullName'] ?>" name="fullName"
-                  id="fullName" placeholder="Nhập tên đầy đủ của bạn" />
+                <label for="website">Website</label>
+                <input type="text" class="form-control" value="<?= $profileData['profile_website'] ?>" name="website"
+                  id="website" placeholder="Nhập Website của bạn" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" value="<?= $userData['email'] ?>" name="email" id="email"
-                  placeholder="Nhập email của bạn" />
+                <label for="location">Địa chỉ</label>
+                <input type="email" class="form-control" value="<?= $profileData['profile_location'] ?>" name="location"
+                  id="location" placeholder="Nhập địa chỉ của bạn" />
               </div>
             </div>
 
             <div class="col-md-6">
+              <div class="form-group">
+                <label for="bio">Giới hiệu</label>
+                <textarea class="form-control" name="bio" id="bio" rows="4" placeholder="Một chút thông tin về bạn"><?= $profileData['profile_bio'] ?? '' ?></textarea>
+              </div>
+            </div>
+
+            <h3 class="my-4">Các tài khoản khác</h3>
+
+            <div class="col-md-6">
               <div class="form-row mb-3 align-items-center">
                 <div class="col">
-                  <label for="userName">Username</label>
-                  <input type="text" class="form-control" value="<?= $userData['userName'] ?>" name="userName"
-                    id="userName" aria-describedby="usernameHelp" placeholder="Username" />
-                  <small id="usernameHelp" class="form-text text-muted">
-                    Tên người dùng công khai của bạn. ví dụ: @tennguoidung123
-                  </small>
+                  <label for="facebook">Facebook</label>
+                  <input type="text" class="form-control" value="<?= $profileData['profile_socialAccounts']['facebook'] ?? '' ?>"
+                    name="facebook" id="facebook" placeholder="https://www.facebook.com/tennguoidung" />
                 </div>
               </div>
             </div>
@@ -53,15 +65,24 @@ $userData ??= [
             <div class="col-md-6">
               <div class="form-row mb-3 align-items-center">
                 <div class="col">
-                  <label for="password">Mật khẩu</label>
-                  <input type="password" class="form-control" name="password" id="password"
-                    aria-describedby="passwordHelp" placeholder="Password" />
-                  <small id="passwordHelp" class="form-text text-muted">
-                    Nhập mật khẩu để xác nhận bạn là chủ tài khoản.
-                  </small>
+                  <label for="instagram">Instagram</label>
+                  <input type="text" class="form-control"
+                    value="<?= $profileData['profile_socialAccounts']['instagram'] ?? '' ?>" name="instagram" id="instagram"
+                    placeholder="https://www.instagram.com/tennguoidung" />
                 </div>
               </div>
             </div>
+
+            <div class="col-md-6">
+              <div class="form-row mb-3 align-items-center">
+                <div class="col">
+                  <label for="tiktok">TikTok</label>
+                  <input type="text" class="form-control" value="<?= $profileData['profile_socialAccounts']['tiktok'] ?? '' ?>"
+                    name="tiktok" id="tiktok" placeholder="https://www.tiktok.com/@tennguoidung" />
+                </div>
+              </div>
+            </div>
+
 
             <div class="col-md-6 text-right">
               <button type="submit" class="btn btn-primary btn-sm p-2 sweetalert-success">

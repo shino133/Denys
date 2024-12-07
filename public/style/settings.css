@@ -628,7 +628,7 @@
     float: right;
     width: 60%;
     height: 100%;
-    overflow: hidden;
+    overflow-y: scroll;
     position: relative;
     background-color: #fff
 }

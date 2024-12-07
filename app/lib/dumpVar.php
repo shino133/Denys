@@ -14,7 +14,7 @@ function dumpVar($var, $allowContinue = false, $allowWrap = true)
       font-size: 20px;
       line-height: 1.5;
       <?php if ($allowWrap) { ?>
-        word-wrap: break-word;
+      word-wrap: break-word;
       <?php } ?>
     }
   </style>

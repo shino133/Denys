@@ -2,6 +2,7 @@
 class UserModel extends BaseModel
 {
   public static $table = 'users_table'; // Đặt tên bảng
+  public static $alias = 'user';
   public static $columns = [
     'id' => 'id',
     'user_name' => 'userName',
