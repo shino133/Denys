@@ -11,7 +11,7 @@ class Loader
       $It_does_not_need_to_be_called_again = $include_once;
       extract($extractDataDetails);
 
-      $It_does_not_need_to_be_called_again
+      return $It_does_not_need_to_be_called_again
         ? include_once $fullPath_starts_from_this_file_location
         : include $fullPath_starts_from_this_file_location;
     } else {

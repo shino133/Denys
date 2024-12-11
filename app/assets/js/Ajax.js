@@ -1,71 +1,52 @@
+function errorHandler(jqXHR, textStatus, errorThrown) {
+  console.error("Error Status:", textStatus);
+  console.error("Error Thrown:", errorThrown);
+  console.error("Response Text:", jqXHR.responseText);
+}
+
+const fullUrl = window.location.origin;
+
 class Ajax {
+  static baseUrl = fullUrl.endsWith("/") ? fullUrl : fullUrl + "/";
 
-  static baseUrl = null;
+  static request(method, url, options = {}) {
+    const {
+      data = {}, // Dữ liệu gửi đi
+      dataType = "json", // Kiểu dữ liệu trả về (json, html, text, xml, script, etc.)
+      contentType = "application/json", // Kiểu dữ liệu gửi đi
+      onSuccess = null,
+      onError = null,
+    } = options;
 
-  // Gọi phương thức GET
-  static get(url, params = {}, onSuccess = null, onError = null) {
     $.ajax({
       url: this.baseUrl + url,
-      type: "GET", 
-      data: params,
-      dataType: "json",
+      type: method,
+      data: method === "GET" ? data : JSON.stringify(data),
+      dataType: dataType, // Kiểu dữ liệu trả về
+      contentType: contentType, // Kiểu dữ liệu gửi đi
       success: function (response) {
         if (onSuccess) onSuccess(response);
       },
       error: function (jqXHR, textStatus, errorThrown) {
         if (onError) onError(jqXHR, textStatus, errorThrown);
+        errorHandler(jqXHR, textStatus, errorThrown);
       },
     });
   }
 
-  // Gọi phương thức POST
-  static post(url, data = {}, onSuccess = null, onError = null) {
-    $.ajax({
-      url: this.baseUrl + url,
-      type: "POST",
-      contentType: "application/json",
-      data: JSON.stringify(data),
-      dataType: "json",
-      success: function (response) {
-        if (onSuccess) onSuccess(response);
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        if (onError) onError(jqXHR, textStatus, errorThrown);
-      },
-    });
+  static get(url, params = {}, options = {}) {
+    this.request("GET", url, { data: params, ...options });
   }
 
-  // Gọi phương thức PUT
-  static put(url, data = {}, onSuccess = null, onError = null) {
-    $.ajax({
-      url: this.baseUrl + url,
-      type: "PUT",
-      contentType: "application/json",
-      data: JSON.stringify(data),
-      dataType: "json",
-      success: function (response) {
-        if (onSuccess) onSuccess(response);
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        if (onError) onError(jqXHR, textStatus, errorThrown);
-      },
-    });
+  static post(url, data = {}, options = {}) {
+    this.request("POST", url, { data, ...options });
   }
 
-  // Gọi phương thức DELETE
-  static delete(url, data = {}, onSuccess = null, onError = null) {
-    $.ajax({
-      url: this.baseUrl + url,
-      type: "DELETE",
-      contentType: "application/json",
-      data: JSON.stringify(data),
-      dataType: "json",
-      success: function (response) {
-        if (onSuccess) onSuccess(response);
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        if (onError) onError(jqXHR, textStatus, errorThrown);
-      },
-    });
+  static put(url, data = {}, options = {}) {
+    this.request("PUT", url, { data, ...options });
+  }
+
+  static delete(url, data = {}, options = {}) {
+    this.request("DELETE", url, { data, ...options });
   }
 }

@@ -12,11 +12,3 @@
   </div>
 </div>
 
-<script>
-  const posts = document.querySelectorAll(".new-post");
-  document.getElementById("toggleButton").addEventListener("click", function () {
-    posts.forEach((post) => {
-      post.classList.toggle("d-none");
-    });
-  });
-</script>

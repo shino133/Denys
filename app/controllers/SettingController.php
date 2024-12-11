@@ -23,9 +23,9 @@ class SettingController extends BaseController
   public static function contactPage()
   {
     Constants::settingPage();
-    AppLoader::controller('UserController');
+    AppLoader::controller('UserProfileController');
 
-    $profileData = UserController::getProfile(
+    $profileData = UserProfileController::getProfile(
       user_id: Auth::getUser()['id'],
       include_userData: false
     );
@@ -90,7 +90,7 @@ class SettingController extends BaseController
 
   public static function accountPageRequest()
   {
-    AppLoader::lib('encryptData');
+    AppLoader::lib('hashPass');
     AppLoader::util('DataValidator');
     AppLoader::controller('AuthController');
 
@@ -152,8 +152,12 @@ class SettingController extends BaseController
     }
 
     // Check password
-    $passwordCorrect = decryptData($userCurrentData['password']);
-    if ($postData['password'] !== $passwordCorrect) {
+    $passwordCorrect = checkPass(
+      password: $postData['password'],
+      hash: $userCurrentData['password']
+    );
+
+    if ($passwordCorrect == false) {
       $msg = 'Mật khẩu không chính xác';
       Action::run('errorEvent', $msg);
     }
@@ -203,7 +207,7 @@ class SettingController extends BaseController
 
   public static function passwordPageRequest()
   {
-    AppLoader::lib('encryptData');
+    AppLoader::lib('hashPass');
     AppLoader::util('DataValidator');
     AppLoader::controller('AuthController');
 
@@ -254,14 +258,14 @@ class SettingController extends BaseController
     }
 
     // Check password
-    $userCurrentPassword = decryptData($userCurrentData['password']);
-    if ($userCurrentPassword !== $postData['password']) {
+    $userCurrentPassword = $userCurrentData['password'];
+    if (checkPass($postData['password'], $userCurrentPassword) == false) {
       $msg = 'Mật khẩu không chính xác';
       Action::run('errorEvent', $msg);
     }
 
     // Password encryption
-    $newPassword = encryptData($postData['newPassword']);
+    $newPassword = hashPass($postData['newPassword']);
 
     // Update password
     $res = UserModel::update(

@@ -53,7 +53,14 @@ class PostController extends BaseController
     Action::run('addPost', $data);
   }
 
-  public static function getPostById($postId)
+  public static function postPage($postId){
+    self::setData('posts', self::getPostById($postId));
+
+    Constants::homePage();
+    self::render('Post/main');
+  }
+  
+  public static function getPostById($postId , $conditions = ['status' => 'active'])
   {
     Action::set('reverse', function ($msg, $status = 'error') {
       Url::setNofi($msg, $status);
@@ -67,16 +74,14 @@ class PostController extends BaseController
     });
 
     // Get post 
+    $conditions['id'] = $postId;
     $posts = PostModel::getPosts(
       orderBy: null,
-      conditions: [
-        'id' => $postId,
-        'status' => 'active'
-      ],
+      conditions: $conditions,
       limit: 1,
     );
 
-    if (!$posts) {
+    if (! $posts) {
       Action::run('reverse', 'Không tìm tháy bài viết', 'error');
     }
 
@@ -87,16 +92,15 @@ class PostController extends BaseController
     //Get isLikedByCurrentUser
     $posts[0]['isLikedByCurrentUser'] = $posts[0]['isLikedByCurrentUser'] == 1;
 
-    self::setData('posts', $posts);
-
-    Constants::homePage();
-    self::render('Post/main');
+    return $posts;
   }
 
-  public static function getNewPosts($limit = 10, $useCache = true)
+  public static function getNewPosts($limit = 10, $useCache = true, $offset = 0)
   {
-    Action::set('getNewPosts', function () use ($limit) {
-      return PostModel::getPosts('created_at', ['status' => "active"], $limit);
+    $timeResetCache = 10; // seconds
+
+    Action::set('getNewPosts', function () use ($limit, $offset) {
+      return PostModel::getPosts('created_at', ['status' => "active"], $limit, $offset);
     });
 
     //WHEN: Don't use cache
@@ -117,7 +121,25 @@ class PostController extends BaseController
     }
 
     // Save to cache
-    Cache::set('newPosts', $posts, 60, 'posts/');
+    Cache::set(
+      key: 'newPosts',
+      data: $posts,
+      expiration: $timeResetCache,
+      cacheFolder: 'posts/'
+    );
     return $posts;
+  }
+
+  public static function renderNewPosts($offset = 0, $limit = 10)
+  {
+    $offset = max(0, (int) $offset) * $limit;
+
+    $posts = self::getNewPosts(
+      limit: $limit,
+      useCache: false,
+      offset: $offset
+    );
+
+    return AppLoader::component("Post/NewPosts", ['posts' => $posts]);
   }
 }

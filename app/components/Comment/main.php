@@ -11,10 +11,10 @@ $self_fullName = Auth::getUser()['full_name'] ?? 'Anonymous';
           <ul class="media-list comments-list">
             <li class="media comment-form">
               <a href="/user/profile" class="pull-left">
-                <?php if ($self_avatarUrl): ?>
+                <?php if ($self_avatarUrl) : ?>
                   <img src="<?= "/assets/img/users/$self_avatarUrl" ?>" alt="Online user" class="mr-3 post-user-image"
                     style="height: 30px; width: 30px;" />
-                <?php else: ?>
+                <?php else : ?>
                   <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image"
                     style="height: 30px; width: 30px;"><span class=""><?= strtoupper($self_fullName)[0] ?></span></div>
                 <?php endif; ?>
@@ -31,9 +31,10 @@ $self_fullName = Auth::getUser()['full_name'] ?? 'Anonymous';
 
 
 
-            <?php foreach ($comments as $comment): ?>
+            <?php foreach ($comments as $comment) : ?>
               <li class="media">
-                <?php AppLoader::component("Comment/Item", ['comment' => $comment]) ?>
+                <?php AppLoader::component("Comment/Item", ['comment' => $comment,
+                  'postId' => $postId]) ?>
               </li>
             <?php endforeach; ?>
 

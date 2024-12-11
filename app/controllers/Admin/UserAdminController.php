@@ -261,7 +261,7 @@ class UserAdminController extends AdminBaseController
       return;
     }
 
-    $userData = UserModel::search($keyword, 'OR');
+    $userData = UserModel::search($keyword, 'OR', []);
 
     $userData = UserModel::getUsers(
       orderBy: 'updated_at',

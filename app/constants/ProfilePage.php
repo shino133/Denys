@@ -13,5 +13,6 @@ Script::addExternalScript(src: "/assets/js/menuToggle.js");
 Script::addExternalScript(src: "/assets/js/uploadAvatarProfile.js", attributes: [], position: 'body');
 Script::addExternalScript(src: "/assets/js/uploadBannerProfile.js", attributes: [], position: 'body');
 Script::addExternalScript(src: "/assets/js/highlightActiveLink.js", attributes: [], position: 'body');
+Script::addExternalScript(src: "/assets/js/followButton.js", attributes: [], position: 'body');
 
 Store::set('bodyClass', 'profile');

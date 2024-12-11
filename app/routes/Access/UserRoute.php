@@ -13,9 +13,15 @@ Route::post('/user/settings/contact/request', 'SettingController@contactPageRequ
 Route::post('/user/settings/password/request', 'SettingController@passwordPageRequest');
 
 // User
-Route::get('/user/profile', 'UserController@profilePage');
-Route::post('/user/profile/avatar/upload/request', 'UserController@uploadAvatar');
-Route::post('/user/profile/banner/upload/request', 'UserController@uploadBanner');
+Route::get('/user/profile', 'UserProfileController@profilePage');
+Route::get('/user/profile', 'UserProfileController@profilePage');
+Route::post('/user/profile/avatar/upload/request', 'UserProfileController@uploadAvatar');
+Route::post('/user/profile/banner/upload/request', 'UserProfileController@uploadBanner');
+
+
+// Follow
+Route::post('/user/follow/request/@{username}', 'UserFollowController@followRequest');
+Route::post('/user/unfollow/request/@{username}', 'UserFollowController@unfollowRequest');
 
 
 // Post CRUD
@@ -23,7 +29,17 @@ Route::post('/post/request/add', 'PostController@addPost');
 Route::post('/post/request/edit/{id}', 'PostController@editPost');
 Route::post('/post/request/destroy/{id}', 'PostController@destroyPost');
 
-Route::get('/post/{postId}', 'PostController@getPostById');
+Route::get('/post/{postId}', 'PostController@postPage');
+Route::get('/post/new/{offset}', 'PostController@renderNewPosts');
 
 // Comment
 Route::post('/comment/request/add/{postId}', 'CommentController@addComment');
+
+// Like
+Route::post('/like/request/add/{postId}', 'LikeController@addLike');
+Route::delete('/like/request/destroy/{postId}', 'LikeController@destroyLike');
+
+// Search
+Route::get('/search', 'SearchController@index');
+Route::post('/search/request', 'SearchController@searchData');
+

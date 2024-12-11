@@ -4,7 +4,7 @@ class AppLoader extends Loader
   // Optional helpers
   public static function view($path, $data = [])
   {
-    self::include("views/$path", $data);
+    return self::include("views/$path", $data);
   }
 
   public static function model($path, $isIncludeBase = true)
@@ -40,12 +40,12 @@ class AppLoader extends Loader
 
   public static function component($path, $data = [], $include_once = false)
   {
-    self::include("components/$path", $data, $include_once);
+    return self::include("components/$path", $data, $include_once);
   }
 
   public static function constant($path)
   {
-    self::include("constants/$path");
+    return self::include("constants/$path");
   }
 
   public static function lib($path)

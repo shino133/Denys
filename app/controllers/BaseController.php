@@ -10,7 +10,7 @@ class BaseController
 
   protected static function setAllData($data)
   {
-    self::$data = $data;
+    self::$data = array_merge(self::$data, $data);
   }
 
   protected static function render($view, $useBaseLayout = true, $pathLayout = 'layout')

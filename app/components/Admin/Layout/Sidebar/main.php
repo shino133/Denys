@@ -29,18 +29,6 @@
           <span class="nav-link-text ms-1">Quản lý bài viết</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-dark" href="/admin/manager/group">
-          <i class="material-symbols-rounded opacity-5">group</i>
-          <span class="nav-link-text ms-1">Quản lý nhóm</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-dark" href="/admin/manager/event">
-          <i class="material-symbols-rounded opacity-5">event</i>
-          <span class="nav-link-text ms-1">Quản lý sự kiện</span>
-        </a>
-      </li>
 
       <li class="nav-item">
         <a class="nav-link text-dark" href="../pages/notifications.html">
@@ -60,7 +48,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-dark" href="/admin/user/settings">
+        <a class="nav-link text-dark" href="/admin/settings">
           <i class="material-symbols-rounded opacity-5">settings</i>
           <span class="nav-link-text ms-1">Settings</span>
         </a>

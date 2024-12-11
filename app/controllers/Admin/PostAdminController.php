@@ -26,8 +26,7 @@ class PostAdminController extends AdminBaseController
       data: $postData
     );
 
-    // dumpVar($postData);
-
+    
     self::setAllData(data: [
       'postData' => $postData['data'],
       'totalPage' => $postData['total'],
@@ -37,7 +36,7 @@ class PostAdminController extends AdminBaseController
       'nextPage' => min($postData['current_page'] + 1, $postData['last_page']),
       'previousPage' => max($postData['current_page'] - 1, 1),
     ]);
-
+    
     self::renderAdmin('Post/main');
   }
 
@@ -45,6 +44,70 @@ class PostAdminController extends AdminBaseController
     ConstantsAdmin::postPage();
 
     self::renderAdmin('Post/add');
+  }
+
+  public static function editPage($id) {
+    ConstantsAdmin::postPage();
+    AppLoader::controller('PostController');
+
+    [$post] = PostController::getPostById($id, []);
+
+    self::setAllData(data: [
+      'post' => $post
+    ]);
+
+    self::renderAdmin('Post/edit');
+  }
+
+  public static function editData($id) {
+    AdminLoader::util('TimeHelper');
+    AdminLoader::util('DataValidator');
+
+    Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
+      Url::setNofi(msg: $msg, status: $status);
+      self::reverse(Url::getQueryString());
+    });
+
+    $data = [
+      'content' => $_POST['content'],
+      'status' => isset($_POST['status'])? 'active' : 'delete',
+      'updatedAt' => TimeHelper::getNow('Y-m-d H:i:s'),
+    ];
+
+    // Validate
+    if (DataValidator::check($data) == false) {
+      Action::run('reverse', 'Vui lòng không để trống', 'error');
+    }
+
+    $postData = PostModel::find(conditions: ['id' => $id], limit: 1)[0] ?? null;
+
+    if (empty($postData)) {
+      Action::run('reverse', 'Không tìm thấy bài viết', 'error');
+    }
+
+    // Upload image
+    $uploadImage = [];
+    if (isset($_FILES["mediaUrl"]) && $_FILES["mediaUrl"]['name'] != '') {
+      AppLoader::controller('AssetController');
+      $uploadImage = AssetController::upImage("mediaUrl");
+    }
+
+    if (isset($uploadImage['success']) && $uploadImage['success'] === false) {
+      Action::run('reverse', 'Lỗi tải ảnh', 'error');
+    }
+
+    $data['mediaUrl'] = $uploadImage['fileName'] ?? $postData['mediaUrl'];
+
+    $res = PostModel::update(conditions: [
+      'id' => $id
+    ], data: $data);
+
+    [$msg, $status] = $res
+      ? ['Updated', 'success']
+      : ['Something went wrong', 'error'];
+
+    Action::run('reverse', $msg, $status);
+    
   }
 
   public static function addData() {
@@ -62,7 +125,7 @@ class PostAdminController extends AdminBaseController
       'updatedAt' => TimeHelper::getNow('Y-m-d H:i:s'),
     ];
 
-    dumpVar($data);
+    // dumpVar($data);
     
   }
   public static function destroyData($id)

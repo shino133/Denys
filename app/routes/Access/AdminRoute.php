@@ -8,6 +8,10 @@ Route::get('/admin/dashboard', 'Admin/HomeAdminController@dashboard');
 // Route::get('/admin/user/settings', 'Admin/HomeAdminController@index');
 Route::get('/admin/manager/user/search', 'Admin/UserAdminController@searchData');
 
+Route::get('/admin/settings', 'Admin/SettingController@index');
+Route::get('/admin/settings/password', 'Admin/SettingController@passwordPage');
+Route::post('/admin/settings/password/request', 'SettingController@passwordPageRequest');
+
 Route::get("/admin/team-manager", "Admin/TeamManagerAdminController@index");
 
 // CRUD
@@ -19,14 +23,6 @@ $routerCRUD = [
   'post' => [
     'url' => '/admin/manager/post',
     'controller' => 'Admin/PostAdminController',
-  ],
-  'group' => [
-    'url' => '/admin/manager/group',
-    'controller' => 'Admin/GroupAdminController',
-  ],
-  'event' => [
-    'url' => '/admin/manager/event',
-    'controller' => 'Admin/EventAdminController',
   ],
   'comment' => [
     'url' => '/admin/manager/comment',

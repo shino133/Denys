@@ -1,8 +1,8 @@
 <div class="media text-muted pt-3">
-  <?php if ($user_avatarUrl): ?>
+  <?php if ($user_avatarUrl) : ?>
     <img src="<?= "/assets/img/users/$user_avatarUrl" ?>" alt="Online user" class="mr-3 post-user-image"
       style="height: 40px; width: 40px;" />
-  <?php else: ?>
+  <?php else : ?>
     <div class="mr-2 d-flex justify-content-center align-items-center bg-orange text-white post-user-image"
       style="height: 40px; width: 40px;"><span class=""><?= strtoupper($user_fullName)[0] ?></span></div>
   <?php endif; ?>
@@ -74,15 +74,18 @@
   </p>
 </div>
 <div class="d-block mt-3">
-  <?php if ($post_mediaUrl): ?>
+  <?php if ($post_mediaUrl) : ?>
     <img src="<?= "/assets/img/posts/$post_mediaUrl" ?>" class="post-content border-content" alt="post image" />
   <?php endif; ?>
 </div>
 <div class="mb-3">
   <!-- Reactions -->
   <div class="argon-reaction">
-    <button type="button" class="btn post-card-buttons like-btn <?= $isLikedByCurrentUser ? 'active' : '' ?>"
-      id="reactions"><i class="bx bxs-like mr-2"></i><?= $likeCount ?></button>
+    <?php AppLoader::component("Post/LikeBtn", [
+      'isLikedByCurrentUser' => $isLikedByCurrentUser,
+      'likeCount' => $likeCount,
+      'post_id' => $post_id
+    ]) ?>
   </div>
   <a href="<?= BASE_URL . "post/$post_id" ?>" class="btn post-card-buttons" id="show-comments"><i
       class="bx bx-message-rounded mr-2"></i>

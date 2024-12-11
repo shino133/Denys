@@ -11,8 +11,8 @@
     AdminLoader::component('DataCard', [
       'userCount' => $userCount,
       'postCount' => $postCount,
-      'groupCount' => $groupCount,
-      'eventCount' => $eventCount
+      'commentCount' => $commentCount,
+      'likeCount' => $likeCount
     ]) ?>
   </div>
 

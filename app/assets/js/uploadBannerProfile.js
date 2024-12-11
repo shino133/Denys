@@ -1,6 +1,6 @@
 // Lấy các phần tử cần thiết
 const bannerInput = document.getElementById("banner");
-const bannerImage = document.querySelector(".profile-cover img");
+const bannerImage = document.getElementById("profileBanner");
 let defaultBanner = bannerImage.src; // URL của ảnh banner mặc định
 let tempBannerUrl = ""; // URL tạm thời của ảnh banner
 

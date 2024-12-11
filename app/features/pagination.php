@@ -1,5 +1,5 @@
 <?php
-function pagination($params = []) {
+function pagination($params = null) {
   $params ??= Store::getQueryParams();
 
   function validatePageParams($params, $var)

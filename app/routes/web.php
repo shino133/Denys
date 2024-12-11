@@ -5,7 +5,7 @@
 Route::get('/', 'HomeController@index');
 Route::get('/logout', 'AuthController@logout');
 Route::get('/404', 'ErrorController@notFoundPage');
-Route::get('/@{username}', 'UserController@profilePublicPage');
+Route::get('/@{username}', 'UserProfileController@profilePublicPage');
 
 Route::get('/user/login', 'AuthController@login');
 Route::get('/user/register', 'AuthController@register');

@@ -25,3 +25,7 @@ Script::addExternalScript(src: "/public/js/bootstrap/bootstrap.min.js");
 
 Script::addExternalScript(src: "/public/js/sweetalert2/queryHandler.js");
 Script::addExternalScript(src: "/public/js/sweetalert2/sweetalertSuccess.js");
+Script::addExternalScript(src: "/assets/js/Ajax.js");
+Script::addExternalScript(src: "/assets/js/likePost.js");
+
+Store::set('bodyClass', 'newsfeed');

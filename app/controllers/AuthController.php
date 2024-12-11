@@ -43,7 +43,7 @@ class AuthController extends BaseController
 
   public static function loginRequest()
   {
-    AppLoader::lib('encryptData');
+    AppLoader::lib('hashPass');
 
     Action::set('errorEvent', function ($msg = 'Something went wrong') {
       Url::setNofi(msg: $msg, status: 'error');
@@ -79,8 +79,9 @@ class AuthController extends BaseController
       Action::run('errorEvent', $msg);
     }
 
-    $userData['password'] = decryptData($userData['password']);
-    if (! ($username == $userData['userName'] && $password == $userData['password'])) {
+    // Check password
+    $isCorrectPassword = checkPass($password, $userData['password']);
+    if (! ($username == $userData['userName'] && $isCorrectPassword)) {
       $msg = 'Sai tài khoản hoặc mật khẩu';
       Action::run('errorEvent', $msg);
     }
@@ -124,7 +125,7 @@ class AuthController extends BaseController
   public static function registerRun() : bool|string
   {
     AppLoader::util('DataValidator');
-    AppLoader::lib('encryptData');
+    AppLoader::lib('hashPass');
 
     $data = [
       'username' => $_POST['username'],
@@ -184,7 +185,7 @@ class AuthController extends BaseController
       Action::run('errorEvent', $msg);
     }
 
-    $data['password'] = encryptData($data['password']);
+    $data['password'] = hashPass($data['password']);
     $result = UserModel::create($data);
     if ($result == false) {
       Action::run('errorEvent', $msg);

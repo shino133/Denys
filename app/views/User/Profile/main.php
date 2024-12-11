@@ -17,7 +17,7 @@ $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
 	<div class="user-profile">
 		<!-- Banner  -->
 		<div class="profile-header-background overflow-hidden">
-			<img src="<?= $profileData['profile_bannerUrl'] ?>" alt="Profile Header Background"
+			<img src="<?= $profileData['profile_bannerUrl'] ?>" alt="Profile Header Background" id="profileBanner"
 				class="w-100 object-fit-cover" />
 			<?php if ($isCurrentUser) : ?>
 				<form action="/user/profile/banner/upload/request" method="post" enctype="multipart/form-data"
@@ -47,7 +47,9 @@ $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
 					<div class="row">
 						<div class="col-md-9 profile-center">
 							<!-- Navbar -->
-							<?php AppLoader::component("Profile/Navbar"); ?>
+							<?php AppLoader::component("Profile/Navbar", [
+								"baseUrl" => $profile_baseUrl ?? null
+							]); ?>
 
 							<?php if (Auth::checkUser()) : ?>
 								<!-- New Post -->
@@ -59,13 +61,17 @@ $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
 
 							<div class="posts-section mb-5">
 								<?php if (! empty($postData)) : ?>
-									<?php foreach ($postData as $post) : ?>
-										<div class="p-3">
-											<div class="post border-card border-bottom p-3 bg-white shadow-lg" id="post-card-<?= $post_id ?>">
-												<?php AppLoader::component("Post/Card", $post); ?>
+									<div id="post-container">
+										<div id="post-wrapper-0">
+											<?php foreach ($postData as $post) : ?>
+											<div class="p-3">
+												<div class="post border-card border-bottom p-3 bg-white shadow-lg" id="post-card-<?= $post_id ?>">
+													<?php AppLoader::component("Post/Card", $post); ?>
+												</div>
 											</div>
+										<?php endforeach; ?>
 										</div>
-									<?php endforeach; ?>
+									</div>
 									<?php AppLoader::component("LoadPostBtn") ?>
 								<?php else : ?>
 									<div class="pt-3">

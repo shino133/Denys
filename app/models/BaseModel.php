@@ -8,17 +8,30 @@ class BaseModel
   protected static function pdo()
   {
     if (! self::$pdo) {
-      // Kết nối tới cơ sở dữ liệu (ví dụ dùng PDO)
-      self::$pdo = new PDO(
-        dsn: 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME,
-        username: DB_USER,
-        password: DB_PASSWORD
-      );
-      self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      try {
+        // Cấu hình kết nối
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+        $username = DB_USER;
+        $password = DB_PASSWORD;
+
+        // Tùy chọn PDO
+        $options = [
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Chế độ báo lỗi
+          PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // Fetch kiểu associative array
+          PDO::ATTR_PERSISTENT => true, // Sử dụng Persistent Connections
+        ];
+
+        // Khởi tạo PDO
+        self::$pdo = new PDO($dsn, $username, $password, $options);
+      } catch (PDOException $e) {
+        // Xử lý lỗi kết nối
+        throw new RuntimeException("Lỗi kết nối cơ sở dữ liệu: " . $e->getMessage());
+      }
     }
 
     return self::$pdo;
   }
+
 
   // Truy vấn SQL
   protected static function query($sql, $params = [])
@@ -62,6 +75,7 @@ class BaseModel
       'VALUES' => ',',
       'SET' => ',',
       'JOIN' => 'ON',
+      'WHERE_OR' => 'OR',
     ][$clauseType] ?? 'AND';
 
     foreach ($conditions as $column => $value) {
@@ -224,7 +238,7 @@ class BaseModel
   }
 
 
-  public static function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null, $offset = null, $groupBy = null)
+  public static function join($joins, $columns = ['*'], $conditions = [], $orderBy = null, $limit = null, $offset = null, $groupBy = null, $clauseType = 'WHERE')
   {
     $columnString = implode(', ', $columns);
     $sql = "SELECT $columnString FROM " . static::$table . " ";
@@ -235,7 +249,7 @@ class BaseModel
     }
 
     // Thêm điều kiện WHERE nếu có
-    $whereData = self::buildSqlClause($conditions);
+    $whereData = self::buildSqlClause(conditions: $conditions, clauseType: $clauseType);
     $sql .= $whereData['sql'];
 
     // Thêm GROUP BY nếu có
@@ -266,18 +280,32 @@ class BaseModel
     return self::fetchAll($sql, $params);
   }
 
-  public static function search($keyword = [], $op = 'AND')
+  public static function search($keyword = [], $op = 'AND', $conditions=['status' => 'active'], $limit = null)
   {
-    $sql = "SELECT * FROM " . static::$table . " WHERE ";
+    if (empty($keyword)) return [];
+    $sql = "SELECT * FROM " . static::$table;
 
     $keywordClause = [];
     $paramsClause = [];
+    if (empty($conditions) == false) {
+      $conditionsClause = self::buildSqlClause($conditions);
+      $sql .= $conditionsClause['sql'] . " AND ";
+      $paramsClause = $conditionsClause['bindings'];
+    } else {
+      $sql .= " WHERE ";
+    }
+
     foreach ($keyword as $key => $value) {
       $keywordClause[] = "$key LIKE :$key";
       $paramsClause[":$key"] = "%$value%";
     }
 
     $sql .= implode(" $op ", $keywordClause);
+
+    if ($limit) {
+      $sql .= " LIMIT :limit";
+      $paramsClause[':limit'] = $limit;
+    }
 
     // dumpVar(['sql' => $sql , 'params' => $paramsClause]);
 

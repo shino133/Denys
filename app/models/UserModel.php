@@ -65,7 +65,7 @@ class UserModel extends BaseModel
     );
   }
 
-  public static function getUserById($id): array
+  public static function getUserById($id) : array
   {
     $userData = self::find(
       conditions: ['id' => $id],
@@ -114,7 +114,7 @@ class UserModel extends BaseModel
     );
   }
 
-  public static function getByUserName($userName): array
+  public static function getByUserName($userName) : array
   {
     return self::find(
       conditions: ['userName' => $userName],

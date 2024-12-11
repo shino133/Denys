@@ -13,15 +13,15 @@ class HomeAdminController extends AdminBaseController
     AdminLoader::controller('TeamManagerAdminController');
     AdminLoader::model('UserModel');
     AdminLoader::model('PostModel');
-    AdminLoader::model('GroupModel');
-    AdminLoader::model('EventModel');
+    AdminLoader::model('CommentModel');
+    AdminLoader::model('PostLikeModel');
 
     // Set data for View
     $statisticalData = [
       'userCount' => UserModel::count(),
       'postCount' => PostModel::count(),
-      'groupCount' => GroupModel::count(),
-      'eventCount' => EventModel::count()
+      'commentCount' => CommentModel::count(),
+      'likeCount' => PostLikeModel::count()
     ];
 
     $teamManagerData = TeamManagerAdminController::setTableData();

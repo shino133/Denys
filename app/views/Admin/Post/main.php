@@ -36,11 +36,6 @@ $activeTextColor = function ($status) {
                   <i class="material-symbols-rounded opacity-5">refresh</i>
                   <span>Refresh</span>
                 </button>
-                <a href="<?= $baseUrl ?>/add"
-                  class="text-info font-weight-bold text-xs d-flex justify-content-center align-items-center">
-                  <i class="material-symbols-rounded opacity-5">add</i>
-                  <span>Thêm</span>
-                </a>
               </div>
             </th>
           </tr>

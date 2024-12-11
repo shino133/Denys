@@ -247,7 +247,12 @@ button:focus {
   border: 0;
 }
 
-.newsfeed-left-sidebar li.sd-active {
+.newsfeed-left-sidebar li.list-links-item:hover {
+  border-left: 4px solid #219b9d;
+  background-color: #f6f6f6;
+}
+
+.newsfeed-left-sidebar li.active {
   border-left: 4px solid #219b9d;
   background-color: #f6f6f6;
 }
@@ -502,10 +507,6 @@ body::-webkit-scrollbar-thumb:hover {
   background-color: #219b9d !important;
 }
 
-#navbar-main {
-  padding: 0px 1rem;
-}
-
 #navbar-main .navbar-brand {
   display: flex;
   align-items: center;
@@ -647,10 +648,6 @@ body::-webkit-scrollbar-thumb:hover {
 .comment-form-btn-send:hover {
   background-color: #eb7a09;
   color: #ffffff;
-}
-
-.commentLR button {
-  padding: 0 0 1rem;
 }
 
 /* Online users section */
@@ -1570,7 +1567,6 @@ img.settings-icon {
 .border-content {
   border-radius: 10px;
 }
-
 
 .object-fit-cover {
   object-fit: cover;

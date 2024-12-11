@@ -12,3 +12,7 @@ const APP_KEY = "your_custom_secret_key";
 const APP_CACHE_PATH = __DIR__ . "/cache/";
 
 const TIMEZONE = "UTC";
+
+const API_WEATHER_KEY = "your_api_key";
+
+const DEV_MODE = true;

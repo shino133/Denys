@@ -25,7 +25,7 @@
               <div class="input-group">
                 <input type="password" class="form-control" name="password" placeholder="Password" />
                 <div class="input-group-prepend">
-                  <button type="button" class="btn btn-sm toggle-password">
+                  <button type="button" class="btn btn-sm btn-light toggle-password">
                     Hiện
                   </button>
                 </div>
@@ -52,12 +52,7 @@
   </div>
   <div class="col-md-6 auth-bg-image d-flex justify-content-center align-items-center">
     <div class="auth-left-content mt-5 mb-5 text-center">
-      <div class="weather-small text-white">
-        <p class="current-weather">
-          <i class="bx bx-sun"></i> <span>24&deg;</span>
-        </p>
-        <p class="weather-city">Hà Nam</p>
-      </div>
+      <?php AppLoader::component("ApiWeather") ?>
       <div class="text-white mt-5 mb-5">
         <h2 class="create-account mb-3">Denys</h2>
         <p>

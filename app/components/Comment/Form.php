@@ -6,10 +6,7 @@
         <input type="file" id="commentImage" name="comment_image" hidden>
 
         <div class="input-group-btn ml-2">
-          <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top"
-            title="Tooltip on top">
-            <i class="bx bxs-smiley-happy"></i>
-          </button>
+          
           <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top"
             title="Tooltip on top">
             <i class="bx bx-camera"></i>

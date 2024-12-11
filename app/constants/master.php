@@ -30,4 +30,15 @@ class Constants
     self::baseTag();
     AppLoader::constant('SettingPage');
   }
+
+  public static function searchPage()
+  {
+    self::baseTag();
+    AppLoader::constant('SearchPage');
+  }
+
+  public static function sidebarHomePage()
+  {
+    return AppLoader::constant('SidebarHomePage');
+  }
 }

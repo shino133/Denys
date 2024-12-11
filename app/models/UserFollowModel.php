@@ -3,6 +3,7 @@
 class UserFollowModel extends BaseModel
 {
   public static $table = 'user_follows_table'; // Đặt tên bảng
+  public static $alias = 'user_follow';
   public static $columns = [
     'id' => 'id',
     'user_id' => 'userId',

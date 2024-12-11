@@ -52,9 +52,17 @@ $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
   <?php if ($isCurrentUser == false) : ?>
     <div class="intro mt-4">
       <div class="row g-3">
-        <button type="button" class="btn btn-outline-primary rounded-pill mx-2 col">
-          <i class="bx bx-plus"></i> Follow
-        </button>
+        <?php if ($profileData['isFollowing'] == false) : ?>
+          <button type="button" class="btn btn-outline-primary rounded-pill mx-2 col" id="followButton">
+            <i class="bx bx-plus" id="followButtonIcon"></i>
+            <span id="followButton@<?= $profileData['user_userName'] ?>">Follow</span>
+          </button>
+        <?php else : ?>
+          <button type="button" class="btn btn-outline-primary rounded-pill mx-2 col followed" id="followButton">
+            <i class="bx bx-check" id="followButtonIcon"></i>
+            <span id="followButton@<?= $profileData['user_userName'] ?>">Following</span>
+          </button>
+        <?php endif; ?>
 
         <button type="button" class="btn btn-primary text-white rounded-pill mx-2 col" data-toggle="modal"
           data-target="#newMessageModal">

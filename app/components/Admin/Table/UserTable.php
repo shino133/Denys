@@ -49,7 +49,7 @@ $roleBadgeColor = function ($role) {
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($userData as $data): ?>
+      <?php foreach ($userData as $data) : ?>
         <tr>
           <!-- Họ và Tên -->
           <td>
@@ -83,31 +83,35 @@ $roleBadgeColor = function ($role) {
             </span>
           </td>
           <!-- Hành động -->
-          <td class="align-middle">
-            <div class="d-flex justify-content-center align-items-center gap-3">
-              <a href="<?= $baseUrl ?>/<?= $data['id'] ?>/edit"
-                class="text-success font-weight-bold text-xs d-flex justify-content-center align-items-center">
-                <i class="material-symbols-rounded opacity-5">edit</i>
-                <span>Sửa</span>
-              </a>
-              <a href="<?= $baseUrl ?>/<?= $data['id'] ?>/destroy/request"
-                class="text-danger font-weight-bold text-xs d-flex justify-content-center align-items-center sweetalert-success">
-                <i class="material-symbols-rounded opacity-5">delete</i>
-                <span>Xoá</span>
-              </a>
-            </div>
-          </td>
+          <?php if (isset($data['id']) && $data['id'] !== Auth::getUser('id') && $data['role'] !== 'editor') : ?>
+            <td class="align-middle">
+              <div class="d-flex justify-content-center align-items-center gap-3">
+                <a href="<?= $baseUrl ?>/<?= $data['id'] ?>/edit"
+                  class="text-success font-weight-bold text-xs d-flex justify-content-center align-items-center">
+                  <i class="material-symbols-rounded opacity-5">edit</i>
+                  <span>Sửa</span>
+                </a>
+                <a href="<?= $baseUrl ?>/<?= $data['id'] ?>/destroy/request"
+                  class="text-danger font-weight-bold text-xs d-flex justify-content-center align-items-center sweetalert-success">
+                  <i class="material-symbols-rounded opacity-5">delete</i>
+                  <span>Xoá</span>
+                </a>
+              </div>
+            </td>
+          <?php endif; ?>
         </tr>
       <?php endforeach; ?>
     </tbody>
   </table>
 
-  <?php AppLoader::component('NavPagination', [
-    'baseUrl' => $baseUrl,
-    'totalPage' => $totalPage,
-    'currentPage' => $currentPage,
-    'lastPage' => $lastPage,
-    'nextPage' => $nextPage,
-    'previousPage' => $previousPage,
-  ]) ?>
+  <?php if (empty($userData) == false) : ?>
+    <?php AppLoader::component('NavPagination', [
+      'baseUrl' => $baseUrl,
+      'totalPage' => $totalPage,
+      'currentPage' => $currentPage,
+      'lastPage' => $lastPage,
+      'nextPage' => $nextPage,
+      'previousPage' => $previousPage,
+    ]) ?>
+  <?php endif; ?>
 </div>
