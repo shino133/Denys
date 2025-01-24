@@ -1,9 +1,13 @@
 <?php
-Title::set(content: APP_NAME . ' - Settings');
+use App\Utils\Helpers\Link;
+use App\Utils\Helpers\Script;
+use App\Utils\Helpers\Title;
 
-Link::addStylesheet(href: '/public/style/settings.css');
-Link::addStylesheet(href: '/public/style/forms.css');
-Link::addStylesheet(href: '/public/style/media.css');
+Title::set(content: APP_NAME.' - Settings');
+
+Link::addStylesheet(href: '/style/settings.css');
+Link::addStylesheet(href: '/style/forms.css');
+Link::addStylesheet(href: '/style/media.css');
 
 Script::addExternalScript(src: "/assets/js/menuToggle.js");
-Script::addExternalScript(src: "/public/js/components/components.js");
+Script::addExternalScript(src: "/js/components/components.js");

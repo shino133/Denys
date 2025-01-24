@@ -1,14 +1,19 @@
 <?php
-Title::set(content: APP_NAME . ' - Profile');
+use App\Utils\Helpers\Link;
+use App\Utils\Helpers\Script;
+use App\Utils\Helpers\Store;
+use App\Utils\Helpers\Title;
 
-Link::addStylesheet(href: "/public/style/profile.css");
-Link::addStylesheet(href: "/public/style/media.css");
+Title::set(content: APP_NAME.' - Profile');
 
-Script::addExternalScript(src: "/public/js/load.js", attributes: ["type" => "text/javascript"], position: 'head');
+Link::addStylesheet(href: "/style/profile.css");
+Link::addStylesheet(href: "/style/media.css");
+
+Script::addExternalScript(src: "/js/load.js", attributes: ["type" => "text/javascript"], position: 'head');
 Script::addExternalScript(src: "/assets/js/imagePreview.js");
 
-Script::addExternalScript(src: "/public/js/app.js", attributes: [], position: 'body');
-Script::addExternalScript(src: "/public/js/components/components.js", attributes: [], position: 'body');
+Script::addExternalScript(src: "/js/app.js", attributes: [], position: 'body');
+Script::addExternalScript(src: "/js/components/components.js", attributes: [], position: 'body');
 Script::addExternalScript(src: "/assets/js/menuToggle.js");
 Script::addExternalScript(src: "/assets/js/uploadAvatarProfile.js", attributes: [], position: 'body');
 Script::addExternalScript(src: "/assets/js/uploadBannerProfile.js", attributes: [], position: 'body');

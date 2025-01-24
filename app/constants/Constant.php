@@ -1,5 +1,9 @@
 <?php
-class Constants
+namespace App\Constants;
+
+use App\Features\AppLoader;
+
+class Constant
 {
   // User pages
   public static function baseTag()
