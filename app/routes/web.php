@@ -1,7 +1,12 @@
 <?php
+use App\Features\AppLoader;
+use App\Features\Auth;
+use App\Utils\Helpers\Route;
+
 // ----------------------------------------------------------------
 // Route public
 // ----------------------------------------------------------------
+
 Route::get('/', 'HomeController@index');
 Route::get('/logout', 'AuthController@logout');
 Route::get('/404', 'ErrorController@notFoundPage');
