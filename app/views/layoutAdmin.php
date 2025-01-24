@@ -1,3 +1,9 @@
+<?php
+
+use App\Features\AdminLoader;
+use App\Features\AppLoader;
+
+?>
 <!-- Sidebar -->
 <?php AdminLoader::component("Layout/Sidebar/main"); ?>
 

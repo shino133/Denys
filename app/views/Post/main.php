@@ -1,6 +1,9 @@
 <?php
+
+use App\Features\AppLoader;
+
 $posts ??= [];
-// dumpVar($posts);
+
 ?>
 
 

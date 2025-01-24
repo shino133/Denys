@@ -1,5 +1,7 @@
 <?php
 
+use App\Features\AdminLoader;
+
 $activeTextColor = function ($status) {
   return match ($status) {
     'active' => 'bg-gradient-success',

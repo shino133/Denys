@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Features\AppLoader;
 
 ?>
 <div class="row newsfeed-right-side-content mt-3">

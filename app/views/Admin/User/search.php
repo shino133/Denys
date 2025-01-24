@@ -9,7 +9,11 @@
 
   <div class="row">
     <div class="col-12">
-      <?php AdminLoader::component('SearchUserForm', [
+      <?php
+
+      use App\Features\AdminLoader;
+
+      AdminLoader::component('SearchUserForm', [
         'backUrl' => '/admin/manager/user',
         'baseUrl' => '/admin/manager/user',
         'userData' => $userData ?? [],
@@ -18,7 +22,7 @@
         'lastPage' => $lastPage ?? null,
         'nextPage' => $nextPage ?? null,
         'previousPage' => $previousPage ?? null,
-      ])?>
+      ]) ?>
     </div>
   </div>
 </div>

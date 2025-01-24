@@ -1,10 +1,15 @@
+<?php
+
+use App\Features\AppLoader;
+
+?>
 <div class="row ht-100v flex-row-reverse no-gutters">
   <div class="col-md-6 d-flex justify-content-center align-items-center">
     <div class="container mx-5">
       <div class="auth-logo text-center mb-5">
         <div class="row">
           <div class="col-md-2">
-            <img src="/public/logo/logo-64x64.png" class="logo-img" alt="Logo" />
+            <img src="/logo/logo-64x64.png" class="logo-img" alt="Logo" />
           </div>
           <div class="col-md-8">
             <p>Denys</p>

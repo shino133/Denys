@@ -2,6 +2,8 @@
 
 // dumpVar($extractDataDetails);
 
+use App\Features\AppLoader;
+
 $baseUrl = "/user/settings/contact";
 $profileData ??= [
   'id' => 0,

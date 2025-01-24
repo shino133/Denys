@@ -1,6 +1,9 @@
 <?php
 
 // dumpVar($extractDataDetails);
+
+use App\Features\AppLoader;
+
 $baseUrl = "/user/settings/password";
 
 ?>

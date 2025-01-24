@@ -1,5 +1,7 @@
 <?php
 
+use App\Features\AppLoader;
+
 $baseUrl ??= "/admin/manager/post";
 $activeTextColor = function ($status) {
   return match ($status) {

@@ -80,8 +80,7 @@
   </div>
   <div class="col-md-6 auth-bg-image d-flex justify-content-center align-items-center">
     <div class="auth-left-content mt-5 mb-5 text-center">
-            <?php AppLoader::component("ApiWeather") ?>
-
+      <?php App\Features\AppLoader::component("ApiWeather") ?>
       <div class="text-white mt-5 mb-5">
         <h2 class="create-account mb-3">Tạo tài khoản</h2>
         <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình cùng chúng tôi.</p>

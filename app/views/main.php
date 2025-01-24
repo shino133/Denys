@@ -1,3 +1,10 @@
+<?php
+
+use App\Features\AppLoader;
+use App\Utils\Helpers\Script;
+use App\Utils\Helpers\Store;
+
+?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
@@ -12,9 +19,9 @@
       "data" => $data,
       "pathView" => $pathView
     ]);
-  } else {
+  } else {               
     AppLoader::view(path: $pathView, data: $data);
-  }?>
+  } ?>
 
   <?php Script::render(position: 'body'); ?>
 </body>

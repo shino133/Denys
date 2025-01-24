@@ -1,16 +1,13 @@
 <?php
 
+use App\Features\AppLoader;
+use App\Features\Auth;
+
 $profileData['profile_bannerUrl'] = isset($profileData['profile_bannerUrl'])
-	? "/assets/img/users/" . $profileData['profile_bannerUrl']
-	: "/public/img/users/cover/cover.webp";
+	? "/assets/img/users/".$profileData['profile_bannerUrl']
+	: "/img/users/cover/cover.webp";
 $postData ??= [];
 $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
-
-// dumpVar([
-// 	"data" => $extractDataDetails,
-// 	'profileData' => $profileData,
-// 	'postData' => $postData
-// ])
 
 ?>
 <div class="row profile-right-side-content">
@@ -64,12 +61,12 @@ $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
 									<div id="post-container">
 										<div id="post-wrapper-0">
 											<?php foreach ($postData as $post) : ?>
-											<div class="p-3">
-												<div class="post border-card border-bottom p-3 bg-white shadow-lg" id="post-card-<?= $post_id ?>">
-													<?php AppLoader::component("Post/Card", $post); ?>
+												<div class="p-3">
+													<div class="post border-card border-bottom p-3 bg-white shadow-lg" id="post-card-<?= $post_id ?>">
+														<?php AppLoader::component("Post/Card", $post); ?>
+													</div>
 												</div>
-											</div>
-										<?php endforeach; ?>
+											<?php endforeach; ?>
 										</div>
 									</div>
 									<?php AppLoader::component("LoadPostBtn") ?>

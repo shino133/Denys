@@ -1,5 +1,9 @@
 <?php
 // dumpVar(Auth::getUser());
+
+use App\Features\AppLoader;
+use App\Features\Auth;
+
 ?>
 
 <div class="container-fluid" id="wrapper">

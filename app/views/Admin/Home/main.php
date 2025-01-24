@@ -8,6 +8,7 @@
   </div>
   <div class="row py-3">
     <?php
+    use App\Features\AdminLoader;
     AdminLoader::component('DataCard', [
       'userCount' => $userCount,
       'postCount' => $postCount,
