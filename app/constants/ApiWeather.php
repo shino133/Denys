@@ -1,4 +1,6 @@
 <?php
+use App\Utils\Helpers\Script;
+
 // Thay thế 'your_api_key' bằng API key của bạn
 $apiKey = API_WEATHER_KEY;
 $city = API_WEATHER_CITY; // Tên thành phố bạn muốn lấy dữ liệu

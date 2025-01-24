@@ -1,23 +1,24 @@
 <?php
-class HomeController extends BaseController
-{
-  private $postModel;
+namespace App\Controllers;
 
+use App\Constants\Constant;
+use App\Features\Auth;
+
+class HomeController extends Controller
+{
   public static function index()
   {
     if (Auth::checkLogin() == false) {
       self::redirect('/user/login');
     }
     
-    AppLoader::controller('PostController');
-
     // Set data for View
     self::setAllData(data: [
       'userData' => Auth::getUser(),
       'posts' => PostController::getNewPosts(),
     ]);
 
-    Constants::homePage();
+    Constant::homePage();
     self::render('Home/main');
   }
 

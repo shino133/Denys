@@ -1,10 +1,16 @@
 <?php
-AdminLoader::model('UserModel');
+namespace App\Controllers\Admin;
+
+use App\Constants\Admin\ConstantAdmin;
+use App\Features\AppLoader;
+use App\Features\Pagination;
+use App\Services\UserService;
+
 class TeamManagerAdminController extends AdminBaseController
 {
   public static function index()
   {
-    ConstantsAdmin::teamManagerPage();
+    ConstantAdmin::teamManagerPage();
 
     // Set data for View
     self::setAllData(data: self::setTableData());
@@ -14,14 +20,13 @@ class TeamManagerAdminController extends AdminBaseController
 
   public static function setTableData()
   {
-    AdminLoader::model('UserModel');
-    AppLoader::feature('pagination');
+    AppLoader::require('features/pagination');
     [
       'perPage' => $perPage,
       'page' => $page
-    ] = pagination();
+    ] = (new Pagination())->get();
 
-    $userData = UserModel::getUsers(
+    $userData = UserService::getUsers(
       orderBy: 'updated_at',
       conditions: ['role' => 1],
       userPerPage: $perPage,

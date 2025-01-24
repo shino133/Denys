@@ -1,18 +1,30 @@
 <?php
-AdminLoader::model('PostModel');
+namespace App\Controllers\Admin;
+
+use App\Constants\Admin\ConstantAdmin;
+use App\Controllers\AssetController;
+use App\Controllers\PostController;
+use App\Features\Pagination;
+use App\Models\PostModel;
+use App\Services\PostService;
+use App\Utils\DataValidator;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Url;
+use App\Utils\TimeHelper;
+
+use function App\Features\pagination;
 
 class PostAdminController extends AdminBaseController
 {
   public static function index() {
-    ConstantsAdmin::postPage();
+    ConstantAdmin::postPage();
 
-    AppLoader::feature('pagination');
     [
       'perPage' => $perPage,
       'page' => $page
-    ] = pagination();
+    ] = Pagination::get();
 
-    $postData = PostModel::getPosts(
+    $postData = PostService::getPosts(
       orderBy: 'created_at',
       conditions: [],
       limit: $perPage,
@@ -41,14 +53,12 @@ class PostAdminController extends AdminBaseController
   }
 
   public static function addPage() {
-    ConstantsAdmin::postPage();
-
+    ConstantAdmin::postPage();
     self::renderAdmin('Post/add');
   }
 
   public static function editPage($id) {
-    ConstantsAdmin::postPage();
-    AppLoader::controller('PostController');
+    ConstantAdmin::postPage();
 
     [$post] = PostController::getPostById($id, []);
 
@@ -60,8 +70,6 @@ class PostAdminController extends AdminBaseController
   }
 
   public static function editData($id) {
-    AdminLoader::util('TimeHelper');
-    AdminLoader::util('DataValidator');
 
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
@@ -88,7 +96,6 @@ class PostAdminController extends AdminBaseController
     // Upload image
     $uploadImage = [];
     if (isset($_FILES["mediaUrl"]) && $_FILES["mediaUrl"]['name'] != '') {
-      AppLoader::controller('AssetController');
       $uploadImage = AssetController::upImage("mediaUrl");
     }
 
@@ -111,7 +118,6 @@ class PostAdminController extends AdminBaseController
   }
 
   public static function addData() {
-    AdminLoader::util('TimeHelper');
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
       self::reverse(Url::getQueryString());
@@ -136,8 +142,6 @@ class PostAdminController extends AdminBaseController
     });
 
     Action::set('updateStatus', function () use ($id) {
-      AdminLoader::util('TimeHelper');
-
       $res = PostModel::update(conditions: [
         'id' => $id
       ], data: [
@@ -181,7 +185,6 @@ class PostAdminController extends AdminBaseController
   {
     $uploadImage = [];
     if (isset($_FILES[$inputName]) && $_FILES[$inputName]['name'] != '') {
-      AppLoader::controller('AssetController');
       $uploadImage = AssetController::upImage($inputName);
     }
 

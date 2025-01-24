@@ -1,14 +1,22 @@
 <?php
-class ErrorController extends BaseController {
+namespace App\Controllers;
 
-  public static function notFoundPage($isJustRender = true) {
-    if (!$isJustRender) {
+use App\Features\Auth;
+use App\Utils\Helpers\Url;
+
+class ErrorController extends Controller
+{
+
+  public static function notFoundPage($isJustRender = true)
+  {
+    if (! $isJustRender) {
       self::redirect('/404');
     }
     self::render('404', false);
   }
 
-  public static function homePage() {
+  public static function homePage()
+  {
     $url = '/';
 
     if (Auth::checkLogin() == false) {

@@ -1,4 +1,12 @@
 <?php
+namespace App\Controllers\Admin;
+
+use App\Constants\Admin\ConstantAdmin;
+use App\Models\CommentModel;
+use App\Models\PostLikeModel;
+use App\Models\PostModel;
+use App\Models\UserModel;
+
 class HomeAdminController extends AdminBaseController
 {
   public static function index()
@@ -8,13 +16,7 @@ class HomeAdminController extends AdminBaseController
 
   public static function dashboard()
   {
-    ConstantsAdmin::homePage();
-
-    AdminLoader::controller('TeamManagerAdminController');
-    AdminLoader::model('UserModel');
-    AdminLoader::model('PostModel');
-    AdminLoader::model('CommentModel');
-    AdminLoader::model('PostLikeModel');
+    ConstantAdmin::homePage();
 
     // Set data for View
     $statisticalData = [

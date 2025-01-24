@@ -1,13 +1,21 @@
 <?php
-AppLoader::model('PostModel');
-class PostController extends BaseController
+namespace App\Controllers;
+
+use App\Constants\Constant;
+use App\Features\AppLoader;
+use App\Features\Auth;
+use App\Services\CommentService;
+use App\Services\PostService;
+use App\Utils\DataValidator;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Cache;
+use App\Utils\Helpers\Url;
+
+class PostController extends Controller
 {
-  private $postModel;
 
   public static function addPost()
   {
-    AppLoader::util('DataValidator');
-
     // Action reverse
     Action::set('reverse', function ($msg, $status = 'error') {
       Url::setNofi($msg, $status);
@@ -16,7 +24,7 @@ class PostController extends BaseController
 
     // Action add post
     Action::set('addPost', function ($data) {
-      $res = PostModel::addPost($data);
+      $res = PostService::addPost($data);
       $args = $res == false
         ? ['Vui lòng thử lại', 'error']
         : ['Đăng bài viết thành công', 'success'];
@@ -39,7 +47,6 @@ class PostController extends BaseController
     // Upload image
     $uploadImage = [];
     if (isset($_FILES["post_image"]) && $_FILES["post_image"]['name'] != '') {
-      AppLoader::controller('AssetController');
       $uploadImage = AssetController::upImage("post_image");
     }
 
@@ -56,7 +63,7 @@ class PostController extends BaseController
   public static function postPage($postId){
     self::setData('posts', self::getPostById($postId));
 
-    Constants::homePage();
+    Constant::homePage();
     self::render('Post/main');
   }
   
@@ -69,13 +76,12 @@ class PostController extends BaseController
 
     // Set action get comments
     Action::set('getComments', function () use ($postId) {
-      AppLoader::controller('CommentController');
-      return CommentController::getCommentByPostId($postId);
+      return CommentService::getCommentByPostId($postId);
     });
 
     // Get post 
     $conditions['id'] = $postId;
-    $posts = PostModel::getPosts(
+    $posts = PostService::getPosts(
       orderBy: null,
       conditions: $conditions,
       limit: 1,
@@ -100,7 +106,7 @@ class PostController extends BaseController
     $timeResetCache = 10; // seconds
 
     Action::set('getNewPosts', function () use ($limit, $offset) {
-      return PostModel::getPosts('created_at', ['status' => "active"], $limit, $offset);
+      return PostService::getPosts('created_at', ['status' => "active"], $limit, $offset);
     });
 
     //WHEN: Don't use cache

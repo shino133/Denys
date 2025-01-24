@@ -1,7 +1,18 @@
 <?php
-AppLoader::model('UserModel');
+namespace App\Controllers;
 
-class AuthController extends BaseController
+use App\Constants\Constant;
+use App\Features\Auth;
+use App\Models\UserModel;
+use App\Services\UserService;
+use App\Utils\DataValidator;
+use App\Utils\EmailUtil;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Title;
+use App\Utils\Helpers\Url;
+use App\Utils\PasswordUtil;
+
+class AuthController extends Controller
 {
   public static function actionDefault($nameAction)
   {
@@ -23,9 +34,9 @@ class AuthController extends BaseController
       self::redirect('/');
     }
 
-    Constants::loginPage();
+    Constant::loginPage();
     if ($nameAction == 'register') {
-      Title::set(APP_NAME . ' - Register');
+      Title::set(APP_NAME.' - Register');
     }
 
     self::render($actionList[$nameAction], false);
@@ -43,7 +54,7 @@ class AuthController extends BaseController
 
   public static function loginRequest()
   {
-    AppLoader::lib('hashPass');
+
 
     Action::set('errorEvent', function ($msg = 'Something went wrong') {
       Url::setNofi(msg: $msg, status: 'error');
@@ -80,19 +91,22 @@ class AuthController extends BaseController
     }
 
     // Check password
-    $isCorrectPassword = checkPass($password, $userData['password']);
+    $isCorrectPassword = PasswordUtil::verify(
+      password: $password,
+      hashedPassword: $userData['password']);
+
     if (! ($username == $userData['userName'] && $isCorrectPassword)) {
       $msg = 'Sai tài khoản hoặc mật khẩu';
       Action::run('errorEvent', $msg);
     }
 
     // get user public data
-    $userData = UserModel::validatePublicData($userData);
+    $userData = UserService::validatePublicData($userData);
 
     // WHEN: login success
     Auth::setUser($userData);
     Auth::setLoginTime();
-    
+
     if ((int) $userData['role'] === 1) {
       Auth::setAdmin($username);
     }
@@ -122,10 +136,8 @@ class AuthController extends BaseController
     self::redirect(Url::get());
   }
 
-  public static function registerRun() : bool|string
+  public static function registerRun(): bool|string
   {
-    AppLoader::util('DataValidator');
-    AppLoader::lib('hashPass');
 
     $data = [
       'username' => $_POST['username'],
@@ -185,7 +197,7 @@ class AuthController extends BaseController
       Action::run('errorEvent', $msg);
     }
 
-    $data['password'] = hashPass($data['password']);
+    $data['password'] = PasswordUtil::hash($data['password']);
     $result = UserModel::create($data);
     if ($result == false) {
       Action::run('errorEvent', $msg);
@@ -194,13 +206,14 @@ class AuthController extends BaseController
     return $result;
   }
 
+
   public static function logout()
   {
     Auth::logout();
     self::redirect('/');
   }
 
-  public static function getCurrentUserData($redirectToLogin = true) : array|null
+  public static function getCurrentUserData($redirectToLogin = true): array|null
   {
     // Check login
     $userData = Auth::getUser();
@@ -212,7 +225,7 @@ class AuthController extends BaseController
     return $userData;
   }
 
-  public static function redirectToLogin() : void
+  public static function redirectToLogin(): void
   {
     Auth::logout();
     Url::setUrl('/user/login');
@@ -222,14 +235,12 @@ class AuthController extends BaseController
 
   public static function validPassword($password)
   {
-    AppLoader::lib('isStrongPassword');
-    return isStrongPassword($password);
+    return PasswordUtil::isStrong($password);
   }
 
   public static function validEmail($email)
   {
-    AppLoader::lib('isValidEmail');
-    return isValidEmail($email);
+    return EmailUtil::isValid($email);
   }
 
   public static function validUsername($username)

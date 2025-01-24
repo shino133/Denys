@@ -1,10 +1,16 @@
 <?php
+namespace App\Features;
+
+use App\Controllers\AuthController;
+use App\Controllers\UserController;
+use App\Services\UserService;
+
 class AutoLogout
 {
 
   public static function run(): bool
   {
-    if (!Auth::checkUser()) {
+    if (! Auth::checkUser()) {
       return false;
     }
 
@@ -16,17 +22,15 @@ class AutoLogout
       return false;
     }
 
-    AppLoader::controller('UserController');
     $userCurrentData = UserController::getCurrentUserData();
-    
+
     if (empty($userCurrentData) == false) {
       AppLoader::model('UserModel');
-      Auth::setUser(UserModel::validatePublicData($userCurrentData));
+      Auth::setUser(UserService::validatePublicData($userCurrentData));
       Auth::setLoginTime();
       return false;
     }
 
-    AppLoader::controller('AuthController');
     AuthController::redirectToLogin();
     return true;
   }

@@ -1,8 +1,12 @@
 <?php
-AppLoader::model('PostLikeModel');
-AppLoader::util('ApiHandler');
+namespace App\Controllers;
 
-class LikeController extends BaseController
+use App\Features\Auth;
+use App\Models\PostLikeModel;
+use App\Utils\ApiHandler;
+use App\Utils\Helpers\Action;
+
+class LikeController extends Controller
 {
   public static function addLike($postId)
   {

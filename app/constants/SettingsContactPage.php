@@ -1,9 +1,13 @@
 <?php
-Title::set(APP_NAME . ' - Contact settings');
+use App\Utils\Helpers\Link;
+use App\Utils\Helpers\Script;
+use App\Utils\Helpers\Title;
 
-Link::addStylesheet("/public/style/settings.css");
-Link::addStylesheet("/public/style/forms.css");
-Link::addStylesheet("/public/style/media.css");
+Title::set(APP_NAME.' - Contact settings');
+
+Link::addStylesheet("/style/settings.css");
+Link::addStylesheet("/style/forms.css");
+Link::addStylesheet("/style/media.css");
 
 Script::addInlineScript(`
 $("#menu-toggle").click(function (e) {
@@ -12,4 +16,4 @@ $("#menu-toggle").click(function (e) {
 });
 `, ['type' => 'text/javascript']);
 
-Script::addExternalScript(src: "/public/js/components/components.js");
+Script::addExternalScript(src: "/js/components/components.js");

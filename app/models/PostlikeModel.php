@@ -1,5 +1,7 @@
 <?php
-class PostLikeModel extends BaseModel
+namespace App\Models;
+
+class PostLikeModel extends Model
 {
   public static $table = 'post_likes_table'; // Đặt tên bảng
   public static $columns = [

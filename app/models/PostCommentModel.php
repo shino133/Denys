@@ -1,5 +1,7 @@
 <?php
-class PostCommentModel extends BaseModel
+namespace App\Models;
+
+class PostCommentModel extends Model
 {
   public static $table = 'post_comments_table'; // Đặt tên bảng
   public static $columns = [
@@ -8,12 +10,4 @@ class PostCommentModel extends BaseModel
     'comments_id' => 'commentsId',
     'created_at' => 'createdAt'
   ];
-
-  public static function addPostComment($data)
-  {
-    return self::create([
-      'postId' => $data['post_id'],
-      'commentsId' => $data['comment_id']
-    ]);
-  }
 }

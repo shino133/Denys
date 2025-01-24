@@ -1,4 +1,6 @@
 <?php
+namespace App\Features;
+
 class AdminLoader extends AppLoader
 {
   // Optional helpers

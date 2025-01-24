@@ -1,8 +1,16 @@
 <?php
-AppLoader::model('CommentModel');
-class CommentController extends BaseController
+namespace App\Controllers;
+
+use App\Features\Auth;
+use App\Models\CommentModel;
+use App\Services\CommentService;
+use App\Services\PostCommentService;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Url;
+use App\Utils\TimeHelper;
+
+class CommentController extends Controller
 {
-  private $commentModel;
 
   public static function addComment($postId)
   {
@@ -23,7 +31,7 @@ class CommentController extends BaseController
 
     // Action add comment
     Action::set('addComment', function ($data) {
-      $newCommentId = CommentModel::addComment($data);
+      $newCommentId = CommentService::addComment($data);
       $isSuccess = $newCommentId !== false;
       if ($isSuccess) {
         $data['comment_id'] = $newCommentId;
@@ -34,8 +42,7 @@ class CommentController extends BaseController
     });
 
     Action::set('addPostComment', function ($data) {
-      AppLoader::model('PostCommentModel');
-      $newPostCommentId = PostCommentModel::addPostComment($data);
+      $newPostCommentId = PostCommentService::addPostComment($data);
       $isSuccess = $newPostCommentId !== false;
       Action::run('default', $isSuccess);
     });
@@ -60,7 +67,6 @@ class CommentController extends BaseController
 
     // Upload image
     if ($isHaveImage == true) {                                                               
-      AppLoader::controller('AssetController');
       $uploadImage = AssetController::upImage("comment_image");
 
       // Validate
@@ -80,60 +86,5 @@ class CommentController extends BaseController
 
     // Upload comment and Redirect
     Action::run('addComment', $data);
-  }
-
-  public static function getCommentByPostId($postId, $orderBy = 'createdAt', $limit = null): array
-  {
-    $userTable = "users_table";
-    $commentTable = "comments_table";
-    $postCommentTable = "post_comments_table";
-
-    $joins = [
-      [
-        'type' => 'INNER',
-        'table' => $userTable,
-        'on' => "$userTable.id = $commentTable.userId"
-      ],
-      [
-        'type' => 'LEFT',
-        'table' => $postCommentTable,
-        'on' => "$postCommentTable.commentsId = $commentTable.id"
-      ]
-    ];
-
-    $columns = [
-      "$commentTable.id as comment_id",
-      "$commentTable.content as comment_content",
-      "$commentTable.mediaType as comment_mediaType",
-      "$commentTable.mediaUrl as comment_mediaUrl",
-      "$commentTable.userId as user_userId",
-      "$userTable.userName as user_userName",
-      "$userTable.fullName as user_fullName",
-      "$userTable.avatarUrl as user_avatarUrl",
-      // "$postCommentTable.id as postComment_id",
-      // "$postCommentTable.postId as postComment_postId",
-      "$postCommentTable.createdAt as postComment_createdAt",
-    ];
-
-    $conditions = [
-      "$postCommentTable.postId" => $postId
-    ];
-
-    if ($orderBy) {
-      $orderBy = "$postCommentTable.$orderBy DESC";
-    }
-
-    $comments = CommentModel::join($joins, $columns, $conditions, $orderBy, $limit);
-
-    if (!isset($comments) || $comments === false) {
-      return [];
-    }
-
-    AppLoader::util('TimeHelper');
-    foreach ($comments as $key => $comment) {
-      $comments[$key]['timeAgo'] = TimeHelper::timeAgo($comment['postComment_createdAt']);
-    }
-
-    return $comments;
   }
 }

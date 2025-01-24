@@ -1,11 +1,14 @@
 <?php
-AdminLoader::model('CommentModel');
+namespace App\Controllers\Admin;
+
+use App\Constants\Admin\ConstantAdmin;
+use App\Models\CommentModel;
 
 class CommentAdminController extends AdminBaseController
 {
   public static function index()
   {
-    ConstantsAdmin::commentPage();
+    ConstantAdmin::commentPage();
 
     $commentData = CommentModel::read(columns: ['*']);
 

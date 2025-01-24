@@ -1,19 +1,23 @@
 <?php
-class SearchController extends BaseController
+namespace App\Controllers;
+
+use App\Constants\Constant;
+use App\Features\AppLoader;
+use App\Models\PostModel;
+use App\Models\UserModel;
+use App\Utils\ApiHandler;
+
+class SearchController extends Controller
 {
   public static function index()
   {
-    Constants::searchPage();
+    Constant::searchPage();
 
     self::render('Search/main');
   }
 
   public static function searchData()
   {
-    AppLoader::util('ApiHandler');
-    AppLoader::lib('htmlToString');
-    AppLoader::model('UserModel');
-
     $reqData = ApiHandler::getRequestData();
     $kw = $reqData['kw'] ?? null;
     if (empty($kw) || empty($reqData)) {
@@ -43,8 +47,6 @@ class SearchController extends BaseController
 
   public static function searchUser($keyword = null, $column = 'userName', $limit = 10)
   {
-    AppLoader::model('UserModel');
-
     return UserModel::search(keyword: [
       $column => $keyword,
     ], op: 'OR', limit: $limit);
@@ -52,8 +54,6 @@ class SearchController extends BaseController
 
   public static function searchPost($keyword = null)
   {
-    AppLoader::model('PostModel');
-
     return PostModel::search([
       'title' => $keyword,
       'content' => $keyword

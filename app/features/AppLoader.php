@@ -1,4 +1,8 @@
 <?php
+namespace App\Features;
+
+use App\Utils\Helpers\Loader;
+
 class AppLoader extends Loader
 {
   // Optional helpers
@@ -7,19 +11,13 @@ class AppLoader extends Loader
     return self::include("views/$path", $data);
   }
 
-  public static function model($path, $isIncludeBase = true)
+  public static function model($path)
   {
-    if ($isIncludeBase) {
-      self::include("models/BaseModel");
-    }
     self::include("models/$path");
   }
 
-  public static function controller($path, $isIncludeBase = true)
+  public static function controller($path)
   {
-    if ($isIncludeBase) {
-      self::include("controllers/BaseController");
-    }
     self::include("controllers/$path");
   }
 

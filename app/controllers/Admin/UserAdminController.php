@@ -1,17 +1,32 @@
 <?php
-AdminLoader::model('UserModel');
+namespace App\Controllers\Admin;
+
+use App\Constants\Admin\ConstantAdmin;
+use App\Controllers\AssetController;
+use App\Controllers\AuthController;
+use App\Features\Auth;
+use App\Features\Pagination;
+use App\Models\UserModel;
+use App\Services\UserService;
+use App\Utils\DataValidator;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Store;
+use App\Utils\Helpers\Url;
+use App\Utils\TimeHelper;
+
+use function App\Features\pagination;
+
 class UserAdminController extends AdminBaseController
 {
   public static function index()
   {
-    ConstantsAdmin::userPage();
+    ConstantAdmin::userPage();
 
     // $userData = UserModel::getUsers(orderBy: 'updated_at', limit: null, conditions: []);
-    AppLoader::feature('pagination');
     [
       'perPage' => $perPage,
       'page' => $page
-    ] = pagination();
+    ] = Pagination::get();
 
     $userData = UserModel::find(
       orderBy: 'updatedAt DESC',
@@ -52,14 +67,14 @@ class UserAdminController extends AdminBaseController
 
   public static function addPage()
   {
-    ConstantsAdmin::userPage();
+    ConstantAdmin::userPage();
     self::renderAdmin('User/add');
   }
   public static function editPage($userId)
   {
-    ConstantsAdmin::userPage('edit');
+    ConstantAdmin::userPage('edit');
 
-    $userData = UserModel::getUserById($userId);
+    $userData = UserService::getUserById($userId);
 
     if (empty($userData)) {
       Url::setNofi(msg: 'Người dùng không tồn tại', status: 'error');
@@ -73,15 +88,13 @@ class UserAdminController extends AdminBaseController
 
   public static function searchPage()
   {
-    ConstantsAdmin::userPage();
+    ConstantAdmin::userPage();
 
     self::renderAdmin('User/search');
   }
 
   public static function addData()
   {
-    AppLoader::controller('AuthController');
-
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
       self::reverse(Url::getQueryString());
@@ -108,8 +121,6 @@ class UserAdminController extends AdminBaseController
 
   public static function editData($userId)
   {
-    AdminLoader::util('TimeHelper');
-    AdminLoader::util('DataValidator');
 
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
@@ -168,8 +179,6 @@ class UserAdminController extends AdminBaseController
     });
 
     Action::set('updateStatus', function () use ($userId) {
-      AdminLoader::util('TimeHelper');
-
       $res = UserModel::update(conditions: [
         'id' => $userId
       ], data: [
@@ -229,7 +238,7 @@ class UserAdminController extends AdminBaseController
     ];
 
     Action::set($ac['render'], function () {
-      ConstantsAdmin::teamManagerPage();
+      ConstantAdmin::teamManagerPage();
       self::renderAdmin('User/search');
     });
 
@@ -239,11 +248,10 @@ class UserAdminController extends AdminBaseController
       return;
     }
 
-    AppLoader::feature('pagination');
     [
       'perPage' => $perPage,
       'page' => $page
-    ] = pagination($params);
+    ] = Pagination::get();
 
     $keyword = [
       'userName' => $params['username'] ?? '',
@@ -263,7 +271,7 @@ class UserAdminController extends AdminBaseController
 
     $userData = UserModel::search($keyword, 'OR', []);
 
-    $userData = UserModel::getUsers(
+    $userData = UserService::getUsers(
       orderBy: 'updated_at',
       conditions: [],
       userPerPage: $perPage,
@@ -290,7 +298,6 @@ class UserAdminController extends AdminBaseController
   {
     $uploadImage = [];
     if (isset($_FILES[$inputName]) && $_FILES[$inputName]['name'] != '') {
-      AppLoader::controller('AssetController');
       $uploadImage = AssetController::upImage($inputName);
     }
 

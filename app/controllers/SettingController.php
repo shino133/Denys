@@ -1,5 +1,17 @@
 <?php
-class SettingController extends BaseController
+namespace App\Controllers;
+
+use App\Constants\Constant;
+use App\Features\Auth;
+use App\Models\UserModel;
+use App\Models\UserProfileModel;
+use App\Utils\DataValidator;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Url;
+use App\Utils\PasswordUtil;
+use App\Utils\UrlUtil;
+
+class SettingController extends Controller
 {
   public static function index()
   {
@@ -8,8 +20,7 @@ class SettingController extends BaseController
 
   public static function accountPage()
   {
-    Constants::settingPage();
-    AppLoader::controller('UserController');
+    Constant::settingPage();
 
     // Get current user
     $userData = UserController::getCurrentUserData();
@@ -22,9 +33,7 @@ class SettingController extends BaseController
 
   public static function contactPage()
   {
-    Constants::settingPage();
-    AppLoader::controller('UserProfileController');
-
+    Constant::settingPage();
     $profileData = UserProfileController::getProfile(
       user_id: Auth::getUser()['id'],
       include_userData: false
@@ -41,13 +50,12 @@ class SettingController extends BaseController
 
   public static function passwordPage()
   {
-    Constants::settingPage();
+    Constant::settingPage();
     self::render('Setting/Password/main');
   }
 
   public static function contactPageRequest()
   {
-    AppLoader::model('UserProfileModel');
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
       self::reverse(Url::getQueryString());
@@ -66,9 +74,8 @@ class SettingController extends BaseController
       'tiktok' => $_POST['tiktok'] ?? null,
     ];
 
-    AppLoader::lib('isValidUrl');
     foreach ($postSocialAccounts as $platform => $account) {
-      if (isValidUrl($account) == false) {
+      if (UrlUtil::isValid($account) == false) {
         unset($postSocialAccounts[$platform]);
       }
     }
@@ -90,10 +97,6 @@ class SettingController extends BaseController
 
   public static function accountPageRequest()
   {
-    AppLoader::lib('hashPass');
-    AppLoader::util('DataValidator');
-    AppLoader::controller('AuthController');
-
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
       self::reverse(Url::getQueryString());
@@ -144,7 +147,6 @@ class SettingController extends BaseController
     });
 
     // Get current user
-    AppLoader::controller('UserController');
     $userCurrentData = UserController::getCurrentUserData();
     if (empty($userCurrentData)) {
       $msg = 'Không thể lấy dữ liệu người dùng';
@@ -152,9 +154,9 @@ class SettingController extends BaseController
     }
 
     // Check password
-    $passwordCorrect = checkPass(
+    $passwordCorrect = PasswordUtil::verify(
       password: $postData['password'],
-      hash: $userCurrentData['password']
+      hashedPassword: $userCurrentData['password']
     );
 
     if ($passwordCorrect == false) {
@@ -207,10 +209,6 @@ class SettingController extends BaseController
 
   public static function passwordPageRequest()
   {
-    AppLoader::lib('hashPass');
-    AppLoader::util('DataValidator');
-    AppLoader::controller('AuthController');
-
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
       self::reverse(Url::getQueryString());
@@ -250,7 +248,6 @@ class SettingController extends BaseController
     });
 
     // Get current user
-    AppLoader::controller('UserController');
     $userCurrentData = UserController::getCurrentUserData();
     if (empty($userCurrentData)) {
       $msg = 'Không thể lấy dữ liệu người dùng';
@@ -259,13 +256,13 @@ class SettingController extends BaseController
 
     // Check password
     $userCurrentPassword = $userCurrentData['password'];
-    if (checkPass($postData['password'], $userCurrentPassword) == false) {
+    if (PasswordUtil::verify($postData['password'], $userCurrentPassword) == false) {
       $msg = 'Mật khẩu không chính xác';
       Action::run('errorEvent', $msg);
     }
 
     // Password encryption
-    $newPassword = hashPass($postData['newPassword']);
+    $newPassword = PasswordUtil::hash($postData['newPassword']);
 
     // Update password
     $res = UserModel::update(

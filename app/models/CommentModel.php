@@ -1,5 +1,7 @@
 <?php
-class CommentModel extends BaseModel
+namespace App\Models;
+
+class CommentModel extends Model
 {
   public static $table = 'comments_table'; // Đặt tên bảng
   public static $alias = 'comment';
@@ -13,14 +15,4 @@ class CommentModel extends BaseModel
     'created_at' => 'createdAt',
     'updated_at' => 'updatedAt'
   ];
-
-  public static function addComment($data)
-  {
-    return self::create([
-      'userId' => $data['user_id'],
-      'content' => $data['content'],
-      'mediaType' => $data['media_type'],
-      'mediaUrl' => $data['media_url'],
-    ]);
-  }
 }

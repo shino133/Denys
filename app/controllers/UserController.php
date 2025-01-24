@@ -1,9 +1,10 @@
 <?php
-AppLoader::model('UserModel');
+namespace App\Controllers;
 
-class UserController extends BaseController
+use App\Models\UserModel;
+
+class UserController extends Controller
 {
-  private $model;
   public static function index()
   {
     $userData = UserModel::read(['*']);
@@ -18,7 +19,6 @@ class UserController extends BaseController
   {
     if (isset($user_id) === false) {
       // Get current user from session
-      AppLoader::controller('AuthController');
       $userCurrentData = AuthController::getCurrentUserData();
       $user_id = $userCurrentData['id'];
     }

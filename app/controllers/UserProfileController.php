@@ -1,26 +1,27 @@
 <?php
-AppLoader::model('UserModel');
-AppLoader::model('UserProfileModel');
+namespace App\Controllers;
 
-class UserProfileController extends BaseController
+use App\Constants\Constant;
+use App\Features\Auth;
+use App\Models\UserModel;
+use App\Models\UserProfileModel;
+use App\Services\PostService;
+use App\Services\UserProfileService;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Url;
+
+class UserProfileController extends Controller
 {
   public static function profilePage($user_id = null)
   {
-    Constants::profilePage();
-    AppLoader::model('PostModel');
-
+    Constant::profilePage();
     $user_id ??= Auth::getUser()['id'];
     $profileData = self::getProfile($user_id);
 
-    $postData = PostModel::getPosts(conditions: [
+    $postData = PostService::getPosts(conditions: [
       'status' => 'active',
       'userId' => $user_id
     ]) ?: [];
-
-    // dumpVar([
-    //   'profileData' => $profileData,
-    //   'postData' => $postData
-    // ]);
 
 
     self::setAllData(data: [
@@ -69,7 +70,6 @@ class UserProfileController extends BaseController
       self::reverse(Url::getQueryString());
     });
 
-    AppLoader::controller('AssetController');
     $uploadImage = AssetController::upImage('avatar');
 
     if ($uploadImage['success'] == false) {
@@ -104,7 +104,6 @@ class UserProfileController extends BaseController
       self::reverse(Url::getQueryString());
     });
 
-    AppLoader::controller('AssetController');
     $uploadImage = AssetController::upImage('banner');
 
     if ($uploadImage['success'] == false) {
@@ -138,15 +137,14 @@ class UserProfileController extends BaseController
       'createAndFind' => 'createUserProfile',
     ];
 
-    AppLoader::model('UserProfileModel');
     // Find user profile
-    Action::set($ac['find'], function ($profileId = null) use ($user_id, $include_userData) : array {
+    Action::set($ac['find'], function ($profileId = null) use ($user_id, $include_userData): array {
       $table = UserProfileModel::$table;
       $conditions = $profileId
         ? ["$table.id" => $profileId]
         : ["$table.userId" => $user_id];
       return $include_userData
-        ? UserProfileModel::getProfile(
+        ? UserProfileService::getProfile(
           userId: $user_id,
           conditions: $conditions,
           limit: 1
@@ -159,7 +157,7 @@ class UserProfileController extends BaseController
     });
 
     // Create user profile and Find again
-    Action::set($ac['createAndFind'], function () use ($ac, $user_id) : array {
+    Action::set($ac['createAndFind'], function () use ($ac, $user_id): array {
       $profileId = UserProfileModel::create(['userId' => $user_id]);
       return Action::run($ac['find'], $profileId);
     });
@@ -178,8 +176,7 @@ class UserProfileController extends BaseController
     }
 
     // Check following
-    AppLoader::controller('UserFollowController');
-    $isFollowing = UserFollowController::checkFollowing($profileData['user_userName']?? null);
+    $isFollowing = UserFollowController::checkFollowing($profileData['user_userName'] ?? null);
 
     $profileData['isFollowing'] = $isFollowing;
 

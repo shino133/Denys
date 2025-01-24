@@ -1,5 +1,9 @@
 <?php
-class AdminBaseController extends BaseController {
+namespace App\Controllers\Admin;
+
+use App\Controllers\Controller;
+
+class AdminBaseController extends Controller {
   public static function renderAdmin($viewAdmin, $useBaseLayout = true, $pathLayoutAdmin = 'layoutAdmin') {
     self::render( "Admin/$viewAdmin", $useBaseLayout, $pathLayoutAdmin);
   }

@@ -1,5 +1,9 @@
 <?php
-class ConstantsAdmin
+namespace App\Constants\Admin;
+
+use App\Features\AdminLoader;
+
+class ConstantAdmin
 {
   // Admin pages
   public static function baseTag()

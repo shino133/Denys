@@ -1,4 +1,17 @@
 <?php
+namespace App\Controllers\Admin;
+
+use App\Constants\Admin\ConstantAdmin;
+use App\Controllers\AuthController;
+use App\Controllers\UserController;
+use App\Features\Auth;
+use App\Models\UserModel;
+use App\Utils\DataValidator;
+use App\Utils\Encryption;
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Url;
+use App\Utils\PasswordUtil;
+
 class SettingController extends AdminBaseController
 {
   public static function index()
@@ -8,16 +21,13 @@ class SettingController extends AdminBaseController
 
   public static function passwordPage()
   {
-    ConstantsAdmin::homePage();
+    ConstantAdmin::homePage();
     self::renderAdmin('Setting/Password/main');
   }
 
 
   public static function passwordPageRequest()
   {
-    AppLoader::lib('hashPass');
-    AppLoader::util('DataValidator');
-    AppLoader::controller('AuthController');
 
     Action::set('reverse', function ($msg = 'Something went wrong', $status = 'error') {
       Url::setNofi(msg: $msg, status: $status);
@@ -58,7 +68,6 @@ class SettingController extends AdminBaseController
     });
 
     // Get current user
-    AppLoader::controller('UserController');
     $userCurrentData = UserController::getCurrentUserData();
     if (empty($userCurrentData)) {
       $msg = 'Không thể lấy dữ liệu người dùng';
@@ -66,14 +75,14 @@ class SettingController extends AdminBaseController
     }
 
     // Check password
-    $userCurrentPassword = decryptData($userCurrentData['password']);
+    $userCurrentPassword = Encryption::decrypt($userCurrentData['password']);
     if ($userCurrentPassword !== $postData['password']) {
       $msg = 'Mật khẩu không chính xác';
       Action::run('errorEvent', $msg);
     }
 
     // Password encryption
-    $newPassword = hashPass($postData['newPassword']);
+    $newPassword = PasswordUtil::hash($postData['newPassword']);
 
     // Update password
     $res = UserModel::update(

@@ -1,9 +1,12 @@
 <?php
-AppLoader::model('UserFollowModel');
-AppLoader::model('UserModel');
-AppLoader::util('ApiHandler');
+namespace App\Controllers;
 
-class UserFollowController extends BaseController
+use App\Features\Auth;
+use App\Models\UserFollowModel;
+use App\Models\UserModel;
+use App\Utils\ApiHandler;
+
+class UserFollowController extends Controller
 {
   public static function getFollowersId($followerName): int|null
   {

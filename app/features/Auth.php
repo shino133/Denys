@@ -1,4 +1,10 @@
 <?php
+namespace App\Features;
+
+use App\Utils\Helpers\Authentication;
+use App\Utils\Helpers\Cache;
+use Ramsey\Uuid\Uuid;
+
 class Auth extends Authentication
 {
   // Phương thức cho username
@@ -59,12 +65,9 @@ class Auth extends Authentication
   }
 
   // Phương thức cho csrf_token
-  public static function setToken($length = 32)
+  public static function setToken()
   {
-    AppLoader::lib('generateToken');
-    $csrf_token = generateToken($length);
-
-    return self::set("csrf_token", $csrf_token);
+    return self::set("csrf_token", Uuid::uuid4()->toString());
   }
 
   public static function getToken()
