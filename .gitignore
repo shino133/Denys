@@ -1,4 +1,4 @@
-app/env.php
+app/configs/env.php
 app/assets/uploads/*
 app/trash/*
 
@@ -9,3 +9,4 @@ app/cache/*
 
 .vscode
 .idea
+/vendor/
