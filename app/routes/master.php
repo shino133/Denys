@@ -1,4 +1,12 @@
 <?php
+
+use App\Controllers\Controller;
+use App\Controllers\ErrorController;
+use App\Features\AppLoader;
+use App\Features\Auth;
+use App\Utils\Helpers\Route;
+use App\Utils\Helpers\Store;
+
 require_once 'web.php';
 
 // Lấy URI và phương thức HTTP hiện tại
@@ -9,8 +17,6 @@ $route = Route::match($requestUri, $requestMethod);
 
 // 404
 if (! $route) {
-  AppLoader::controller('ErrorController');
-
   $action = Auth::checkLogin()
     ? 'notFoundPage'
     : 'homePage';
@@ -24,12 +30,12 @@ Store::setQueryParams($route['queryParams']);
 
 // Gọi controller và action
 [$fullControllerPath, $action] = explode('@', $route['controllerPath']);
-AppLoader::controller(path: $fullControllerPath);
 
 // Tách folder và controller từ fullControllerPath
 $parts = explode('/', $fullControllerPath);
 // $folder = implode('/', $parts);
-$controller = array_pop($parts);
+$controller = "App\\Controllers\\".implode('\\', $parts);
+
 $controllerInstance = new $controller();
 
 // Gọi action và truyền các tham số nếu có
