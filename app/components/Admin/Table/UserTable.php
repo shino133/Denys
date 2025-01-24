@@ -1,5 +1,8 @@
 <?php
 
+use App\Features\AppLoader;
+use App\Features\Auth;
+
 $baseUrl ??= "/admin/manager/user";
 
 $activeTextColor = function ($status) {

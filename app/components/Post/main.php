@@ -1,5 +1,8 @@
 <?php
 // dumpVar($comments);
+
+use App\Features\AppLoader;
+
 $data = [
   'post_id' => $post_id ?? '',
   'post_content' => $post_content ?? '',

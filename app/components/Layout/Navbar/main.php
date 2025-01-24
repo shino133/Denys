@@ -1,5 +1,8 @@
 <?php
 // dumpVar($extractDataDetails);
+
+use App\Features\Auth;
+
 $avatar_url = $userData['avatar_url'] ?? "";
 $full_name = $userData['full_name'] ?? "Anonymous";
 ?>
@@ -9,7 +12,7 @@ $full_name = $userData['full_name'] ?? "Anonymous";
     <ul class="nav navbar-nav enable-mobile px-2">
       <li class="nav-item">
         <button type="button" class="btn nav-link p-0">
-          <img src="/public/img/icons/theme/post-image.png" class="f-nav-icon" alt="Quick make post" />
+          <img src="/img/icons/theme/post-image.png" class="f-nav-icon" alt="Quick make post" />
         </button>
       </li>
       <li class="nav-item w-100 py-2">
@@ -28,23 +31,23 @@ $full_name = $userData['full_name'] ?? "Anonymous";
       </li>
       <li class="nav-item">
         <a href="/messages" class="nav-link nav-icon nav-links message-drop drop-w-tooltip" data-placement="bottom">
-          <img src="/public/img/icons/navbar/message.png" class="message-dropdown f-nav-icon" alt="navbar icon" />
+          <img src="/img/icons/navbar/message.png" class="message-dropdown f-nav-icon" alt="navbar icon" />
         </a>
       </li>
     </ul>
     <ul class="navbar-nav mr-5 row" id="main_menu">
       <div class="col d-flex">
-        <a class="navbar-brand nav-item" href="/"><img src="/public/logo/logo-64x64.png" width="60" height="60"
-         alt="Logo" /></a>
+        <a class="navbar-brand nav-item" href="/"><img src="/logo/logo-64x64.png" width="60" height="60"
+            alt="Logo" /></a>
         <!-- Collect the nav links, forms, and other content for toggling -->
-         <div class="d-flex justify-content-center align-items-center px-2">
+        <div class="d-flex justify-content-center align-items-center px-2">
           <div class="bg-white rounded-pill p-1">
             <a class="p-1 d-flex justify-content-center align-items-center" href="/search">
-              <span>Tìm kiếm</span> 
-            <i class='bx bx-search-alt-2 px-1' style="font-size: 20px;"></i>
-          </a>
+              <span>Tìm kiếm</span>
+              <i class='bx bx-search-alt-2 px-1' style="font-size: 20px;"></i>
+            </a>
           </div>
-         </div>
+        </div>
       </div>
 
 
@@ -66,25 +69,25 @@ $full_name = $userData['full_name'] ?? "Anonymous";
         <li class="nav-item s-nav nav-icon dropdown px-3">
           <a href="settings.html" data-toggle="dropdown" data-placement="bottom"
             class="nav-link settings-link rm-drop-mobile drop-w-tooltip" id="settings-dropdown"><img
-              src="/public/img/icons/navbar/settings.png" class="nav-settings" alt="navbar icon" /></a>
+              src="/img/icons/navbar/settings.png" class="nav-settings" alt="navbar icon" /></a>
           <div class="dropdown-menu dropdown-menu-right settings-dropdown shadow-sm"
             aria-labelledby="settings-dropdown">
             <a class="dropdown-item" href="#">
-              <img src="/public/img/icons/navbar/help.png" alt="Navbar icon" />
+              <img src="/img/icons/navbar/help.png" alt="Navbar icon" />
               Trung tâm trợ giúp</a>
             <a class="dropdown-item" href="/user/settings">
-              <img src="/public/img/icons/navbar/gear-1.png" alt="Navbar icon" />
+              <img src="/img/icons/navbar/gear-1.png" alt="Navbar icon" />
               Cài Đặt Chung</a>
 
             <?php if (Auth::checkAdmin()) : ?>
               <a class="dropdown-item" href="/admin/dashboard">
-                <img src="/public/img/icons/navbar/logout.png" alt="Navbar icon" />
+                <img src="/img/icons/navbar/logout.png" alt="Navbar icon" />
                 Vào trang quản trị</a>
             <?php endif; ?>
 
             <?php if (Auth::checkLogin()) : ?>
               <a class="dropdown-item logout-btn" href="/logout">
-                <img src="/public/img/icons/navbar/logout.png" alt="Navbar icon" />
+                <img src="/img/icons/navbar/logout.png" alt="Navbar icon" />
                 Đăng Xuất</a>
             <?php else : ?>
               <a class="dropdown-item logout-btn" href="/user/login">Đăng Nhập</a>
@@ -93,7 +96,7 @@ $full_name = $userData['full_name'] ?? "Anonymous";
           </div>
         </li>
         <button type="button" class="btn nav-link" id="menu-toggle">
-          <img src="/public/img/icons/theme/navs.png" alt="Navbar navs" />
+          <img src="/img/icons/theme/navs.png" alt="Navbar navs" />
         </button>
       </div>
 

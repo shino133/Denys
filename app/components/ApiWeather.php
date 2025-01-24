@@ -1,5 +1,8 @@
 <?php
 
+use App\Utils\Helpers\Action;
+use App\Utils\Helpers\Cache;
+
 $weatherData = Cache::get('weatherDataApi', 'weather/');
 
 [$temperature, $city] = isset($weatherData) && ! empty($weatherData)

@@ -2,11 +2,12 @@
   <div class="row">
     <div class="col-md-12">
       <div class="input-group">
-        <input type="text" class="form-control comment-input" name="content" placeholder="Viết bình luận" />
+        <input type="text" class="form-control comment-input" name="content" placeholder="Viết bình luận"
+          autocomplete="off" />
         <input type="file" id="commentImage" name="comment_image" hidden>
 
         <div class="input-group-btn ml-2">
-          
+
           <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top"
             title="Tooltip on top">
             <i class="bx bx-camera"></i>

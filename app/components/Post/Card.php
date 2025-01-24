@@ -81,7 +81,7 @@
 <div class="mb-3">
   <!-- Reactions -->
   <div class="argon-reaction">
-    <?php AppLoader::component("Post/LikeBtn", [
+    <?php App\Features\AppLoader::component("Post/LikeBtn", [
       'isLikedByCurrentUser' => $isLikedByCurrentUser,
       'likeCount' => $likeCount,
       'post_id' => $post_id

@@ -1,4 +1,8 @@
 <?php
+
+use App\Features\AppLoader;
+use App\Features\Auth;
+
 $self_avatarUrl = Auth::getUser()['avatar_url'] ?? '';
 $self_fullName = Auth::getUser()['full_name'] ?? 'Anonymous';
 ?>

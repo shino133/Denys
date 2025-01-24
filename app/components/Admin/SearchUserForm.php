@@ -1,5 +1,7 @@
 <?php
 
+use App\Features\AdminLoader;
+
 $backUrl ??= '/admin/user';
 $baseUrl ??= '/admin/user';
 

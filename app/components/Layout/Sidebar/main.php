@@ -1,5 +1,8 @@
 <?php
-$menuItems = Constants::sidebarHomePage();
+
+use App\Constants\Constant;
+
+$menuItems = Constant::sidebarHomePage();
 ?>
 
 <div class="card newsfeed-user-card h-100 rounded mr-3">

@@ -1,3 +1,7 @@
+<?php
+
+use App\Utils\Helpers\Store;
+?>
 <ul class="list-unstyled" style="margin-bottom: 0">
   <li class="media post-form w-shadow">
     <div class="media-body">

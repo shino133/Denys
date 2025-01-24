@@ -6,7 +6,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <?php AppLoader::component("NewPost"); ?>
+      <?php App\Features\AppLoader::component("NewPost"); ?>
     </div>
   </div>
 </div>

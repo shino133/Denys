@@ -3,6 +3,10 @@
 // dumpVar(var: $extractDataDetails, allowWrap: false, allowContinue: true);
 // return;
 
+use App\Features\AppLoader;
+use App\Features\Auth;
+use App\Utils\UrlUtil;
+
 $socialAccounts = $profileData['profile_socialAccounts'] ?? [];
 
 AppLoader::lib('getFriendlyUrlName');
@@ -123,7 +127,7 @@ $isCurrentUser = $profileData['user_id'] == Auth::getUser('id');
     </div>
     <?php if (empty($socialAccounts) == false) : ?>
       <?php foreach ($socialAccounts as $platform => $account) : ?>
-        <?php $friendlyName = getFriendlyUrlName($account); ?>
+        <?php $friendlyName = UrlUtil::getFriendlyUrlName($account); ?>
         <div class="intro-item d-flex justify-content-between align-items-center">
           <p class="intro-title text-muted">
             <i class="bx bxl-<?= $platform ?> <?= $platform ?>-color"></i>

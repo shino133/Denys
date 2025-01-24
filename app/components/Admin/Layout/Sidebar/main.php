@@ -3,8 +3,8 @@
   <div class="sidenav-header">
     <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
       aria-hidden="true" id="iconSidenav"></i>
-    <a class="navbar-brand px-4 py-3 m-0" href="<?= BASE_URL_ADMIN . "dashboard" ?>">
-      <img src="/public/logo/logo-64x64.png" class="navbar-brand-img" width="32" height="32" alt="main_logo" />
+    <a class="navbar-brand px-4 py-3 m-0" href="<?= BASE_URL_ADMIN."dashboard" ?>">
+      <img src="/logo/logo-64x64.png" class="navbar-brand-img" width="32" height="32" alt="main_logo" />
       <span class="ms-1 text-sm text-dark">Denys Admin</span>
     </a>
   </div>
