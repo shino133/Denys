@@ -1,4 +1,7 @@
 <?php
+
+use App\Utils\Helpers\Route;
+
 Route::get('/about', 'PageController@about');
 Route::post('/contact', 'ContactController@submit');
 

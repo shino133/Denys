@@ -1,5 +1,7 @@
 <?php
-AppLoader::feature('setCRUDRoute');
+
+use App\Features\CRUDRoute;
+use App\Utils\Helpers\Route;
 
 Route::get('/admin', 'Admin/HomeAdminController@index');
 Route::get('/admin/manager', 'Admin/HomeAdminController@index');
@@ -31,5 +33,5 @@ $routerCRUD = [
 ];
 
 foreach ($routerCRUD as $key => $value) {
-  setCRUDRoute($value['url'], $value['controller']);
+  CRUDRoute::set($value['url'], $value['controller']);
 }

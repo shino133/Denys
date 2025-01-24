@@ -1,5 +1,8 @@
 <?php
 // Asset
+
+use App\Utils\Helpers\Route;
+
 Route::get('/assets/img/{fileName}', 'AssetController@getImage');
 Route::get('/assets/js/{fileName}', 'AssetController@getJs');
 Route::get('/assets/css/{fileName}', 'AssetController@getCss');
