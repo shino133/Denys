@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Validator
 {
   /**

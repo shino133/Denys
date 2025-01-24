@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Meta
 {
   // Biến lưu trữ nội dung thẻ meta

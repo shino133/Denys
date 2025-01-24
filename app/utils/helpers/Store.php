@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Store
 {
   // Mảng tĩnh để lưu trữ dữ liệu

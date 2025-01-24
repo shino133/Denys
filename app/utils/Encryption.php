@@ -1,8 +1,10 @@
 <?php
+namespace App\Utils;
+
 class Encryption
 {
   private static $cipher = 'AES-256-CBC';
-  private static $key = APP_KEY ?? 'your_custom_secret_key';
+  private static $key = APP_KEY ?? null;
   private static $ivLength = null;
 
   // Khởi tạo độ dài IV ngay khi khai báo

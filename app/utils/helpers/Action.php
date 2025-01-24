@@ -1,4 +1,9 @@
 <?php
+namespace App\Utils\Helpers;
+
+use Exception;
+use Throwable;
+
 class Action
 {
   private static $storedAction;

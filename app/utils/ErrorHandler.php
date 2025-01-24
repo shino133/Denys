@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils;
+
 class ErrorHandler
 {
     private static $message = "";

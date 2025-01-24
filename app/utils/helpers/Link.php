@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Link
 {
   // Biến lưu trữ danh sách các thẻ link

@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Title
 {
   private static $title = '';

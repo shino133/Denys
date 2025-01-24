@@ -1,4 +1,6 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Authentication
 {
   // Phương thức đăng nhập: thiết lập session nếu thông tin người dùng hợp lệ

@@ -1,36 +1,52 @@
 <?php
+namespace App\Utils\Helpers;
+
 class Loader
 {
-  // Core helpers
-  public static function include($path, $extractDataDetails = [], $include_once = true)
+  private static $basePath;
+
+  // Set base path for file inclusion
+  public static function setBasePath($path)
   {
-    $fullPath_starts_from_this_file_location = __DIR__ . '/../../' . $path . ".php";
+    self::$basePath = rtrim($path, '/');
+  }
 
-    // Kiểm tra nếu file tồn tại trước khi include
-    if (file_exists($fullPath_starts_from_this_file_location)) {
-      $It_does_not_need_to_be_called_again = $include_once;
-      extract($extractDataDetails);
+  public static function getBasePath()
+  {
+    return self::$basePath ?? (__DIR__.'/../../');
+  }
 
-      return $It_does_not_need_to_be_called_again
-        ? include_once $fullPath_starts_from_this_file_location
-        : include $fullPath_starts_from_this_file_location;
+  // Get full path of a file
+  private static function getFullPath($path)
+  {
+    $basePath = self::$basePath ?? (__DIR__.'/../');
+    return $basePath.'/'.ltrim($path, '/').'.php';
+  }
+
+  // Get file                
+  private static function getFileFullPath($path, $data = [])
+  {
+    $fullPath = self::getFullPath($path);
+    if (file_exists($fullPath)) {
+      return [$fullPath, $data];
     } else {
-      echo "404 - File not found: $fullPath_starts_from_this_file_location";
+      throw new \Exception("File not found: $fullPath");
     }
   }
 
-  public static function getPath($path): string
+  // Include file
+  public static function include($path, $data = [], $includeOnce = true)
   {
-    return __DIR__ . '/../../' . $path;
+    [$fullPath, $data] = self::getFileFullPath($path, $data);
+    extract($data);
+    return $includeOnce ? include_once $fullPath : include $fullPath;
   }
 
-  public static function htmlToString($path, $data = [])
+  // Require file
+  public static function require($path, $data = [], $requireOnce = true)
   {
-    ob_start();
-    if ($data) {
-      extract($data);
-    }
-    self::include($path, $data);
-    return ob_get_clean();
+    [$fullPath, $data] = self::getFileFullPath($path, $data);
+    extract($data, EXTR_SKIP);
+    return $requireOnce ? require_once $fullPath : require $fullPath;
   }
 }
