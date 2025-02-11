@@ -23,7 +23,8 @@ class CRUDRoute
       'editData' => ['method' => 'post', 'path' => "{$url}/{id}/edit/request", 'action' => "{$controller}@editData"],
       'addPage' => ['method' => 'get', 'path' => "{$url}/add", 'action' => "{$controller}@addPage"],
       'addData' => ['method' => 'post', 'path' => "{$url}/add/request", 'action' => "{$controller}@addData"],
-      'destroyData' => ['method' => 'post', 'path' => "{$url}/{id}/destroy/request", 'action' => "{$controller}@destroyData"],
+
+      'destroyData' => ['method' => 'get', 'path' => "{$url}/{id}/destroy/request", 'action' => "{$controller}@destroyData"],
     ];
 
     // Merge default actions with custom actions

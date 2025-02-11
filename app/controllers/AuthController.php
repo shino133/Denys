@@ -173,7 +173,7 @@ class AuthController extends Controller
 
     // Check password valid
     if (self::validPassword($data['password']) == false) {
-      $msg = 'Password phải có ít nhất 8 ký tự, 1 chữ thường, 1 chữ hoa, 1 số, 1 ký tự đặc biệt';
+      $msg = 'Password phải có ít nhất 2 từ, 8 ký tự, 1 số, 1 ký tự đặc biệt';
       Action::run('errorEvent', $msg);
     }
 

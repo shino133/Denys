@@ -45,4 +45,10 @@ class Constant
   {
     return AppLoader::constant('SidebarHomePage');
   }
+
+  public static function notFoundPage()
+  {
+    self::baseTag();
+    AppLoader::constant('NotFoundPage');
+  }
 }

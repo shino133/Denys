@@ -1,9 +1,8 @@
 <?php
 
-use App\Controllers\Controller;
 use App\Controllers\ErrorController;
-use App\Features\AppLoader;
 use App\Features\Auth;
+use App\Lib\DumpVar;
 use App\Utils\Helpers\Route;
 use App\Utils\Helpers\Store;
 
@@ -14,6 +13,9 @@ $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 $route = Route::match($requestUri, $requestMethod);
+
+// Lấy tất cả các route
+// DumpVar::dump(Route::getRoutes());
 
 // 404
 if (! $route) {

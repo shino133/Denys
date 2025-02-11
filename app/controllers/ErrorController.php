@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Constants\Constant;
 use App\Features\Auth;
 use App\Utils\Helpers\Url;
 
@@ -12,6 +13,8 @@ class ErrorController extends Controller
     if (! $isJustRender) {
       self::redirect('/404');
     }
+
+    Constant::notFoundPage();
     self::render('404', false);
   }
 

@@ -51,7 +51,10 @@ class Route
     // Lấy tất cả các route đã định nghĩa
     public static function getRoutes()
     {
-        return self::$routes;
+        return [
+            'routes' => self::$routes,
+            'dynamicRoutes' => self::$dynamicRoutes,
+        ];
     }
 
     // So khớp route với URI và lấy tham số nếu có
@@ -66,7 +69,7 @@ class Route
         if (isset($parsedUrl['query'])) {
             parse_str($parsedUrl['query'], $queryParams);
         }
-        
+
         // Kiểm tra route cố định trước
         if (isset(self::$routes[$requestMethod][$requestUri])) {
             return [
@@ -76,14 +79,14 @@ class Route
             ];
         }
 
-        
-        if (!isset(self::$dynamicRoutes[$requestMethod])) {
+
+        if (! isset(self::$dynamicRoutes[$requestMethod])) {
             return null;
         }
         // Kiểm tra route động nếu không có route cố định
         foreach (self::$dynamicRoutes[$requestMethod] as $uri => $controller) {
             $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([^/]+)', $uri);
-            $pattern = "#^" . $pattern . "$#";
+            $pattern = "#^".$pattern."$#";
 
             if (preg_match($pattern, $requestUri, $matches)) {
                 array_shift($matches); // Bỏ phần khớp toàn bộ
